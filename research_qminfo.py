@@ -88,7 +88,7 @@ def Beam_Splitter_Action(A):             # function to give appropriate output s
                 new_states[second_index-1] = basis[i][1]
                 resultant_vectors.append(n.array(new_states))
                 full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))  
-    results = [resultant_vectors, full_result_state]
+    results = [resultant_vectors, full_result_state, Coeff_list]
     return results  
 
 A = Beam_Splitter_Action(working_state)
@@ -108,16 +108,25 @@ def BeamSPlitterLooped(mirror_index, input_vectors_list, coefficient_list):
     # print(working_states_list)
     output_vector_list = [i for i in range(len(working_states_list))]
     # print(output_vector_list)
+    first_coeff_list = Beam_Splitter_Action(working_states_list[i])[2]
+
+    second_coeff_list = []
+    # adding a 'for' loop to add the new coeff lists based on the six if-statements
+
+
+
     for i in range(len(working_states_list)):
         output_vector_list[i] = (Beam_Splitter_Action(working_states_list[i])[0])
-    # print(output_vector_list)
+    print(output_vector_list)
+    [ for i in  
+     
 
     # t = sym.Symbol('t'+f'_{total_index}')     # creating matching coeficients
     # r = sym.Symbol('r'+f'_{total_index}')    
 
 
 B = []
-BeamSPlitterLooped('12',A[0], B)
+(BeamSPlitterLooped('12',A[0], B))
 
 
 

@@ -5,7 +5,7 @@ import scipy as s
 import sympy as sym
 
 
-matrix_index = "14"                                                  # matrices be inputted according to choice
+matrix_index = "13"                                                  # matrices be inputted according to choice
 # input = (input('Action of matrix : '))                             #UNCOMMENT later
 
 total_index = int(matrix_index)
@@ -15,6 +15,8 @@ second_matrix_index = int(matrix_index[1])
 t = sym.Symbol('t'+f'_{total_index}')                               # creating matching coeficients
 r = sym.Symbol('r'+f'_{total_index}')
 
+t12 = sym.Symbol('t12')                               # creating matching coeficients
+r12 = sym.Symbol('r12')
 
 
 six_states_0 = n.array([0,0])                                       # defining the six possilbe output states
@@ -37,8 +39,8 @@ ten_states_8 = n.array([0,2,0,0])
 ten_states_9= n.array([0,0,2,0])
 ten_states_10 = n.array([0,0,0,2])
 
-input_vector_list = [[1,0,0,1],[1,0,1,0],[2,0,0,0]]                  # input and output pure state vectors be lists
-input_coeff_list = [1,55,78]                                               # list of coeffcients t and r attached to the input states
+input_vector_list = [[1,0,0,1], [0,1,0,1]]                  # input and output pure state vectors be lists
+input_coeff_list = [t12,-r12]                                               # list of coeffcients t and r attached to the input states
 input_state = [('(' + str(input_coeff_list[i]) + ')*'+ str(input_vector_list[i])) for i in range(len(input_coeff_list)) if input_coeff_list[i] != 0 ]    # typesets the result, ignores zero coefficient terms
 
 
@@ -166,10 +168,10 @@ for k in range(len(working_state_list)):
 
 
 # print('output_vectors_list_intermediate :' , output_vectors_list_intermediate)
-# print('output_vectors_list_full :' , output_vectors_list_full)
+# print('resultant_state' , resultant_state)
 print('input_state : ', input_state)
-print('resultant_state' , resultant_state)
 print('output_coeff_list full : ' , output_coeff_list_full)
+print('output_vectors_list_full :' , output_vectors_list_full)
 
 
 

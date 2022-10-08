@@ -5,19 +5,7 @@ import scipy as s
 import sympy as sym
 
 
-input_state = [1,0,0,1]
-# Matrices = ['M34'+'M24'+'M23'-'M14','M13','M12']    #useless rn
 
-input = "14"
-# input = (input('Action of matrix : '))              #UNCOMMENT later
-total_index = int(input)
-first_index = int(input[0])
-second_index = int(input[1])
-
-working_state = [input_state[first_index-1], input_state[second_index-1]]
-
-t = sym.Symbol('t'+f'_{total_index}')     # creating matching coeficients
-r = sym.Symbol('r'+f'_{total_index}')
 
 six_states_0 = n.array([0,0])          # defining the six possilbe output states
 six_states_1 = n.array([1,0])
@@ -27,20 +15,144 @@ six_states_4 = n.array([2,0])
 six_states_5 = n.array([0,2])
 empty = n.array([])
 
+ten_states_0 = n.array([0,0,0,0])          # defining the ten possilbe output states
+ten_states_1 = n.array([1,1,0 ,0 ])
+ten_states_2 = n.array([1,0,1,0])
+ten_states_3 = n.array([1,0,0,1])
+ten_states_4 = n.array([0,1,1,0])
+ten_states_5 = n.array([0,1,0,1])
+ten_states_6 = n.array([0,0,1,1])
+ten_states_7= n.array([2,0,0,0])
+ten_states_8 = n.array([0,2,0,0])
+ten_states_9= n.array([0,0,2,0])
+ten_states_10 = n.array([0,0,0,2])
+
+
+input_state_list = [[1,0,0,1]]             # input and output pure state vectors be lists
+input_coeff_list = [1]                      # list of coeffcients t and r attached to the input states
+
+
+matrix_index = "14"                          # matrices be inputted according to choice
+# input = (input('Action of matrix : '))              #UNCOMMENT later
+total_index = int(matrix_index)
+first_matrix_index = int(matrix_index[0])
+second_matrix_index = int(matrix_index[1])
+
+working_state_list = [[input_state_list[i][first_matrix_index-1], input_state_list[i][second_matrix_index-1]] for i in input_state_list]
+# working "2 dimesnional" states of every input  
+
+t = sym.Symbol('t'+f'_{total_index}')     # creating matching coeficients
+r = sym.Symbol('r'+f'_{total_index}')
+
+
+# Now applying this beams splitter on the inputs
+
+resultant_state = []
+# full_result_state = []
+# resultant_vectors = []                           # list of new_states
+basis = [six_states_0,six_states_1, six_states_2,six_states_3,six_states_4,six_states_5]
+new_states = [[i for i in input_state_list[j]] for j in range(len(input_state_list))]  # copy of input state list to change in into results
+
+for k in range(len(working_state_list)):
+    if working_state_list[k] == [1,0]:
+        Coeff_list = [0,(t),(-r),0,0,0]
+        for i in range(len((Coeff_list))):
+            if Coeff_list[i] != 0:
+                resultant_state.append(Coeff_list[i]*basis[i])         # only keeping the non-zero lists (except the state_0)
+                new_states[k][first_matrix_index-1] = basis[i][0]              # changing elts of the input state so to get the new states with 4 positons
+                new_states[k][second_matrix_index-1] = basis[i][1]
+                resultant_vectors.append(n.array(new_states))
+                full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   # making a list of such new states as strings 
+    elif working_state_list[k] == [0,1]:
+        Coeff_list = [0,(r),(t),0,0,0]
+        for i in range(len((Coeff_list))):
+            if Coeff_list[i] != 0:
+                resultant_state.append(Coeff_list[i]*basis[i])
+                new_states[k][first_matrix_index-1] = basis[i][0]              
+                new_states[k][second_matrix_index-1] = basis[i][1]
+                resultant_vectors.append(n.array(new_states))
+                full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
+    elif working_state_list[k] == [0,0]:
+        Coeff_list = [(1),0,0,0,0,0]
+        for i in range(len((Coeff_list))):
+            if Coeff_list[i] != 0:
+                resultant_state.append(Coeff_list[i]*basis[i])
+                new_states[k][first_matrix_index-1] = basis[i][0]              
+                new_states[k][second_matrix_index-1] = basis[i][1]
+                resultant_vectors.append(n.array(new_states))
+                full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
+    elif working_state_list[k] == [1,1]:
+        Coeff_list = [0,0,0,(t**2-r**2),(n.sqrt(2)*t*r),(-n.sqrt(2)*t*r)]
+        for i in range(len((Coeff_list))):
+            if Coeff_list[i] != 0:
+                resultant_state.append(Coeff_list[i]*basis[i])
+                new_states[k][first_matrix_index-1] = basis[i][0]              
+                new_states[k][second_matrix_index-1] = basis[i][1]
+                resultant_vectors.append(n.array(new_states))
+                full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
+    elif working_state_list[k] == [2,0]:
+        Coeff_list = [0,0,0,(-n.sqrt(2)*t*r),(t**2),(r**2)]
+        for i in range(len((Coeff_list))):
+            if Coeff_list[i] != 0:
+                resultant_state.append(Coeff_list[i]*basis[i])
+                new_states[k][first_matrix_index-1] = basis[i][0]              
+                new_states[k][second_matrix_index-1] = basis[i][1]
+                resultant_vectors.append(n.array(new_states))
+                full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
+    elif working_state_list[k] == [0,2]:
+        Coeff_list = [0,0,0,(n.sqrt(2)*t*r),(r**2),(t**2)]
+        for i in range(len((Coeff_list))):
+            if Coeff_list[i] != 0:
+                resultant_state.append(Coeff_list[i]*basis[i])
+                new_states[k][first_matrix_index-1] = basis[i][0]              
+                new_states[k][second_matrix_index-1] = basis[i][1]
+                resultant_vectors.append(n.array(new_states))
+                full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))  
+    results = [resultant_vectors, full_result_state, Coeff_list]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""" 
 
 def Beam_Splitter_Action(A):             # function to give appropriate output states
     result_state = []
     full_result_state = []
     resultant_vectors = []                            # list of new_states
     basis = [six_states_0,six_states_1, six_states_2,six_states_3,six_states_4,six_states_5]
-    new_states = [i for i in input_state]
+    new_states = [i for i in input_state_list]
     if A == [1,0]:
         Coeff_list = [0,(t),(-r),0,0,0]
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 result_state.append(Coeff_list[i]*basis[i])         # only keeping the non-zero lists (except the state_0)
-                new_states[first_index-1] = basis[i][0]              # changing elts of the input state so to get the new states with 4 positons
-                new_states[second_index-1] = basis[i][1]
+                new_states[first_matrix_index-1] = basis[i][0]              # changing elts of the input state so to get the new states with 4 positons
+                new_states[second_matrix_index-1] = basis[i][1]
                 resultant_vectors.append(n.array(new_states))
                 full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   # making a list of such new states as strings 
     elif A == [0,1]:
@@ -48,8 +160,8 @@ def Beam_Splitter_Action(A):             # function to give appropriate output s
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 result_state.append(Coeff_list[i]*basis[i])
-                new_states[first_index-1] = basis[i][0]              
-                new_states[second_index-1] = basis[i][1]
+                new_states[first_matrix_index-1] = basis[i][0]              
+                new_states[second_matrix_index-1] = basis[i][1]
                 resultant_vectors.append(n.array(new_states))
                 full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
     elif A == [0,0]:
@@ -57,8 +169,8 @@ def Beam_Splitter_Action(A):             # function to give appropriate output s
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 result_state.append(Coeff_list[i]*basis[i])
-                new_states[first_index-1] = basis[i][0]              
-                new_states[second_index-1] = basis[i][1]
+                new_states[first_matrix_index-1] = basis[i][0]              
+                new_states[second_matrix_index-1] = basis[i][1]
                 resultant_vectors.append(n.array(new_states))
                 full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
     elif A == [1,1]:
@@ -66,8 +178,8 @@ def Beam_Splitter_Action(A):             # function to give appropriate output s
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 result_state.append(Coeff_list[i]*basis[i])
-                new_states[first_index-1] = basis[i][0]              
-                new_states[second_index-1] = basis[i][1]
+                new_states[first_matrix_index-1] = basis[i][0]              
+                new_states[second_matrix_index-1] = basis[i][1]
                 resultant_vectors.append(n.array(new_states))
                 full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
     elif A == [2,0]:
@@ -75,8 +187,8 @@ def Beam_Splitter_Action(A):             # function to give appropriate output s
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 result_state.append(Coeff_list[i]*basis[i])
-                new_states[first_index-1] = basis[i][0]              
-                new_states[second_index-1] = basis[i][1]
+                new_states[first_matrix_index-1] = basis[i][0]              
+                new_states[second_matrix_index-1] = basis[i][1]
                 resultant_vectors.append(n.array(new_states))
                 full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
     elif A == [0,2]:
@@ -84,12 +196,12 @@ def Beam_Splitter_Action(A):             # function to give appropriate output s
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 result_state.append(Coeff_list[i]*basis[i])
-                new_states[first_index-1] = basis[i][0]              
-                new_states[second_index-1] = basis[i][1]
+                new_states[first_matrix_index-1] = basis[i][0]              
+                new_states[second_matrix_index-1] = basis[i][1]
                 resultant_vectors.append(n.array(new_states))
                 full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))  
     results = [resultant_vectors, full_result_state, Coeff_list]
-    return results  
+    return results   """
 
 A = Beam_Splitter_Action(working_state)
 
@@ -97,7 +209,7 @@ A = Beam_Splitter_Action(working_state)
 # print('result_state = ', result_state)
 # print('resultant_vectors = ', resultant_vectors)
 # print('full_result_state = ', full_result_state)
-
+""" 
  
 def BeamSPlitterLooped(mirror_index, input_vectors_list, coefficient_list):
     total_index = int(mirror_index)
@@ -118,7 +230,7 @@ def BeamSPlitterLooped(mirror_index, input_vectors_list, coefficient_list):
     for i in range(len(working_states_list)):
         output_vector_list[i] = (Beam_Splitter_Action(working_states_list[i])[0])
     print(output_vector_list)
-    [ for i in  
+
      
 
     # t = sym.Symbol('t'+f'_{total_index}')     # creating matching coeficients
@@ -130,23 +242,5 @@ B = []
 
 
 
-
-
-
-""" 
-def Beam_Splitter_Action(A):             # function to give appropriate output states
-    basis = [six_states_0,six_states_1, six_states_2,six_states_3,six_states_4,six_states_5, empty]
-    if A == [1,0]:
-        R = [t*six_states_1, -r*six_states_2, empty]
-    elif A == [0,1]:
-        R = [t*six_states_2, r*six_states_1, empty]
-    elif A == [0,0]:
-        R = [six_states_0, empty, empty]
-    elif A == [1,1]:
-        R = [(t**2-r**2)*six_states_3, n.sqrt(2)*t*r*six_states_4, -n.sqrt(2)*t*r*six_states_5]
-    elif A == [2,0]:
-        R = [t**2*six_states_4, r**2*six_states_5, -n.sqrt(2)*t*r*six_states_3]
-    elif A == [0,2]:
-        R = [t**2*six_states_5, r**2*six_states_4, n.sqrt(2)*t*r*six_states_3]
-    return R
  """
+

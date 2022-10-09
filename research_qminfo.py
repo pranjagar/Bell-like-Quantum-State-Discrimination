@@ -5,19 +5,19 @@ import scipy as s
 import sympy as sym
 
 
-matrix_index = "13"                                                  # matrices be inputted according to choice
 # input = (input('Action of matrix : '))                             #UNCOMMENT later
 
-total_index = int(matrix_index)
-first_matrix_index = int(matrix_index[0])
-second_matrix_index = int(matrix_index[1])
 
-t = sym.Symbol('t'+f'_{total_index}')                               # creating matching coeficients
-r = sym.Symbol('r'+f'_{total_index}')
 
 t12 = sym.Symbol('t12')                               # creating matching coeficients
 r12 = sym.Symbol('r12')
 
+matrix_index = "13"                                                  # matrices be inputted according to choice
+total_index = int(matrix_index)
+first_matrix_index = int(matrix_index[0])
+second_matrix_index = int(matrix_index[1])
+t = sym.Symbol('t'+f'_{total_index}')                               # creating matching coeficients
+r = sym.Symbol('r'+f'_{total_index}')
 
 six_states_0 = n.array([0,0])                                       # defining the six possilbe output states
 six_states_1 = n.array([1,0])
@@ -56,7 +56,6 @@ resultant_state_1 = []
 resultant_state = []
 # full_result_state = []
 basis = [six_states_0,six_states_1, six_states_2,six_states_3,six_states_4,six_states_5]
-
 new_states = [[i for i in input_vector_list[j]] for j in range(len(input_vector_list))]  # copy of input state list to change in into results
 
 output_vectors_list_full = []                                         # main lists of new vectors and coeffs 
@@ -162,7 +161,7 @@ for k in range(len(working_state_list)):
 
 
 output_state = [ ['(' +str(output_coeff_list_full[i]) + ')*' +str(output_vectors_list_full[i])] for i in range(len(output_vectors_list_full))]
-    
+
 
 
 
@@ -177,6 +176,8 @@ output_state = [ ['(' +str(output_coeff_list_full[i]) + ')*' +str(output_vectors
 print('output_coeff_list printing : ' , output_coeff_list_printing)
 print('output_vectors_list_printing :' , output_vectors_list_printing)
 print('output_state (sum bw terms is implied):' , output_state)
+
+
 
 
 

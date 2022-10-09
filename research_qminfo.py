@@ -39,7 +39,7 @@ ten_states_8 = n.array([0,2,0,0])
 ten_states_9= n.array([0,0,2,0])
 ten_states_10 = n.array([0,0,0,2])
 
-input_vector_list = [[1,0,0,1], [0,1,0,1]]                  # input and output pure state vectors be lists
+input_vector_list = [[1,0,0,1], [0,0,1,1]]                  # input and output pure state vectors be lists
 input_coeff_list = [t12,-r12]                                               # list of coeffcients t and r attached to the input states
 input_state = [('(' + str(input_coeff_list[i]) + ')*'+ str(input_vector_list[i])) for i in range(len(input_coeff_list)) if input_coeff_list[i] != 0 ]    # typesets the result, ignores zero coefficient terms
 
@@ -55,16 +55,25 @@ working_state_list = [[input_vector_list[i][first_matrix_index-1], input_vector_
 resultant_state_1 = []
 resultant_state = []
 # full_result_state = []
-output_vectors_list_full = []                                         # list of new_states
 basis = [six_states_0,six_states_1, six_states_2,six_states_3,six_states_4,six_states_5]
+
 new_states = [[i for i in input_vector_list[j]] for j in range(len(input_vector_list))]  # copy of input state list to change in into results
+
+output_vectors_list_full = []                                         # main lists of new vectors and coeffs 
 output_coeff_list_full = []
+
+output_coeff_list_printing = []
+output_vectors_list_printing = []                                         # lists for display purposes
 
 for k in range(len(working_state_list)):
     output_vectors_list_intermediate = []                                     # list of new_states
+    output_coeff_list_intermediate = []
+
+    output_vectors_list_intermediate_printing = []                                     # intermediate lists for display prurpposes
+    output_coeff_list_intermediate_printing = []
+
     if working_state_list[k] == [1,0] and input_coeff_list[k] != 0 :            # these are the equations, exculding the states whose coeffs are zero
         Coeff_list = [0,(t),(-r),0,0,0]
-        output_coeff_list_intermediate = []
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 resultant_state.append(Coeff_list[i]*basis[i])                 # only keeping the non-zero lists (except the state_0)
@@ -73,15 +82,12 @@ for k in range(len(working_state_list)):
                 new_states[k][second_matrix_index-1] = basis[i][1]
                 output_vectors_list_intermediate.append(n.array(new_states[k]))
                 
-                # full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   # making a list of such new states as strings 
-                
                 output_coeff_list_intermediate.append(input_coeff_list[k]*Coeff_list[i])
 
 
 
     elif working_state_list[k] == [0,1] and input_coeff_list[k] != 0:
         Coeff_list = [0,(r),(t),0,0,0]
-        output_coeff_list_intermediate = []
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 resultant_state.append(Coeff_list[i]*basis[i])
@@ -89,8 +95,6 @@ for k in range(len(working_state_list)):
                 new_states[k][first_matrix_index-1] = basis[i][0]              
                 new_states[k][second_matrix_index-1] = basis[i][1]
                 output_vectors_list_intermediate.append(n.array(new_states[k]))
-                
-                # full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
                 
                 output_coeff_list_intermediate.append(input_coeff_list[k]*Coeff_list[i])
 
@@ -98,7 +102,6 @@ for k in range(len(working_state_list)):
 
     elif working_state_list[k] == [0,0] and input_coeff_list[k] != 0:
         Coeff_list = [(1),0,0,0,0,0]
-        output_coeff_list_intermediate = []
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 resultant_state.append(Coeff_list[i]*basis[i])
@@ -106,8 +109,6 @@ for k in range(len(working_state_list)):
                 new_states[k][first_matrix_index-1] = basis[i][0]              
                 new_states[k][second_matrix_index-1] = basis[i][1]
                 output_vectors_list_intermediate.append(n.array(new_states[k]))
-                
-                # full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
                 
                 output_coeff_list_intermediate.append(input_coeff_list[k]*Coeff_list[i])
 
@@ -115,7 +116,6 @@ for k in range(len(working_state_list)):
 
     elif working_state_list[k] == [1,1] and input_coeff_list[k] != 0:
         Coeff_list = [0,0,0,(t**2-r**2),(n.sqrt(2)*t*r),(-n.sqrt(2)*t*r)]
-        output_coeff_list_intermediate = []
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 resultant_state.append(Coeff_list[i]*basis[i])
@@ -123,8 +123,6 @@ for k in range(len(working_state_list)):
                 new_states[k][first_matrix_index-1] = basis[i][0]              
                 new_states[k][second_matrix_index-1] = basis[i][1]
                 output_vectors_list_intermediate.append(n.array(new_states[k]))
-                
-                # full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
                 
                 output_coeff_list_intermediate.append(input_coeff_list[k]*Coeff_list[i])
 
@@ -132,7 +130,6 @@ for k in range(len(working_state_list)):
 
     elif working_state_list[k] == [2,0] and input_coeff_list[k] != 0:
         Coeff_list = [0,0,0,(-n.sqrt(2)*t*r),(t**2),(r**2)]
-        output_coeff_list_intermediate = []
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 resultant_state.append(Coeff_list[i]*basis[i])
@@ -140,8 +137,6 @@ for k in range(len(working_state_list)):
                 new_states[k][first_matrix_index-1] = basis[i][0]              
                 new_states[k][second_matrix_index-1] = basis[i][1]
                 output_vectors_list_intermediate.append(n.array(new_states[k]))
-                
-                # full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))                   
                 
                 output_coeff_list_intermediate.append(input_coeff_list[k]*Coeff_list[i])
 
@@ -149,7 +144,6 @@ for k in range(len(working_state_list)):
 
     elif working_state_list[k] == [0,2] and input_coeff_list[k] != 0:
         Coeff_list = [0,0,0,(n.sqrt(2)*t*r),(r**2),(t**2)]
-        output_coeff_list_intermediate = []
         for i in range(len((Coeff_list))):
             if Coeff_list[i] != 0:
                 resultant_state.append(Coeff_list[i]*basis[i])
@@ -158,24 +152,31 @@ for k in range(len(working_state_list)):
                 new_states[k][second_matrix_index-1] = basis[i][1]
                 output_vectors_list_intermediate.append(n.array(new_states[k]))
                 
-                # full_result_state.append('(' +str(Coeff_list[i]) + ')*' +str(n.array(new_states)))  
-                
                 output_coeff_list_intermediate.append(input_coeff_list[k]*Coeff_list[i])
 
-    output_vectors_list_full.append((output_vectors_list_intermediate))                # making a list of lists of output vectors
-    output_coeff_list_full.append(output_coeff_list_intermediate)
+    output_vectors_list_full.extend((output_vectors_list_intermediate))                # making a list of lists of output vectors
+    output_coeff_list_full.extend(output_coeff_list_intermediate)
+
+    output_vectors_list_printing.append((output_vectors_list_intermediate))                # making a list of lists of output vectors
+    output_coeff_list_printing.append(output_coeff_list_intermediate)
+
+
+output_state = [ ['(' +str(output_coeff_list_full[i]) + ')*' +str(output_vectors_list_full[i])] for i in range(len(output_vectors_list_full))]
     
+
+
 
 
 # print('output_vectors_list_intermediate :' , output_vectors_list_intermediate)
 # print('resultant_state' , resultant_state)
-print('input_state : ', input_state)
-print('output_coeff_list full : ' , output_coeff_list_full)
-print('output_vectors_list_full :' , output_vectors_list_full)
 
+# print('input_state : ', input_state)
+# print('output_coeff_list full : ' , output_coeff_list_full)
+# print('output_vectors_list_full :' , output_vectors_list_full)
 
-
-
+print('output_coeff_list printing : ' , output_coeff_list_printing)
+print('output_vectors_list_printing :' , output_vectors_list_printing)
+print('output_state (sum bw terms is implied):' , output_state)
 
 
 

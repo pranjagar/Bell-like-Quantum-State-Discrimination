@@ -4,6 +4,8 @@ import numpy as n
 import scipy as s
 import sympy as sym
 
+print('----------------BEGIN-------------------------------')
+
 six_states_0 = n.array([0,0])                                       # defining the six possilbe output states
 six_states_1 = n.array([1,0])
 six_states_2 = n.array([0,1])
@@ -110,27 +112,68 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
         output_coeffs_full.extend(output_coeff_intermediate)
         output_vectors_display.append(output_vectors_intermediate)                # making a list of lists of output vectors
         output_coeffs_display.append(output_coeff_intermediate)
-    output_state_display = [ ['(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])] for i in range(len(output_vectors_full))]
+    # output_state_display = [ ['(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])] for i in range(len(output_vectors_full))]
+    output_state_display = [ ('(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])) for i in range(len(output_vectors_full))]
+    
     output = [output_vectors_full, output_coeffs_full, output_state_display] 
     return output
 
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
 
-A = MatrixAction('12', [[1,0,0,1]],[1])
-B = MatrixAction('13', A[0], A[1])
-C = MatrixAction('14', B[0], B[1])
-D = MatrixAction('23', C[0], C[1])
 
-print(D[2])
 
+def latex_conversion(A):        # 'A' is a the output (a list of strings) that you wanna convert into latex code
 
+    AA = [(i+'+') for i in A]
+    B = ''.join(AA)
+    C = [i for i in B]             # the strings joined and sliced letter-by-letter into a list
+    # print(AA)
+    # print(B)
+    for i in range(len(C)):
+        if C[i] == '*':
+            C[i] = ''
+        elif C[i] == '_':
+            C[i] = '_{'
+            C.insert(i+2+1,'}') 
+        elif C[i] == '[':
+            C[i] = '|'
+        elif C[i] == ']':
+            C[i] = '\\rangle'
+        elif C[i] == '+' and C[i+1] == '-':
+            C[i] = ''
+    C.pop()                           # removing the extra last + sign
+    out = ''.join(C)                     # recombining into a string
+    return out
 
 
 
 
+user_input_state = input("What state is input (enter as 1001 0200 etc.)? __")
+user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ?__"))
+user_input_list = [int(i) for i in user_input_state]
 
+M12 = MatrixAction('12', [user_input_list],[1])
+M13 = MatrixAction('13', M12[0], M12[1])
+M14 = MatrixAction('14', M13[0], M13[1])
+M23 = MatrixAction('23', M14[0], M14[1])
+M24 = MatrixAction('24', M23[0], M23[1])
+M34 = MatrixAction('34', M24[0], M24[1])
 
 
+if user_input_matrix == 12:
+    print('LATEX result = ', latex_conversion(M12[2]))
+elif user_input_matrix == 13:
+    print('LATEX result = ', latex_conversion(M13[2]))
+elif user_input_matrix == 14:
+    print('LATEX result = ', latex_conversion(M14[2]))
+elif user_input_matrix == 23:
+    print('LATEX result = ', latex_conversion(M23[2]))
+elif user_input_matrix == 24:
+    print('LATEX result = ', latex_conversion(M24[2]))
+elif user_input_matrix == 34:
+    print('LATEX result = ', latex_conversion(M34[2]))
+else:
+    print('Wrong Input!!') 
 
 
 
@@ -192,16 +235,7 @@ print(D[2])
 
 
 
-
-
-
-
-
-
-
-
-
-
+# print('----------------END-------------------------------')
 
 
 

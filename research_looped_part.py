@@ -127,29 +127,41 @@ def latex_conversion(A):        # 'A' is a the output (a list of strings) that y
     AA = [(i+'+') for i in A]
     B = ''.join(AA)
     C = [i for i in B]             # the strings joined and sliced letter-by-letter into a list
-    # print(AA)
-    # print(B)
+    C.insert(0,'\\begin{align*} & ')
+    C.pop()                                               # removing the extra last + sign
+
+    counter = 0            # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
     for i in range(len(C)):
         if C[i] == '*':
-            C[i] = ''
+            if C[i+1] == '*':
+                C[i] = '^{'
+                C[i+2] += '}'
+            else:
+                C[i] = '' 
         elif C[i] == '_':
             C[i] = '_{'
-            C.insert(i+2+1,'}') 
+            C[i+2] += '}'
         elif C[i] == '[':
             C[i] = '|'
         elif C[i] == ']':
-            C[i] = '\\rangle'
+            counter += 1
+            if counter%2 ==0:
+                C[i] = '\\rangle \\\\ & '
+            else:
+                C[i] = '\\rangle'
         elif C[i] == '+' and C[i+1] == '-':
             C[i] = ''
-    C.pop()                           # removing the extra last + sign
+
+    # C.pop()
+    # C.append('\\rangle')
+    
+    C.append(' \\end{align*}')                         
     out = ''.join(C)                     # recombining into a string
     return out
 
 
-
-
-user_input_state = input("What state is input (enter as 1001 0200 etc.)? __")
-user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ?__"))
+user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
+user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
 user_input_list = [int(i) for i in user_input_state]
 
 M12 = MatrixAction('12', [user_input_list],[1])
@@ -159,6 +171,7 @@ M23 = MatrixAction('23', M14[0], M14[1])
 M24 = MatrixAction('24', M23[0], M23[1])
 M34 = MatrixAction('34', M24[0], M24[1])
 
+print(M14[2])
 
 if user_input_matrix == 12:
     print('LATEX result = ', latex_conversion(M12[2]))

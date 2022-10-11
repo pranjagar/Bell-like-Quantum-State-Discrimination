@@ -1,4 +1,3 @@
-from operator import le
 import matplotlib as plt
 import math as m
 import numpy as n
@@ -57,81 +56,66 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 
         if working_states[k] == [1,0] and input_coeffs[k] != 0 :                                     # these are the equations, exculding the states whose coeffs are zero
             Coeff_list = [0,(t),(-r),0,0,0]                                                         # coeff vector with appropriate values at places such that multiplication results in correct output equations
-            for h in range(len((Coeff_list))):
-                if Coeff_list[h] != 0:                                                              #making sure that zero vectors do not do not come in our calculations
-                    new_states[k][first_matrix_index-1] = basis[h][0]                                # changing elts of the input state so to get the new states with 4 positons
-                    new_states[k][second_matrix_index-1] = basis[h][1]
+            for i in range(len((Coeff_list))):
+                if Coeff_list[i] != 0:                                                              #making sure that zero vectors do not do not come in our calculations
+                    new_states[k][first_matrix_index-1] = basis[i][0]                                # changing elts of the input state so to get the new states with 4 positons
+                    new_states[k][second_matrix_index-1] = basis[i][1]
                     output_vectors_intermediate.append(n.array(new_states[k]))                          # adding results to the intermediate lists
-                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[h])
+                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[i])
 
         elif working_states[k] == [0,1] and input_coeffs[k] != 0:
             Coeff_list = [0,(r),(t),0,0,0]
-            for h in range(len((Coeff_list))):
-                if Coeff_list[h] != 0:
-                    new_states[k][first_matrix_index-1] = basis[h][0]              
-                    new_states[k][second_matrix_index-1] = basis[h][1]
+            for i in range(len((Coeff_list))):
+                if Coeff_list[i] != 0:
+                    new_states[k][first_matrix_index-1] = basis[i][0]              
+                    new_states[k][second_matrix_index-1] = basis[i][1]
                     output_vectors_intermediate.append(n.array(new_states[k]))
-                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[h])
+                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[i])
 
         elif working_states[k] == [0,0] and input_coeffs[k] != 0:
             Coeff_list = [(1),0,0,0,0,0]
-            for h in range(len((Coeff_list))):
-                if Coeff_list[h] != 0:
-                    new_states[k][first_matrix_index-1] = basis[h][0]              
-                    new_states[k][second_matrix_index-1] = basis[h][1]
+            for i in range(len((Coeff_list))):
+                if Coeff_list[i] != 0:
+                    new_states[k][first_matrix_index-1] = basis[i][0]              
+                    new_states[k][second_matrix_index-1] = basis[i][1]
                     output_vectors_intermediate.append(n.array(new_states[k]))
-                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[h])
+                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[i])
 
         elif working_states[k] == [1,1] and input_coeffs[k] != 0:
             Coeff_list = [0,0,0,(t**2-r**2),(n.sqrt(2)*t*r),(-n.sqrt(2)*t*r)]
-            for h in range(len((Coeff_list))):
-                if Coeff_list[h] != 0:
-                    new_states[k][first_matrix_index-1] = basis[h][0]              
-                    new_states[k][second_matrix_index-1] = basis[h][1]
+            for i in range(len((Coeff_list))):
+                if Coeff_list[i] != 0:
+                    new_states[k][first_matrix_index-1] = basis[i][0]              
+                    new_states[k][second_matrix_index-1] = basis[i][1]
                     output_vectors_intermediate.append(n.array(new_states[k]))
-                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[h])
+                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[i])
 
         elif working_states[k] == [2,0] and input_coeffs[k] != 0:
             Coeff_list = [0,0,0,(-n.sqrt(2)*t*r),(t**2),(r**2)]
-            for h in range(len((Coeff_list))):
-                if Coeff_list[h] != 0:
-                    new_states[k][first_matrix_index-1] = basis[h][0]              
-                    new_states[k][second_matrix_index-1] = basis[h][1]
+            for i in range(len((Coeff_list))):
+                if Coeff_list[i] != 0:
+                    new_states[k][first_matrix_index-1] = basis[i][0]              
+                    new_states[k][second_matrix_index-1] = basis[i][1]
                     output_vectors_intermediate.append(n.array(new_states[k]))
-                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[h])
+                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[i])
 
         elif working_states[k] == [0,2] and input_coeffs[k] != 0:
             Coeff_list = [0,0,0,(n.sqrt(2)*t*r),(r**2),(t**2)]
-            for h in range(len((Coeff_list))):
-                if Coeff_list[h] != 0:
-                    new_states[k][first_matrix_index-1] = basis[h][0]              
-                    new_states[k][second_matrix_index-1] = basis[h][1]
+            for i in range(len((Coeff_list))):
+                if Coeff_list[i] != 0:
+                    new_states[k][first_matrix_index-1] = basis[i][0]              
+                    new_states[k][second_matrix_index-1] = basis[i][1]
                     output_vectors_intermediate.append(n.array(new_states[k]))
-                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[h])
+                    output_coeff_intermediate.append(input_coeffs[k]*Coeff_list[i])
         
         output_vectors_full.extend(output_vectors_intermediate)                                            # Adding the data from intermediate lists to the full output lists
         output_coeffs_full.extend(output_coeff_intermediate)
         output_vectors_display.append(output_vectors_intermediate)                                            # same but for display purposes
         output_coeffs_display.append(output_coeff_intermediate)
-        
-        for h in range(len(output_vectors_full)):
-            for m in range(h+1,len(output_vectors_full)):
-                if str(output_vectors_full[m]) == str(output_vectors_full[h]):
-                    output_coeffs_full[h] += output_coeffs_full[m] 
-                    output_vectors_full[m] = 'kkk'                                  # kkk represents dummy variable that is eliminated in the next line
-                    output_coeffs_full[m]  = 'kkk'
-        output_coeffs_full_grouped = [h for h in output_coeffs_full if str(h)!= 'kkk']
-        output_vectors_full_grouped = [h for h in output_vectors_full if str(h)!= 'kkk']
     # output_state_display = [ ['(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])] for i in range(len(output_vectors_full))]
-    output_state_display_grouped = [ ('(' +str(output_coeffs_full_grouped[i]) + ')*' +str(output_vectors_full_grouped[i])) for i in range(len(output_vectors_full_grouped))]      # final output state for display 
+    output_state_display = [ ('(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])) for i in range(len(output_vectors_full))]      # final output state for display 
     
-    # for i in range(len(output_state_display)):
-    #     for j in range(i+1,len(output_state_display)):
-    #         if output_state_display[j][-9:] == output_state_display[i][-9:]:
-    #             output_state_display[i] = '('+(output_state_display[i][0:(len(output_state_display[i])-10)] +'+' + output_state_display[j][0:(len(output_state_display[j])-10)]) + ')*' + output_state_display[i][-9:]
-    #             output_state_display[j] = '@@@'
-    # output_state_grouped = [i for i in output_state_display if i != '@@@']
-    output = [output_vectors_full_grouped, output_coeffs_full_grouped, output_state_display_grouped]                                         # final list to be returned by the function, in this form so that it can be looped later on
+    output = [output_vectors_full, output_coeffs_full, output_state_display]                                         # final list to be returned by the function, in this form so that it can be looped later on
     return output
 
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
@@ -161,7 +145,7 @@ def latex_conversion(A):                                    # 'A' is a the outpu
             C[i] = '|'
         elif C[i] == ']':
             counter += 1
-            if counter%2 ==0:
+            if counter%1 ==0:
                 C[i] = '\\rangle \\\\ & '
             else:
                 C[i] = '\\rangle'
@@ -173,12 +157,9 @@ def latex_conversion(A):                                    # 'A' is a the outpu
     return out
 
 
-# user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
-# user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
-# user_input_list = [int(i) for i in user_input_state]
-
-user_input_list = [1,0,0,1]
-user_input_matrix = 12
+user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
+user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
+user_input_list = [int(i) for i in user_input_state]
 
 M12 = MatrixAction('12', [user_input_list],[1])                                         # making use of the beam splitter function, looping it over and over
 M13 = MatrixAction('13', M12[0], M12[1])
@@ -188,56 +169,51 @@ M24 = MatrixAction('24', M23[0], M23[1])
 M34 = MatrixAction('34', M24[0], M24[1])
 
 
-print(M12[2])
+
+if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
+    ungrouped_output_display = (M12[2])
+elif user_input_matrix == 13:
+    ungrouped_output_display = (M13[2])
+elif user_input_matrix == 14:
+    ungrouped_output_display = (M14[2])
+elif user_input_matrix == 23:
+    ungrouped_output_display = (M23[2])
+elif user_input_matrix == 24:
+    ungrouped_output_display = (M24[2])
+elif user_input_matrix == 34:
+    ungrouped_output_display = (M34[2])
+else:
+    print('Wrong Input!!') 
+
+ 
+for i in range(len(ungrouped_output_display)):
+    for j in range(i+1,len(ungrouped_output_display)):
+        if ungrouped_output_display[j][-9:] == ungrouped_output_display[i][-9:]:
+            ungrouped_output_display[i] = '('+(ungrouped_output_display[i][0:(len(ungrouped_output_display[i])-10)] +'+' + ungrouped_output_display[j][0:(len(ungrouped_output_display[j])-10)]) + ')*' + ungrouped_output_display[i][-9:]
+            ungrouped_output_display[j] = '@@@'
+
+new_output_state_grouped = [i for i in ungrouped_output_display if i != '@@@']
 
 
-# Uncomment for latex result directly
-# if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
-#     print('LATEX result = ', latex_conversion(M12[2]))
-# elif user_input_matrix == 13:
-#     print('LATEX result = ', latex_conversion(M13[2]))
-# elif user_input_matrix == 14:
-#     print('LATEX result = ', latex_conversion(M14[2]))
-# elif user_input_matrix == 23:
-#     print('LATEX result = ', latex_conversion(M23[2]))
-# elif user_input_matrix == 24:
-#     print('LATEX result = ', latex_conversion(M24[2]))
-# elif user_input_matrix == 34:
-#     print('LATEX result = ', latex_conversion(M34[2]))
-# else:
-#     print('Wrong Input!!') 
+print('LATEX: ',latex_conversion(new_output_state_grouped))
 
+""" 
+if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
+    print('LATEX result = ', latex_conversion(M12[2]))
+elif user_input_matrix == 13:
+    print('LATEX result = ', latex_conversion(M13[2]))
+elif user_input_matrix == 14:
+    print('LATEX result = ', latex_conversion(M14[2]))
+elif user_input_matrix == 23:
+    print('LATEX result = ', latex_conversion(M23[2]))
+elif user_input_matrix == 24:
+    print('LATEX result = ', latex_conversion(M24[2]))
+elif user_input_matrix == 34:
+    print('LATEX result = ', latex_conversion(M34[2]))
+else:
+    print('Wrong Input!!') 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ """
 
 
 

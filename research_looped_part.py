@@ -178,7 +178,7 @@ def latex_conversion(A):                                    # 'A' is a the outpu
 # user_input_list = [int(i) for i in user_input_state]
 
 user_input_list = [1,0,0,1]
-user_input_matrix = 12
+user_input_matrix = '12'
 
 M12 = MatrixAction('12', [user_input_list],[1])                                         # making use of the beam splitter function, looping it over and over
 M13 = MatrixAction('13', M12[0], M12[1])

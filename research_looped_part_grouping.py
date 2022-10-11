@@ -169,7 +169,6 @@ M24 = MatrixAction('24', M23[0], M23[1])
 M34 = MatrixAction('34', M24[0], M24[1])
 
 
-
 if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
     ungrouped_output_display = (M12[2])
 elif user_input_matrix == 13:
@@ -186,6 +185,9 @@ else:
     print('Wrong Input!!') 
 
  
+# print('LATEX UNgrouped : ',latex_conversion(ungrouped_output_display))
+
+
 for i in range(len(ungrouped_output_display)):
     for j in range(i+1,len(ungrouped_output_display)):
         if ungrouped_output_display[j][-9:] == ungrouped_output_display[i][-9:]:
@@ -195,7 +197,15 @@ for i in range(len(ungrouped_output_display)):
 new_output_state_grouped = [i for i in ungrouped_output_display if i != '@@@']
 
 
-print('LATEX: ',latex_conversion(new_output_state_grouped))
+print("")
+print("")
+print('LATEX Grouped : ',latex_conversion(new_output_state_grouped))
+
+
+
+
+
+
 
 """ 
 if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input

@@ -1,3 +1,4 @@
+from cmath import sqrt
 import matplotlib as plt
 import math as m
 import numpy as n
@@ -157,10 +158,69 @@ def latex_conversion(A):                                    # 'A' is a the outpu
     return out
 
 
-user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
+# user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
+# user_input_list = [int(i) for i in user_input_state]
 user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
-user_input_list = [int(i) for i in user_input_state]
 
+
+# Bell state Input part
+InputBellState = (input("Input bell state (type 'def' for symbols): " ))
+
+if InputBellState == 'def':
+    print('[(00+11) = phi+, (00-11) = phi-, (01+10) = psi+, (10-10) = psi-]')
+elif InputBellState == 'phi+':
+    user_input_list = [ten_states_2,ten_states_5]
+    user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
+elif InputBellState == 'phi-':
+    user_input_list = [ten_states_2,ten_states_5]
+    user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
+elif InputBellState == 'psi+':
+    user_input_list = [ten_states_3,ten_states_4]
+    user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
+elif InputBellState == 'psi-':
+    user_input_list = [ten_states_3,ten_states_4]
+    user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
+
+
+M12 = MatrixAction('12', user_input_list,user_input_coeffs)                                         # making use of the beam splitter function, looping it over and over
+M13 = MatrixAction('13', M12[0], M12[1])
+M14 = MatrixAction('14', M13[0], M13[1])
+M23 = MatrixAction('23', M14[0], M14[1])
+M24 = MatrixAction('24', M23[0], M23[1])
+M34 = MatrixAction('34', M24[0], M24[1])
+
+
+if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
+    ungrouped_output_display = (M12[2])
+elif user_input_matrix == 13:
+    ungrouped_output_display = (M13[2])
+elif user_input_matrix == 14:
+    ungrouped_output_display = (M14[2])
+elif user_input_matrix == 23:
+    ungrouped_output_display = (M23[2])
+elif user_input_matrix == 24:
+    ungrouped_output_display = (M24[2])
+elif user_input_matrix == 34:
+    ungrouped_output_display = (M34[2])
+else:
+    print('Wrong Input!!') 
+
+ 
+
+
+for i in range(len(ungrouped_output_display)):
+    for j in range(i+1,len(ungrouped_output_display)):
+        if ungrouped_output_display[j][-9:] == ungrouped_output_display[i][-9:]:
+            ungrouped_output_display[i] = '('+(ungrouped_output_display[i][0:(len(ungrouped_output_display[i])-10)] +'+' + ungrouped_output_display[j][0:(len(ungrouped_output_display[j])-10)]) + ')*' + ungrouped_output_display[i][-9:]
+            ungrouped_output_display[j] = '@@@'
+
+new_output_state_grouped = [i for i in ungrouped_output_display if i != '@@@']
+
+
+print('LATEX Grouped : ',latex_conversion(new_output_state_grouped))
+
+
+""" 
 M12 = MatrixAction('12', [user_input_list],[1])                                         # making use of the beam splitter function, looping it over and over
 M13 = MatrixAction('13', M12[0], M12[1])
 M14 = MatrixAction('14', M13[0], M13[1])
@@ -194,13 +254,7 @@ for i in range(len(ungrouped_output_display)):
             ungrouped_output_display[i] = '('+(ungrouped_output_display[i][0:(len(ungrouped_output_display[i])-10)] +'+' + ungrouped_output_display[j][0:(len(ungrouped_output_display[j])-10)]) + ')*' + ungrouped_output_display[i][-9:]
             ungrouped_output_display[j] = '@@@'
 
-new_output_state_grouped = [i for i in ungrouped_output_display if i != '@@@']
-
-
-print("")
-print("")
-print('LATEX Grouped : ',latex_conversion(new_output_state_grouped))
-
+new_output_state_grouped = [i for i in ungrouped_output_display if i != '@@@'] """
 
 
 

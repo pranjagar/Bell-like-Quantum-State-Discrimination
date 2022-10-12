@@ -196,9 +196,8 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 
     # print(output_coeffs_full_reduced, output_vectors_full_reduced)
 
-    output_state_display = [ ('(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])) for i in range(len(output_vectors_full))]      # final output state for display 
+    output_state_display = [ ('(' +str(output_coeffs_full_reduced[i]) + ')*' +str(output_vectors_full_reduced[i])) for i in range(len(output_vectors_full_reduced))]      # final output state for display 
     
-
 
     output = [output_vectors_full_reduced, output_coeffs_full_reduced, output_state_display]                                         # final list to be returned by the function, in this form so that it can be looped later on
     return output
@@ -208,12 +207,12 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 
 # use the second block below instead of the first one for custom user inputs
 
-user_input_matrix = 13
-user_input_list = [1,0,0,1]
+# user_input_matrix = 13
+# user_input_list = [1,0,0,1]
 
-# user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
-# user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
-# user_input_list = [int(i) for i in user_input_state]
+user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
+user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
+user_input_list = [int(i) for i in user_input_state]
 
 
 M12 = MatrixAction('12', [user_input_list],[1])                                         # making use of the beam splitter function, looping it over and over
@@ -225,26 +224,28 @@ M34 = MatrixAction('34', M24[0], M24[1])
 
 
 if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
-    ungrouped_output_display = (M12[2])
+    output_display = (M12[2])
 elif user_input_matrix == 13:
-    ungrouped_output_display = (M13[2])
+    output_display = (M13[2])
 elif user_input_matrix == 14:
-    ungrouped_output_display = (M14[2])
+    output_display = (M14[2])
 elif user_input_matrix == 23:
-    ungrouped_output_display = (M23[2])
+    output_display = (M23[2])
 elif user_input_matrix == 24:
-    ungrouped_output_display = (M24[2])
+    output_display = (M24[2])
 elif user_input_matrix == 34:
-    ungrouped_output_display = (M34[2])
+    output_display = (M34[2])
 else:
     print('Wrong Input!!') 
 
 
-print(M24[:2])
+# print(M14[:2])
+# print(M14[2])
+
 
 print("")
 print("")
-# print('LATEX Grouped : ',latex_conversion(grouping(ungrouped_output_display)))
+print(f'LATEX Grouped for: ',latex_conversion(output_display))
 
 
 

@@ -176,9 +176,24 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
         output_coeffs_full.extend(output_coeff_intermediate)
         output_vectors_display.append(output_vectors_intermediate)                                            # same but for display purposes
         output_coeffs_display.append(output_coeff_intermediate)
-    # output_state_display = [ ['(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])] for i in range(len(output_vectors_full))]
+
+    for i in range(len(output_vectors_full)):
+        for j in range(i+1,len(output_vectors_full)):
+            z = 0
+            for k in range(len(output_vectors_full[i])):
+                if output_vectors_full[i][k] != output_vectors_full[j][k]:
+                    z = 1
+            # print(f'output_coeffs_full[i],[j] : {output_coeffs_full[i]} and {output_coeffs_full[j]}')
+            if z ==0 :
+                if output_coeffs_full[j] != '$$$' and output_coeffs_full[i] != '$$$' :
+                    output_coeffs_full[i] = output_coeffs_full[i]+output_coeffs_full[j]
+                output_vectors_full[j] = n.zeros(len(output_vectors_full[j]))    
+                output_coeffs_full[j] = '$$$'
+            
     output_state_display = [ ('(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])) for i in range(len(output_vectors_full))]      # final output state for display 
     
+
+
     output = [output_vectors_full, output_coeffs_full, output_state_display]                                         # final list to be returned by the function, in this form so that it can be looped later on
     return output
 
@@ -187,12 +202,12 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 
 # use the second block below instead of the first one for custom user inputs
 
-# user_input_matrix = 13
-# user_input_list = [1,0,0,1]
+user_input_matrix = 13
+user_input_list = [1,0,0,1]
 
-user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
-user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
-user_input_list = [int(i) for i in user_input_state]
+# user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
+# user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
+# user_input_list = [int(i) for i in user_input_state]
 
 
 M12 = MatrixAction('12', [user_input_list],[1])                                         # making use of the beam splitter function, looping it over and over
@@ -219,9 +234,11 @@ else:
     print('Wrong Input!!') 
 
 
+print(M23[:2])
+
 print("")
 print("")
-print('LATEX Grouped : ',latex_conversion(grouping(ungrouped_output_display)))
+# print('LATEX Grouped : ',latex_conversion(grouping(ungrouped_output_display)))
 
 
 

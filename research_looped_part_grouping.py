@@ -261,15 +261,21 @@ M34 = MatrixAction('34', M24[0], M24[1])
 
 if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
     output_display = (M12[2])
+    output_coefficients = (M12[1])
 elif user_input_matrix == 13:
     output_display = (M13[2])
+    output_coefficients = (M13[1])
 elif user_input_matrix == 14:
     output_display = (M14[2])
+    output_coefficients = (M14[1])
 elif user_input_matrix == 23:
     output_display = (M23[2])
+    output_coefficients = (M23[1])
 elif user_input_matrix == 24:
     output_display = (M24[2])
+    output_coefficients = (M24[1])
 elif user_input_matrix == 34:
+    output_coefficients = (M34[1])
     output_display = (M34[2])
 else:
     print('Wrong Input!!') 
@@ -281,7 +287,8 @@ else:
 
 print("")
 print("")
-print(f'LATEX Grouped for: ',latex_conversion(output_display))
+# print(f'LATEX Grouped for: ',latex_conversion(output_display))
+print(f'Mathematica Grouped: ', sym.mathematica_code(output_coefficients))
 
 
 

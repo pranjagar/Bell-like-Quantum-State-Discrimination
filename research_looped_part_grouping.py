@@ -189,12 +189,18 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
                     output_coeffs_full[i] = output_coeffs_full[i]+output_coeffs_full[j]
                 output_vectors_full[j] = n.zeros(len(output_vectors_full[j]))    
                 output_coeffs_full[j] = '$$$'
-            
+    output_coeffs_full_reduced = [i for i in output_coeffs_full if i!= '$$$']
+    output_vectors_full_flattened = [list(i) for i in output_vectors_full]
+    output_vectors_full_reduced = [i for i in output_vectors_full_flattened if i != list(n.zeros(len(output_vectors_full[0])))]
+
+
+    # print(output_coeffs_full_reduced, output_vectors_full_reduced)
+
     output_state_display = [ ('(' +str(output_coeffs_full[i]) + ')*' +str(output_vectors_full[i])) for i in range(len(output_vectors_full))]      # final output state for display 
     
 
 
-    output = [output_vectors_full, output_coeffs_full, output_state_display]                                         # final list to be returned by the function, in this form so that it can be looped later on
+    output = [output_vectors_full_reduced, output_coeffs_full_reduced, output_state_display]                                         # final list to be returned by the function, in this form so that it can be looped later on
     return output
 
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
@@ -234,7 +240,7 @@ else:
     print('Wrong Input!!') 
 
 
-print(M23[:2])
+print(M24[:2])
 
 print("")
 print("")

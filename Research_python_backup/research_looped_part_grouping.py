@@ -6,71 +6,6 @@ import sympy as sym
 
 print('----------------BEGIN-------------------------------')
 
-
-# Side functions stored here
-
-
-# LATEX function: to convert our output display state into latex code that can be directly copied and result can be seen easily
-def latex_conversion(A):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
-
-    AA = [(i+'+') for i in A]                               #adding the  + at the end of each term for display purpose    
-    B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
-    C = [i for i in B]                                         # making a huge list composed of The letters of the huge string above
-    C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
-    C.pop()                                               # removing the extra last + sign
-
-    counter = 0                                                    # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
-    for i in range(len(C)):                                      # loop that converts symbols into their corresponding latex format
-        if C[i] == '*':
-            if C[i+1] == '*':
-                C[i] = '^{'
-                C[i+2] += '}'
-            else:
-                C[i] = '' 
-        elif C[i] == '_':
-            C[i] = '_{'
-            C[i+2] += '}'
-        elif C[i] == '[':
-            C[i] = '|'
-        elif C[i] == ']':
-            counter += 1
-            if counter%1 ==0:
-                C[i] = '\\rangle \\\\ & '
-            else:
-                C[i] = '\\rangle'
-        elif C[i] == '+' and C[i+1] == '-':
-            C[i] = ''
-
-    C.append(' \\end{align*}')                         
-    out = ''.join(C)                                                             # recombining into a final string for display 
-    return out
-
-
-# GROUPING FUNCTION
-
-
-def grouping(A):                                                    # 'A' is list of strings particularly ending with string [1,0,0,1] etc.
-    for i in range(len(A)):
-        for j in range(i+1,len(A)):
-            if A[j][-9:] == A[i][-9:]:
-                A[i] = '('+(A[i][0:(len(A[i])-10)] +'+' + A[j][0:(len(A[j])-10)]) + ')*' + A[i][-9:]
-                A[j] = '@@@'
-    grouped_A = [i for i in A if i != '@@@']
-    return grouped_A
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 six_states_0 = n.array([0,0])                                                                # defining the six possilbe output states
 six_states_1 = n.array([1,0])
 six_states_2 = n.array([0,1])
@@ -186,15 +121,45 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
 
 
-# use the second block below instead of the first one for custom user inputs
+# function to convert our output display state into latex code that can be directly copied and result can be seen easily
+def latex_conversion(A):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
 
-# user_input_matrix = 13
-# user_input_list = [1,0,0,1]
+    AA = [(i+'+') for i in A]                               #adding the  + at the end of each term for display purpose    
+    B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
+    C = [i for i in B]                                         # making a huge list composed of The letters of the huge string above
+    C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
+    C.pop()                                               # removing the extra last + sign
+
+    counter = 0                                                    # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
+    for i in range(len(C)):                                      # loop that converts symbols into their corresponding latex format
+        if C[i] == '*':
+            if C[i+1] == '*':
+                C[i] = '^{'
+                C[i+2] += '}'
+            else:
+                C[i] = '' 
+        elif C[i] == '_':
+            C[i] = '_{'
+            C[i+2] += '}'
+        elif C[i] == '[':
+            C[i] = '|'
+        elif C[i] == ']':
+            counter += 1
+            if counter%1 ==0:
+                C[i] = '\\rangle \\\\ & '
+            else:
+                C[i] = '\\rangle'
+        elif C[i] == '+' and C[i+1] == '-':
+            C[i] = ''
+
+    C.append(' \\end{align*}')                         
+    out = ''.join(C)                                                             # recombining into a final string for display 
+    return out
+
 
 user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
 user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
 user_input_list = [int(i) for i in user_input_state]
-
 
 M12 = MatrixAction('12', [user_input_list],[1])                                         # making use of the beam splitter function, looping it over and over
 M13 = MatrixAction('13', M12[0], M12[1])
@@ -223,9 +188,18 @@ else:
 # print('LATEX UNgrouped : ',latex_conversion(ungrouped_output_display))
 
 
+for i in range(len(ungrouped_output_display)):
+    for j in range(i+1,len(ungrouped_output_display)):
+        if ungrouped_output_display[j][-9:] == ungrouped_output_display[i][-9:]:
+            ungrouped_output_display[i] = '('+(ungrouped_output_display[i][0:(len(ungrouped_output_display[i])-10)] +'+' + ungrouped_output_display[j][0:(len(ungrouped_output_display[j])-10)]) + ')*' + ungrouped_output_display[i][-9:]
+            ungrouped_output_display[j] = '@@@'
+
+new_output_state_grouped = [i for i in ungrouped_output_display if i != '@@@']
+
+
 print("")
 print("")
-print('LATEX Grouped : ',latex_conversion(grouping(ungrouped_output_display)))
+print('LATEX Grouped : ',latex_conversion(new_output_state_grouped))
 
 
 

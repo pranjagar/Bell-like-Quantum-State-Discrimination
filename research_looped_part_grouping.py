@@ -1,4 +1,3 @@
-from cmath import sqrt
 import matplotlib as plt
 import math as m
 import numpy as n
@@ -6,67 +5,6 @@ import scipy as s
 import sympy as sym
 
 print('----------------BEGIN-------------------------------')
-
-
-# some functions defined, colleceted here separately to not overcrowd the main code
-
-
-# LATEX CODE: function to convert our output display state into latex code that can be directly copied and result can be seen easily
-def latex_conversion(A):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
-
-    AA = [(i+'+') for i in A]                               #adding the  + at the end of each term for display purpose    
-    B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
-    C = [i for i in B]                                         # making a huge list composed of The letters of the huge string above
-    C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
-    C.pop()                                               # removing the extra last + sign
-
-    counter = 0                                                    # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
-    for i in range(len(C)):                                      # loop that converts symbols into their corresponding latex format
-        if C[i] == '*':
-            if C[i+1] == '*':
-                C[i] = '^{'
-                C[i+2] += '}'
-            else:
-                C[i] = '' 
-        elif C[i] == '_':
-            C[i] = '_{'
-            C[i+2] += '}'
-        elif C[i] == '[':
-            C[i] = '|'
-        elif C[i] == ']':
-            counter += 1
-            if counter%1 ==0:
-                C[i] = '\\rangle \\\\ & '
-            else:
-                C[i] = '\\rangle'
-        elif C[i] == '+' and C[i+1] == '-':
-            C[i] = ''
-
-    C.append(' \\end{align*}')                         
-    out = ''.join(C)                                                             # recombining into a final string for display 
-    return out
-
-
-
-
-
-# Grouping function 
-
-def Grouping(A):                        # A here is a list of strings (of our particular type ending in '[1,0,1,0]' etc )
-    for i in range(len(A)):
-        for j in range(i+1,len(A)):
-            if A[j][-9:] == A[i][-9:]:
-                A[i] = '('+(A[i][0:(len(A[i])-10)] +'+' + A[j][0:(len(A[j])-10)]) + ')*' + A[i][-9:]
-                A[j] = '@@@'
-    grouped_A =  [i for i in A if i != '@@@']
-    return grouped_A
-
-
-
-
-
-
-
 
 six_states_0 = n.array([0,0])                                                                # defining the six possilbe output states
 six_states_1 = n.array([1,0])
@@ -87,6 +25,7 @@ ten_states_7= n.array([2,0,0,0])
 ten_states_8 = n.array([0,2,0,0])
 ten_states_9= n.array([0,0,2,0])
 ten_states_10 = n.array([0,0,0,2])
+
 
 
 def MatrixAction(matrix_index, input_vectors, input_coeffs):
@@ -182,40 +121,47 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
 
 
+# function to convert our output display state into latex code that can be directly copied and result can be seen easily
+def latex_conversion(A):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
+
+    AA = [(i+'+') for i in A]                               #adding the  + at the end of each term for display purpose    
+    B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
+    C = [i for i in B]                                         # making a huge list composed of The letters of the huge string above
+    C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
+    C.pop()                                               # removing the extra last + sign
+
+    counter = 0                                                    # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
+    for i in range(len(C)):                                      # loop that converts symbols into their corresponding latex format
+        if C[i] == '*':
+            if C[i+1] == '*':
+                C[i] = '^{'
+                C[i+2] += '}'
+            else:
+                C[i] = '' 
+        elif C[i] == '_':
+            C[i] = '_{'
+            C[i+2] += '}'
+        elif C[i] == '[':
+            C[i] = '|'
+        elif C[i] == ']':
+            counter += 1
+            if counter%1 ==0:
+                C[i] = '\\rangle \\\\ & '
+            else:
+                C[i] = '\\rangle'
+        elif C[i] == '+' and C[i+1] == '-':
+            C[i] = ''
+
+    C.append(' \\end{align*}')                         
+    out = ''.join(C)                                                             # recombining into a final string for display 
+    return out
 
 
+user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
+user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
+user_input_list = [int(i) for i in user_input_state]
 
-choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )
-
-# Bell state Input part
-
-if choice == 'bell':
-    InputBellState = (input("Input bell state (type 'def' for symbols): " ))
-    if InputBellState == 'def':
-        print('[(00+11) = phi+, (00-11) = phi-, (01+10) = psi+, (10-10) = psi-]')
-    elif InputBellState == 'phi+':
-        user_input_list = [ten_states_2,ten_states_5]
-        user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
-    elif InputBellState == 'phi-':
-        user_input_list = [ten_states_2,ten_states_5]
-        user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
-    elif InputBellState == 'psi+':
-        user_input_list = [ten_states_3,ten_states_4]
-        user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
-    elif InputBellState == 'psi-':
-        user_input_list = [ten_states_3,ten_states_4]
-        user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
-elif choice == 'basis':
-    user_input_state = input("input state (enter as 1001 0200 etc.)? ")
-    user_input_list = [int(i) for i in user_input_state]
-else: 
-    print('unrecognized input!')
-
-
-user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))          # till what beam splitter is evaluation required
-
-
-M12 = MatrixAction('12', user_input_list,user_input_coeffs)                                         # making use of the beam splitter function, looping it over and over
+M12 = MatrixAction('12', [user_input_list],[1])                                         # making use of the beam splitter function, looping it over and over
 M13 = MatrixAction('13', M12[0], M12[1])
 M14 = MatrixAction('14', M13[0], M13[1])
 M23 = MatrixAction('23', M14[0], M14[1])
@@ -239,7 +185,46 @@ else:
     print('Wrong Input!!') 
 
  
-print('LATEX Grouped : ', latex_conversion(Grouping(ungrouped_output_display)))
+# print('LATEX UNgrouped : ',latex_conversion(ungrouped_output_display))
+
+
+for i in range(len(ungrouped_output_display)):
+    for j in range(i+1,len(ungrouped_output_display)):
+        if ungrouped_output_display[j][-9:] == ungrouped_output_display[i][-9:]:
+            ungrouped_output_display[i] = '('+(ungrouped_output_display[i][0:(len(ungrouped_output_display[i])-10)] +'+' + ungrouped_output_display[j][0:(len(ungrouped_output_display[j])-10)]) + ')*' + ungrouped_output_display[i][-9:]
+            ungrouped_output_display[j] = '@@@'
+
+new_output_state_grouped = [i for i in ungrouped_output_display if i != '@@@']
+
+
+print("")
+print("")
+print('LATEX Grouped : ',latex_conversion(new_output_state_grouped))
+
+
+
+
+
+
+
+""" 
+if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
+    print('LATEX result = ', latex_conversion(M12[2]))
+elif user_input_matrix == 13:
+    print('LATEX result = ', latex_conversion(M13[2]))
+elif user_input_matrix == 14:
+    print('LATEX result = ', latex_conversion(M14[2]))
+elif user_input_matrix == 23:
+    print('LATEX result = ', latex_conversion(M23[2]))
+elif user_input_matrix == 24:
+    print('LATEX result = ', latex_conversion(M24[2]))
+elif user_input_matrix == 34:
+    print('LATEX result = ', latex_conversion(M34[2]))
+else:
+    print('Wrong Input!!') 
+
+ """
+
 
 
 

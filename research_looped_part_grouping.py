@@ -4,8 +4,7 @@ import numpy as n
 import scipy as s
 import sympy as sym
 
-print('----------------BEGIN-------------------------------')
-
+print('------BEGIN----------BEGIN---------BEGIN-----------BEGIN--------BEGIN-------------BEGIN---------BEGIN-----------BEGIN--')
 
 # Side functions stored here
 
@@ -219,9 +218,6 @@ elif user_input_matrix == 34:
 else:
     print('Wrong Input!!') 
 
- 
-# print('LATEX UNgrouped : ',latex_conversion(ungrouped_output_display))
-
 
 print("")
 print("")
@@ -233,23 +229,6 @@ print('LATEX Grouped : ',latex_conversion(grouping(ungrouped_output_display)))
 
 
 
-""" 
-if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
-    print('LATEX result = ', latex_conversion(M12[2]))
-elif user_input_matrix == 13:
-    print('LATEX result = ', latex_conversion(M13[2]))
-elif user_input_matrix == 14:
-    print('LATEX result = ', latex_conversion(M14[2]))
-elif user_input_matrix == 23:
-    print('LATEX result = ', latex_conversion(M23[2]))
-elif user_input_matrix == 24:
-    print('LATEX result = ', latex_conversion(M24[2]))
-elif user_input_matrix == 34:
-    print('LATEX result = ', latex_conversion(M34[2]))
-else:
-    print('Wrong Input!!') 
-
- """
 
 
 
@@ -269,17 +248,7 @@ else:
 
 
 
-
-
-
-
-
-
-
-
-
-
-# print('----------------END-------------------------------')
+print('------END----------END---------END-----------END--------END-------------END---------END-----------END--')
 
 
 

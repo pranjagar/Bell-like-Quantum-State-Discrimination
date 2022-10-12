@@ -177,9 +177,9 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
         output_vectors_display.append(output_vectors_intermediate)                                            # same but for display purposes
         output_coeffs_display.append(output_coeff_intermediate)
 
-    for i in range(len(output_vectors_full)):
-        for j in range(i+1,len(output_vectors_full)):
-            z = 0
+    for i in range(len(output_vectors_full)):                                      # Grouping algorithm: taking and vectors from the vector list andcomparing them element by element.
+        for j in range(i+1,len(output_vectors_full)):                                   # it's something doesn't match then we replace that with zero vector andsimilarly the corresponding 
+            z = 0                                                                   # coefficient with a dummy $$$ sign. in the final step we remove these dummy lists and signs.
             for k in range(len(output_vectors_full[i])):
                 if output_vectors_full[i][k] != output_vectors_full[j][k]:
                     z = 1
@@ -189,6 +189,7 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
                     output_coeffs_full[i] = output_coeffs_full[i]+output_coeffs_full[j]
                 output_vectors_full[j] = n.zeros(len(output_vectors_full[j]))    
                 output_coeffs_full[j] = '$$$'
+
     output_coeffs_full_reduced = [i for i in output_coeffs_full if i!= '$$$']
     output_vectors_full_flattened = [list(i) for i in output_vectors_full]
     output_vectors_full_reduced = [i for i in output_vectors_full_flattened if i != list(n.zeros(len(output_vectors_full[0])))]
@@ -204,18 +205,53 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
 
+choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )
+
+if choice == 'bell':
+    InputBellState = (input("Input bell state (type 'def' for symbols): " ))
+    if InputBellState == 'def':
+        print('[(00+11) = phi+, (00-11) = phi-, (01+10) = psi+, (10-10) = psi-]')
+    elif InputBellState == 'phi+':
+        user_input_list = [ten_states_2,ten_states_5]
+        user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
+    elif InputBellState == 'phi-':
+        user_input_list = [ten_states_2,ten_states_5]
+        user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
+    elif InputBellState == 'psi+':
+        user_input_list = [ten_states_3,ten_states_4]
+        user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
+    elif InputBellState == 'psi-':
+        user_input_list = [ten_states_3,ten_states_4]
+        user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
+elif choice == 'basis':
+    user_input_state = input("input state (enter as 1001 0200 etc.)? ")
+    user_input_list = [[int(i) for i in user_input_state]]
+    user_input_coeffs = [1]
+else: 
+    print('unrecognized input!')
+
+
+
+
+
+
+
+
+
+
+
 
 # use the second block below instead of the first one for custom user inputs
 
 # user_input_matrix = 13
 # user_input_list = [1,0,0,1]
 
-user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")
 user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
-user_input_list = [int(i) for i in user_input_state]
+# user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")                        #Inputting the required states etc.
+# user_input_list = [[int(i) for i in user_input_state]]
 
 
-M12 = MatrixAction('12', [user_input_list],[1])                                         # making use of the beam splitter function, looping it over and over
+M12 = MatrixAction('12', user_input_list,user_input_coeffs)                                         # making use of the beam splitter function, looping it over and over
 M13 = MatrixAction('13', M12[0], M12[1])
 M14 = MatrixAction('14', M13[0], M13[1])
 M23 = MatrixAction('23', M14[0], M14[1])

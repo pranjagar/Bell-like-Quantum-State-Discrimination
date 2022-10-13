@@ -30,12 +30,6 @@ def latex_conversion(A):                                    # 'A' is a the outpu
             C[i+2] += '}'
         elif C[i] == '[':
             C[i] = '\ket{'
-            print(C[i+1])
-            C[i+1] = str(C[i+1])+str(C[i+2])+str(C[i+3])+str(C[i+4])
-            print(C[i+1])
-            C[i+2] = ''
-            C[i+3] = ''
-            C[i+4] = ''
         elif C[i] == ']':
             counter += 1
             if counter%1 ==0:
@@ -44,6 +38,9 @@ def latex_conversion(A):                                    # 'A' is a the outpu
                 C[i] = '\\rangle'
         elif C[i] == '+' and C[i+1] == '-':
             C[i] = ''
+        elif C[i] == ",":
+            C[i] = ""
+            C[i+1] = ""
 
     C.append(' \\end{align*}')                         
     out = ''.join(C)                                                             # recombining into a final string for display 
@@ -293,6 +290,7 @@ else:
 print("")
 print("")
 print(f'LATEX Grouped for: ',latex_conversion(output_display))
+# print(output_display)
 #print(f'Mathematica Grouped: ', sym.mathematica_code(output_coefficients))
 
 

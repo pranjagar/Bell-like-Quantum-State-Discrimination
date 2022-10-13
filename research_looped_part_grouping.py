@@ -288,7 +288,7 @@ else:
 print("")
 print("")
 # print(f'LATEX Grouped for: ',latex_conversion(output_display))
-print(f'Mathematica Grouped: ', sym.mathematica_code(output_coefficients))
+print(f'Grouped MATHEMATICA Code: ', sym.mathematica_code(output_coefficients))
 
 
 

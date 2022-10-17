@@ -66,10 +66,6 @@ def grouping(A):                                                    # 'A' is lis
 
 
 
-
-
-
-
 six_states_0 = n.array([0,0])                                                                # defining the six possilbe output states
 six_states_1 = n.array([1,0])
 six_states_2 = n.array([0,1])
@@ -203,8 +199,8 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
     output = [output_vectors_full_reduced, output_coeffs_full_reduced, output_state_display]                                         # final list to be returned by the function, in this form so that it can be looped later on
     return output
 
-# Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
 
+# Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
 choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )
 
 if choice == 'bell':
@@ -230,25 +226,15 @@ elif choice == 'basis':
 else: 
     print('unrecognized input!')
 
-
-
-
-
-
-
-
-
-
-
-
-# use the second block below instead of the first one for custom user inputs
-
-# user_input_matrix = 13
-# user_input_list = [1,0,0,1]
-
 user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
-# user_input_state = input("What state is input (enter as 1001 0200 etc.)? ")                        #Inputting the required states etc.
-# user_input_list = [[int(i) for i in user_input_state]]
+
+
+"""
+user_input_list = [[1,0,0,1]]            # some default values to avoid inputting while debugging 
+user_input_coeffs = [1]
+user_input_matrix = 14
+ """
+# use the second block below instead of the first one for custom user inputs
 
 
 M12 = MatrixAction('12', user_input_list,user_input_coeffs)                                         # making use of the beam splitter function, looping it over and over
@@ -287,15 +273,52 @@ else:
 
 print("")
 print("")
-# print(f'LATEX Grouped for: ',latex_conversion(output_display))
-print(f'Grouped MATHEMATICA Code: ', sym.mathematica_code(output_coefficients))
+print(f'LATEX Grouped for: ',latex_conversion(output_display))
+print(f'Grouped MATHEMATICA (list of coefficients): ', sym.mathematica_code(output_coefficients))
+
+
+
+# for mathematica solving specifically
+""" 
+def removing_nSqrt(A):       # removing '_' nad '1.4142' etc for mathematica from t_14 etc 
+    b = [i for i in A]
+    for i in range(len(b)):
+        if b[i] == '_':
+            b[i] = ''
+    for i in range(len(b)):            # removing the 1.4142 
+        if int(b[i  ]) == 1 and b[i+1] == '.' and int(b[i+2]) == 4 and int(b[i+3]) == 1 and int(b[i+4]) == 4:
+            b[i] = 'Sqrt[2]'
+            for j in range(14):
+                b[i+1+j] = ''
+    for i in range(len(b)):            # removing the 0.7071
+        if int(b[i  ]) == 0 and b[i+1] == '.' and int(b[i+2]) == 7 and int(b[i+3]) == 0 and int(b[i+4]) == 7:
+            b[i] = '(1/Sqrt[2])'
+            for j in range(15):
+                b[i+1+j] = ''
+    c =''.join(b)      
+    return c
+ """
+
+""" 
+for i in range(len(output_coefficients)):
+    print('Coefficient', (i+1),": ", {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))})
+ """
+
+# print(removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
+
+
+
+
+# text editing part for mathematica calculations
 
 
 
 
 
-
-
+""" 
+conditions = r_(12)+t_(12)-1 
+print(sym.mathematica_code(conditions))
+ """
 
 
 

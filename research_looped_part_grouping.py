@@ -288,18 +288,20 @@ def removing_nSqrt(A):       # removing '_' nad '1.4142' etc for mathematica fro
     for i in range(len(b)):            # removing the 1.4142 
         if b[i] == '1' and b[i+1] == '.' and b[i+2] == '4' and b[i+3] == '1' and b[i+4] == '4':
             b[i] = 'Sqrt[2]'
+            # b[i] = '\\sqrt{2}'              # uncomment for latex output without 1.4142
             for j in range(14):
                 b[i+1+j] = ''
     for i in range(len(b)):            # removing the 0.7071
         if b[i] == '0' and b[i+1] == '.' and b[i+2] == '7' and b[i+3] == '0' and b[i+4] == '7':
-            b[i] = '(1/Sqrt[2])'
+            b[i] = '(1/Sqrt[2])'                  
+            # b[i] = '\\frac{1}{\\sqrt{2}}'                  # uncomment for latex output without 1.4142
             for j in range(16):
                 b[i+1+j] = ''
     c =''.join(b)      
     return c
 
  
-print('Test: ',removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
+# print('Test: ',removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
 
 
 for i in range(len(output_coefficients)):

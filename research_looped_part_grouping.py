@@ -26,14 +26,14 @@ def latex_conversion(A):                                    # 'A' is a the outpu
                 C[i+2] += '}'
             else:
                 C[i] = '' 
-        elif C[i] == '_':
+        elif C[i] == '_' and C[i+1] != '{' :                        # added the 'and' part on 10/18 10 AM
             C[i] = '_{'
             C[i+2] += '}'
         elif C[i] == '[':
             C[i] = '|'
         elif C[i] == ']':
             counter += 1
-            if counter%1 ==0:
+            if counter%1 ==0:                                 # change '1' to '2' or whatever for making new line (adding \\) after 2 terms
                 C[i] = '\\rangle \\\\ & '
             else:
                 C[i] = '\\rangle'
@@ -58,8 +58,8 @@ def MathematicaToLatex(A):    # A is the input string
                     c[i+1] = '_{'+ c[i+1]
                     c[i+2] = c[i+2] + '}'
         # elif c[i] != 'r' or 't'            
-    c.insert(0,'\\begin{align*} & ')
-    c.append(' \\end{align*}')  
+    # c.insert(0,'\\begin{align*} & ')
+    # c.append(' \\end{align*}')  
     out = ''.join(c)
     return out
 
@@ -244,10 +244,10 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
 
-""" 
+ 
 # uncomment for full user interface kinda thing
-choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )       
-# choice = 'bell'                                     # uncomment to avoid imput: choice = bell states
+# choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )       
+choice = 'bell'                                     # uncomment to avoid imput: choice = bell states
 
 if choice == 'bell':
     InputBellState = (input("Input bell state (type 'def' for symbols): " ))
@@ -274,14 +274,14 @@ else:
 
 user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
 
- """
-# user_input_matrix = 34                                       # uncomment to avoid imput: matrix  = 34 
+ 
+user_input_matrix = 34                                       # uncomment to avoid imput: matrix  = 34 
 
 
  
-user_input_list = [[1,0,0,1]]            # uncomment to avoid inputting state & matrices while debugging, default state = 1001, matrix = 23
-user_input_coeffs = [1]
-user_input_matrix = 23 
+# user_input_list = [[1,0,0,1]]            # uncomment to avoid inputting state & matrices while debugging, default state = 1001, matrix = 23
+# user_input_coeffs = [1]
+# user_input_matrix = 23 
 
 
 # use the second block below instead of the first one for custom user inputs
@@ -296,21 +296,27 @@ M34 = MatrixAction('34', M24[0], M24[1])
 
 
 if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
-    output_display = (M12[2])
+    output_vectors = (M12[0])
     output_coefficients = (M12[1])
+    output_display = (M12[2])
 elif user_input_matrix == 13:
-    output_display = (M13[2])
+    output_vectors = (M13[0])
     output_coefficients = (M13[1])
+    output_display = (M13[2])
 elif user_input_matrix == 14:
-    output_display = (M14[2])
+    output_vectors = (M14[0])
     output_coefficients = (M14[1])
+    output_display = (M14[2])
 elif user_input_matrix == 23:
-    output_display = (M23[2])
+    output_vectors = (M23[0])
     output_coefficients = (M23[1])
+    output_display = (M23[2])
 elif user_input_matrix == 24:
-    output_display = (M24[2])
+    output_vectors = (M24[0])
     output_coefficients = (M24[1])
+    output_display = (M24[2])
 elif user_input_matrix == 34:
+    output_vectors = (M34[0])
     output_coefficients = (M34[1])
     output_display = (M34[2])
 else:
@@ -321,8 +327,6 @@ else:
 # print(M14[2])
 
 
-print("")
-print("")
 # print(f'LATEX Grouped for: ',latex_conversion(output_display))
 # print(f'Grouped MATHEMATICA (list of coefficients): ', sym.mathematica_code(output_coefficients))
 
@@ -366,17 +370,54 @@ print(f'C34 = {C34}')
  """
 
 mathcopy = '-r23 r34^2 t12 t13 t23-r12 r13 r34^2 t13 t23^2-r23^2 r24 r34 t12 t13 t34-2 r12 r13 r23 r24 r34 t13 t23 t34+r24 r34 t12 t13 t23^2 t34-r13 r14 r23 r34 t12 t24 t34-r12 r23 r34 t14 t24 t34-r12 r13^2 r14 r34 t23 t24 t34+r12 r14 r34 t13^2 t23 t24 t34+r13 r34 t12 t14 t23 t24 t34-r12 r13 r23^2 r24^2 t13 t34^2+r23 r24^2 t12 t13 t23 t34^2-r12 r13^2 r14 r23 r24 t24 t34^2+r12 r14 r23 r24 t13^2 t24 t34^2+r13 r23 r24 t12 t14 t24 t34^2+r13 r14 r24 t12 t23 t24 t34^2+r12 r24 t14 t23 t24 t34^2+r12 r13 r14^2 t13 t24^2 t34^2-r14 t12 t13 t14 t24^2 t34^2'
-
-print(MathematicaToLatex(mathcopy))
-print(latex_conversion(str(ten_states_1)))
+MathCoeff = ['r12', 't12','r12', 't12','r12', 't12','r12', 't12','r12', 't12']
 
 
+MathLatexCoeff = [MathematicaToLatex(i) for i in MathCoeff]    # list of latex coeffs converted from input code from mathematica
 
 
+# print(latex_conversion(str(ten_states_1)))
 
 
+def NewNewlatex_conversion(coeff, vects):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
+
+    AA = [(str(coeff[i])+str(vects[i])+ '+') for i in range(len(vects))]       #adding the  + at the end of each term for display purpose    
+    B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
+    C = [i for i in B]                                         # making a huge list composed of The letters of the huge string above
+    C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
+    C.pop()                                               # removing the extra last + sign
+
+    counter = 0                                                    # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
+    for i in range(len(C)):                                      # loop that converts symbols into their corresponding latex format
+        if C[i] == '*':
+            if C[i+1] == '*':
+                C[i] = '^{'
+                C[i+2] += '}'
+            else:
+                C[i] = '' 
+        elif C[i] == '_' and C[i+1] != '{' :                        # added the 'and' part on 10/18 10 AM
+            C[i] = '_{'
+            C[i+2] += '}'
+        elif C[i] == '[':
+            C[i] = '|'
+        elif C[i] == ']':
+            counter += 1
+            if counter%1 ==0:                                 # change '1' to '2' or whatever for making new line (adding \\) after 2 terms
+                C[i] = '\\rangle \\\\ & '
+            else:
+                C[i] = '\\rangle'
+        elif C[i] == '+' and C[i+1] == '-':
+            C[i] = ''
+
+    C.append(' \\end{align*}')                         
+    out = ''.join(C)                                                             # recombining into a final string for display 
+    return out
 
 
+xx = ['r_{12}','r_13']
+# print(NewNewlatex_conversion(xx,[ten_states_1, ten_states_10]))
+
+print(NewNewlatex_conversion(MathLatexCoeff,output_vectors))
 
 
 

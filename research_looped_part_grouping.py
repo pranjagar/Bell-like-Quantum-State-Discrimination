@@ -58,6 +58,28 @@ def grouping(A):                                                    # 'A' is lis
     return grouped_A
 
 
+ #fn for removing '_' nad '1.4142' etc for mathematica and latex (uncomment) from input strings 
+def removing_nSqrt(A):      
+    b = [i for i in A]
+    for i in range(len(b)):
+        if b[i] == '_':
+            b[i] = ''
+    if len(b) > 15:
+        for i in range(len(b)):            # removing the 1.4142 
+            if b[i] == '1' and b[i+1] == '.' and b[i+2] == '4' and b[i+3] == '1' and b[i+4] == '4':
+                b[i] = 'Sqrt[2]'
+                # b[i] = '\\sqrt{2}'              # uncomment for latex output without 1.4142
+                for j in range(14):
+                    b[i+1+j] = ''
+    if len(b) > 17:        
+        for i in range(len(b)):            # removing the 0.7071
+            if b[i] == '0' and b[i+1] == '.' and b[i+2] == '7' and b[i+3] == '0' and b[i+4] == '7':
+                b[i] = '(1/Sqrt[2])'                  
+                # b[i] = '\\frac{1}{\\sqrt{2}}'                  # uncomment for latex output without 1.4142
+                for j in range(16):
+                    b[i+1+j] = ''
+    c =''.join(b)      
+    return c
 
 
 
@@ -201,8 +223,9 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 
 
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
-"""  # uncomment for full user interface kinda thing
-choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )       
+  # uncomment for full user interface kinda thing
+# choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )       
+choice = 'bell'                                     # uncomment to avoid imput: choice = bell states
 
 if choice == 'bell':
     InputBellState = (input("Input bell state (type 'def' for symbols): " ))
@@ -227,12 +250,15 @@ elif choice == 'basis':
 else: 
     print('unrecognized input!')
 
-user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
- """
+# user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
+user_input_matrix = 34                                       # uncomment to avoid imput: matrix  = 34 
 
+
+""" 
 user_input_list = [[1,0,0,1]]            # uncomment to avoid inputting state & matrices while debugging, default state = 1001, matrix = 23
 user_input_coeffs = [1]
-user_input_matrix = 23
+user_input_matrix = 23 
+"""
 
 # use the second block below instead of the first one for custom user inputs
 
@@ -280,34 +306,12 @@ print("")
 
 # for mathematica solving specifically
 
-def removing_nSqrt(A):       # removing '_' nad '1.4142' etc for mathematica and latex (uncomment) from input strings 
-    b = [i for i in A]
-    for i in range(len(b)):
-        if b[i] == '_':
-            b[i] = ''
-    if len(b) > 15:
-        for i in range(len(b)):            # removing the 1.4142 
-            if b[i] == '1' and b[i+1] == '.' and b[i+2] == '4' and b[i+3] == '1' and b[i+4] == '4':
-                b[i] = 'Sqrt[2]'
-                # b[i] = '\\sqrt{2}'              # uncomment for latex output without 1.4142
-                for j in range(14):
-                    b[i+1+j] = ''
-    if len(b) > 17:        
-        for i in range(len(b)):            # removing the 0.7071
-            if b[i] == '0' and b[i+1] == '.' and b[i+2] == '7' and b[i+3] == '0' and b[i+4] == '7':
-                b[i] = '(1/Sqrt[2])'                  
-                # b[i] = '\\frac{1}{\\sqrt{2}}'                  # uncomment for latex output without 1.4142
-                for j in range(16):
-                    b[i+1+j] = ''
-    c =''.join(b)      
-    return c
-
  
 # print('Test: ',removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
 
 
-# for i in range(len(output_coefficients)):
-#     print('Coefficient', (i+1),": ", removing_nSqrt(sym.mathematica_code(output_coefficients[i]))) 
+for i in range(len(output_coefficients)):
+    print(f'Coeff{i+1} = {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))} \n') 
 
 
 
@@ -323,12 +327,7 @@ def removing_nSqrt(A):       # removing '_' nad '1.4142' etc for mathematica and
 
 # text editing part for mathematica calculations
 
-
-
-
-
-
-
+""" 
 # conditions 
 
 C12 = removing_nSqrt('r_12+t_12-1')
@@ -344,14 +343,8 @@ print(f'C24 = {C24}')
 C34 = removing_nSqrt('r_34+t_34-1')
 print(f'C34 = {C34}')
 # print(sym.mathematica_code(conditions)) 
-
-print(sym.mathematica_code('x**2*(w**2*(z**2+y**2))+y**2*(x**2*(z**2+a**2))'))
-
-
-""" 
-x**2*(w**2*(z**2+y**2))+y**2*(x**2*(z**2+a**2))
-
  """
+
 
 
 

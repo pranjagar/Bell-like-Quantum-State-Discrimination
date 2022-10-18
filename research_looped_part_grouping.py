@@ -280,23 +280,25 @@ print("")
 
 # for mathematica solving specifically
 
-def removing_nSqrt(A):       # removing '_' nad '1.4142' etc for mathematica from t_14 etc 
+def removing_nSqrt(A):       # removing '_' nad '1.4142' etc for mathematica and latex (uncomment) from input strings 
     b = [i for i in A]
     for i in range(len(b)):
         if b[i] == '_':
             b[i] = ''
-    for i in range(len(b)):            # removing the 1.4142 
-        if b[i] == '1' and b[i+1] == '.' and b[i+2] == '4' and b[i+3] == '1' and b[i+4] == '4':
-            b[i] = 'Sqrt[2]'
-            # b[i] = '\\sqrt{2}'              # uncomment for latex output without 1.4142
-            for j in range(14):
-                b[i+1+j] = ''
-    for i in range(len(b)):            # removing the 0.7071
-        if b[i] == '0' and b[i+1] == '.' and b[i+2] == '7' and b[i+3] == '0' and b[i+4] == '7':
-            b[i] = '(1/Sqrt[2])'                  
-            # b[i] = '\\frac{1}{\\sqrt{2}}'                  # uncomment for latex output without 1.4142
-            for j in range(16):
-                b[i+1+j] = ''
+    if len(b) > 15:
+        for i in range(len(b)):            # removing the 1.4142 
+            if b[i] == '1' and b[i+1] == '.' and b[i+2] == '4' and b[i+3] == '1' and b[i+4] == '4':
+                b[i] = 'Sqrt[2]'
+                # b[i] = '\\sqrt{2}'              # uncomment for latex output without 1.4142
+                for j in range(14):
+                    b[i+1+j] = ''
+    if len(b) > 17:        
+        for i in range(len(b)):            # removing the 0.7071
+            if b[i] == '0' and b[i+1] == '.' and b[i+2] == '7' and b[i+3] == '0' and b[i+4] == '7':
+                b[i] = '(1/Sqrt[2])'                  
+                # b[i] = '\\frac{1}{\\sqrt{2}}'                  # uncomment for latex output without 1.4142
+                for j in range(16):
+                    b[i+1+j] = ''
     c =''.join(b)      
     return c
 
@@ -304,8 +306,8 @@ def removing_nSqrt(A):       # removing '_' nad '1.4142' etc for mathematica fro
 # print('Test: ',removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
 
 
-for i in range(len(output_coefficients)):
-    print('Coefficient', (i+1),": ", {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))}) 
+# for i in range(len(output_coefficients)):
+#     print('Coefficient', (i+1),": ", removing_nSqrt(sym.mathematica_code(output_coefficients[i]))) 
 
 
 
@@ -325,16 +327,31 @@ for i in range(len(output_coefficients)):
 
 
 
+
+
+# conditions 
+
+C12 = removing_nSqrt('r_12+t_12-1')
+print(f'C12 = {C12}')
+C13 = removing_nSqrt('r_13+t_13-1')
+print(f'C13 = {C13}')
+C14 = removing_nSqrt('r_14+t_14-1')
+print(f'C14 = {C14}')
+C23 = removing_nSqrt('r_23+t_23-1')
+print(f'C23 = {C23}')
+C24 = removing_nSqrt('r_24+t_24-1')
+print(f'C24 = {C24}')
+C34 = removing_nSqrt('r_34+t_34-1')
+print(f'C34 = {C34}')
+# print(sym.mathematica_code(conditions)) 
+
+print(sym.mathematica_code('x**2*(w**2*(z**2+y**2))+y**2*(x**2*(z**2+a**2))'))
+
+
 """ 
-conditions = r_(12)+t_(12)-1 
-print(sym.mathematica_code(conditions))
+x**2*(w**2*(z**2+y**2))+y**2*(x**2*(z**2+a**2))
+
  """
-
-
-
-
-
-
 
 
 

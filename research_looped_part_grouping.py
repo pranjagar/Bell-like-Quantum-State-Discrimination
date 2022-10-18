@@ -45,6 +45,26 @@ def latex_conversion(A):                                    # 'A' is a the outpu
     return out
 
 
+
+# fn from mathematica to latex
+
+def MathematicaToLatex(A):    # A is the input string
+    c = [i for i in A]
+    for i in range(len(c)-2):
+        if c[i] == 'r' or c[i] == 't':
+            if c[i+1] == '1' or c[i+1] == '2' or c[i+1] == '3':
+                if c[i+2]== '1' or c[i+2]== '2' or c[i+2]== '3' or c[i+2]== '4':
+                    # print(c[i:i+3])
+                    c[i+1] = '_{'+ c[i+1]
+                    c[i+2] = c[i+2] + '}'
+        # elif c[i] != 'r' or 't'            
+    c.insert(0,'\\begin{align*} & ')
+    c.append(' \\end{align*}')  
+    out = ''.join(c)
+    return out
+
+
+
 # GROUPING FUNCTION
 
 
@@ -223,9 +243,11 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 
 
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
-  # uncomment for full user interface kinda thing
-# choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )       
-choice = 'bell'                                     # uncomment to avoid imput: choice = bell states
+
+""" 
+# uncomment for full user interface kinda thing
+choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )       
+# choice = 'bell'                                     # uncomment to avoid imput: choice = bell states
 
 if choice == 'bell':
     InputBellState = (input("Input bell state (type 'def' for symbols): " ))
@@ -250,15 +272,17 @@ elif choice == 'basis':
 else: 
     print('unrecognized input!')
 
-# user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
-user_input_matrix = 34                                       # uncomment to avoid imput: matrix  = 34 
+user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
+
+ """
+# user_input_matrix = 34                                       # uncomment to avoid imput: matrix  = 34 
 
 
-""" 
+ 
 user_input_list = [[1,0,0,1]]            # uncomment to avoid inputting state & matrices while debugging, default state = 1001, matrix = 23
 user_input_coeffs = [1]
 user_input_matrix = 23 
-"""
+
 
 # use the second block below instead of the first one for custom user inputs
 
@@ -310,12 +334,8 @@ print("")
 # print('Test: ',removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
 
 
-for i in range(len(output_coefficients)):
-    print(f'Coeff{i+1} = {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))} \n') 
-
-
-
-
+# for i in range(len(output_coefficients)):            # uncomment for printing coefficients
+#     print(f'Coeff{i+1} = {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))} \n') 
 
 
 
@@ -345,8 +365,10 @@ print(f'C34 = {C34}')
 # print(sym.mathematica_code(conditions)) 
  """
 
+mathcopy = '-r23 r34^2 t12 t13 t23-r12 r13 r34^2 t13 t23^2-r23^2 r24 r34 t12 t13 t34-2 r12 r13 r23 r24 r34 t13 t23 t34+r24 r34 t12 t13 t23^2 t34-r13 r14 r23 r34 t12 t24 t34-r12 r23 r34 t14 t24 t34-r12 r13^2 r14 r34 t23 t24 t34+r12 r14 r34 t13^2 t23 t24 t34+r13 r34 t12 t14 t23 t24 t34-r12 r13 r23^2 r24^2 t13 t34^2+r23 r24^2 t12 t13 t23 t34^2-r12 r13^2 r14 r23 r24 t24 t34^2+r12 r14 r23 r24 t13^2 t24 t34^2+r13 r23 r24 t12 t14 t24 t34^2+r13 r14 r24 t12 t23 t24 t34^2+r12 r24 t14 t23 t24 t34^2+r12 r13 r14^2 t13 t24^2 t34^2-r14 t12 t13 t14 t24^2 t34^2'
 
-
+print(MathematicaToLatex(mathcopy))
+print(latex_conversion(str(ten_states_1)))
 
 
 

@@ -381,11 +381,17 @@ else:
 # print('Test: ',removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
 
 
-for i in range(len(output_coefficients)):            # uncomment for printing coefficients in mathematica
-    print(f'Coeff{i+1} = {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))} \n') 
+# for i in range(len(output_coefficients)):            # uncomment for printing coefficients in mathematica
+#     print(f'{InputBellState}_Coeffs = {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))} \n') 
 
 
+MathematicaInputCoeffList = [removing_nSqrt(sym.mathematica_code(i)) for i in output_coefficients]
+inputlist = '{'+ ','.join(MathematicaInputCoeffList)+'}'
+# inputlist = +inputlist+'}' 
 
+print(f'{InputBellState}CoeffList = {inputlist}')
+
+# print(f'InputCoeffList = {MathematicaInputCoeffList}')
 
 
 
@@ -455,7 +461,7 @@ MathLatexCoeff = [MathematicaToLatex(i) for i in MathCoeffPsiminus]    # list of
 
 
 
-print(NewNewlatex_conversion(MathLatexCoeff,output_vectors))
+# print(NewNewlatex_conversion(MathLatexCoeff,output_vectors))
 
 
 

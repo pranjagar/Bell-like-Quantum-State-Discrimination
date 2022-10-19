@@ -100,7 +100,7 @@ def MathematicaToLatex(A):    # A is the input string
                     # print(c[i:i+3])
                     c[i+1] = '_{'+ c[i+1]
                     c[i+2] = c[i+2] + '}'
-        # elif c[i] != 'r' or 't'            
+        # elif c[i] != 'r' or 't'           
     # c.insert(0,'\\begin{align*} & ')
     # c.append(' \\end{align*}')  
     out = ''.join(c)
@@ -121,7 +121,7 @@ def grouping(A):                                                    # 'A' is lis
     return grouped_A
 
 
- #fn for removing '_' nad '1.4142' etc for mathematica and latex (uncomment) from input strings 
+#fn for removing '_' nad '1.4142' etc for mathematica and latex (uncomment) from input strings 
 def removing_nSqrt(A):      
     b = [i for i in A]
     for i in range(len(b)):
@@ -141,6 +141,13 @@ def removing_nSqrt(A):
                 # b[i] = '\\frac{1}{\\sqrt{2}}'                  # uncomment for latex output without 1.4142
                 for j in range(16):
                     b[i+1+j] = ''
+    for i in range(len(b)):
+        if i < len(b)-3 and b[i] == '1' and b[i+1]== '.' and b[i+2]== '0':
+            b[i] = ''
+            b[i+1] = ''
+            b[i+2] = ''
+            if b[i+3] == '*':
+                b[i+3] = ''
     c =''.join(b)      
     return c
 
@@ -295,17 +302,17 @@ choice = 'bell'                                     # uncomment to avoid imput: 
 if choice == 'bell':
     InputBellState = (input("Input bell state (type 'def' for symbols): " ))
     if InputBellState == 'def':
-        print('[(00+11) = phi+, (00-11) = phi-, (01+10) = psi+, (10-10) = psi-]')
-    elif InputBellState == 'phi+':
+        print('[(00+11) = phiplus, (00-11) = phiminus, (01+10) = psiplus, (10-10) = psiminus]')
+    elif InputBellState == 'phiplus':
         user_input_list = [ten_states_2,ten_states_5]
         user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
-    elif InputBellState == 'phi-':
+    elif InputBellState == 'phiminus':
         user_input_list = [ten_states_2,ten_states_5]
         user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
-    elif InputBellState == 'psi+':
+    elif InputBellState == 'psiplus':
         user_input_list = [ten_states_3,ten_states_4]
         user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
-    elif InputBellState == 'psi-':
+    elif InputBellState == 'psiminus':
         user_input_list = [ten_states_3,ten_states_4]
         user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
 elif choice == 'basis':
@@ -381,42 +388,17 @@ else:
 # print('Test: ',removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
 
 
-# for i in range(len(output_coefficients)):            # uncomment for printing coefficients in mathematica
+# for i in range(len(output_coefficients)):            # uncomment for printing all ten coefficients in mathematica script
 #     print(f'{InputBellState}_Coeffs = {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))} \n') 
 
 
-MathematicaInputCoeffList = [removing_nSqrt(sym.mathematica_code(i)) for i in output_coefficients]
+MathematicaInputCoeffList = [removing_nSqrt(sym.mathematica_code(i)) for i in output_coefficients]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
 inputlist = '{'+ ','.join(MathematicaInputCoeffList)+'}'
-# inputlist = +inputlist+'}' 
-
-print(f'{InputBellState}CoeffList = {inputlist}')
-
-# print(f'InputCoeffList = {MathematicaInputCoeffList}')
-
-
-
-
+print(f'{InputBellState}CoeffList = {inputlist}')         
 
 
 # text editing part for mathematica calculations
 
-""" 
-# conditions 
-
-C12 = removing_nSqrt('r_12+t_12-1')
-print(f'C12 = {C12}')
-C13 = removing_nSqrt('r_13+t_13-1')
-print(f'C13 = {C13}')
-C14 = removing_nSqrt('r_14+t_14-1')
-print(f'C14 = {C14}')
-C23 = removing_nSqrt('r_23+t_23-1')
-print(f'C23 = {C23}')
-C24 = removing_nSqrt('r_24+t_24-1')
-print(f'C24 = {C24}')
-C34 = removing_nSqrt('r_34+t_34-1')
-print(f'C34 = {C34}')
-# print(sym.mathematica_code(conditions)) 
- """
 
 # mathcopy = '-r23 r34^2 t12 t13 t23-r12 r13 r34^2 t13 t23^2-r23^2 r24 r34 t12 t13 t34-2 r12 r13 r23 r24 r34 t13 t23 t34+r24 r34 t12 t13 t23^2 t34-r13 r14 r23 r34 t12 t24 t34-r12 r23 r34 t14 t24 t34-r12 r13^2 r14 r34 t23 t24 t34+r12 r14 r34 t13^2 t23 t24 t34+r13 r34 t12 t14 t23 t24 t34-r12 r13 r23^2 r24^2 t13 t34^2+r23 r24^2 t12 t13 t23 t34^2-r12 r13^2 r14 r23 r24 t24 t34^2+r12 r14 r23 r24 t13^2 t24 t34^2+r13 r23 r24 t12 t14 t24 t34^2+r13 r14 r24 t12 t23 t24 t34^2+r12 r24 t14 t23 t24 t34^2+r12 r13 r14^2 t13 t24^2 t34^2-r14 t12 t13 t14 t24^2 t34^2'
 MathCoeffPsiplus = ['(-r14^2 r24 t12 t13-r14 (2 r12 r13 r24 t13 t14+r13 r23 t12 t24+r12 t23 t24)+t14 (r24 t12 t13 t14+r12 r23 (-r13^2+t13^2) t24+r13 t12 t23 t24))/Sqrt[2]' ,'(1/Sqrt[2])(r34 t12 t13 (-r14^2+t14^2) t24+r12 r13^2 t14 (r23 r24 r34-t23 t34)+r12 (-r23 r24 r34 t13^2 t14+r14 r24 r34 t23+r14 r23 t34+t13^2 t14 t23 t34)-r13 (t12 t14 (r24 r34 t23+r23 t34)+r14 (-r23 r24 r34 t12+2 r12 r34 t13 t14 t24+t12 t23 t34)))',' (1/Sqrt[2])(t12 t13 (-r14^2+t14^2) t24 t34+r12 (r13^2-t13^2) t14 (r34 t23+r23 r24 t34)+r13 t12 (r23 r34 t14+r14 r34 t23+r14 r23 r24 t34-r24 t14 t23 t34)+r12 r14 (-r23 r34+r24 t23 t34-2 r13 t13 t14 t24 t34))', 't13 t14 (r14 t12+r12 r13 t14)',' (1/Sqrt[2])(t12 (-t13 t24 (2 r14 r24 r34 t14+2 r23 r24 r34 t23+r23^2 t34-t23^2 t34)+r13 (r14 r34 t23 (r24^2-t24^2)-r24 t14 t23 t34+r23 (r24^2 r34 t14-r34 t14 t24^2+r14 r24 t34)))+r12 (t14 (r24^2 r34 t23-r34 t23 t24^2+r23 r24 t34)+r14 t13^2 (r23 r34 (r24^2-t24^2)-r24 t23 t34)+r13^2 r14 (r23 r34 (-r24^2+t24^2)+r24 t23 t34)+2 r13 t13 t24 (r14^2 r24 r34+r23 (r23 r24 r34-t23 t34))))' ,'(1/Sqrt[2])(t12 t13 t24 (r23^2 r34-r34 t23^2-2 r14 r24 t14 t34-2 r23 r24 t23 t34)-r12 r13^2 r14 (r24 r34 t23+r23 r24^2 t34-r23 t24^2 t34)+r12 (r14 r24 r34 t13^2 t23+t14 t23 (r24^2-t24^2) t34+r23 (-r24 r34 t14+r14 r24^2 t13^2 t34-r14 t13^2 t24^2 t34))+r13 (r23 r24^2 t12 t14 t34+2 r12 r14^2 r24 t13 t24 t34+r24 (r34 t12 t14 t23+2 r12 r23^2 t13 t24 t34)+r23 t24 (2 r12 r34 t13 t23-t12 t14 t24 t34)-r14 t12 (r23 r24 r34+t23 (-r24^2+t24^2) t34)))',' -t12 (r14 r24 (r24 t13 t14+r13 t23 t24)+r23 t24 (r13 r24 t14-t13 t23 t24))+r12 (r13^2 r14 r23 r24 t24-r24 (r14 r23 t13^2+t14 t23) t24+r13 t13 (r14^2 r24^2-r23^2 t24^2))', '(1/Sqrt[2])(2 r34 t13 t23 (r23 t12+r12 r13 t23) t34-2 r34 (-t12 (r23 r24 (r24 t13 t23+r13 t14 t24)+r14 t24 (r13 r24 t23-t13 t14 t24))+r12 (r13^2 r14 r23 r24 t24-r24 (r14 r23 t13^2+t14 t23) t24+r13 t13 (r23^2 r24^2-r14^2 t24^2))) t34-(r23^2 r24 t12 t13+r23 (2 r12 r13 r24 t13 t23+r13 r14 t12 t24+r12 t14 t24)-t23 (r24 t12 t13 t23+r12 r14 (-r13^2+t13^2) t24+r13 t12 t14 t24)) (r34^2-t34^2))', 't12 (r23 r24^2 r34^2 t13 t23+r13 r23 r24 r34^2 t14 t24+r23^2 r24 r34 t13 t34+r13 r34 t23 t24 (r14 r24 r34-t14 t34)+r23 t34 (r13 r14 r34 t24-t13 t23 t34)-r34 t13 (r14 r34 t14 t24^2+r24 t23^2 t34))+r12 (r13^2 r14 r34 t24 (-r23 r24 r34+t23 t34)+r13 t13 (-r23^2 r24^2 r34^2+r14^2 r34^2 t24^2+2 r23 r24 r34 t23 t34-t23^2 t34^2)+r34 t24 (t14 (r24 r34 t23+r23 t34)+r14 t13^2 (r23 r24 r34-t23 t34)))',' -r23^2 r24 t13 t34 (r34 t12+r12 r13 r24 t34)-r23 (r34^2 t12 t13 t23+r34 (2 r12 r13 r24 t13 t23+r13 r14 t12 t24+r12 t14 t24) t34-r24 (r24 t12 t13 t23+r12 r14 (-r13^2+t13^2) t24+r13 t12 t14 t24) t34^2)+t12 t34 (r24 t23 (r34 t13 t23+r13 r14 t24 t34)+t14 t24 (r13 r34 t23-r14 t13 t24 t34))+r12 (-r13^2 r14 r34 t23 t24 t34+t23 t24 t34 (r14 r34 t13^2+r24 t14 t34)+r13 (-r34^2 t13 t23^2+r14^2 t13 t24^2 t34^2))']

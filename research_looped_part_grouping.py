@@ -295,11 +295,13 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs):
 # Notes : matrix index argument should be given as a two digit number, in ascendign order, and AS A STRING.
 
  
+""" 
 # uncomment for full user interface kinda thing
 # choice = input("Bell state input or basis state input ? (type 'bell' or 'basis')" )       
 choice = 'bell'                                     # uncomment to avoid imput: choice = bell states
 
 if choice == 'bell':
+    # InputBellState = 'phiplus'                    # avoiding input
     InputBellState = (input("Input bell state (type 'def' for symbols): " ))
     if InputBellState == 'def':
         print('[(00+11) = phiplus, (00-11) = phiminus, (01+10) = psiplus, (10-10) = psiminus]')
@@ -372,29 +374,108 @@ elif user_input_matrix == 34:
 else:
     print('Wrong Input!!') 
 
-
-# print(M14[:2])
-# print(M14[2])
-
-
-# print(f'LATEX Grouped for: ',latex_conversion(output_display))
-# print(f'Grouped MATHEMATICA (list of coefficients): ', sym.mathematica_code(output_coefficients))
+ """
 
 
 
-# for mathematica solving specifically
-
- 
-# print('Test: ',removing_nSqrt('0.707106781186547*t12 +1.4142135623731*x + t_12'))
 
 
-# for i in range(len(output_coefficients)):            # uncomment for printing all ten coefficients in mathematica script
-#     print(f'{InputBellState}_Coeffs = {removing_nSqrt(sym.mathematica_code(output_coefficients[i]))} \n') 
+def BellOutput(InputBellState, VorCorOut):              #input one one of the four bell states as string, second input is what is needed : list of coeffs or list of vectors or full output as a string 
+    if InputBellState == 'phiplus':
+        user_input_list = [ten_states_2,ten_states_5]
+        user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
+    elif InputBellState == 'phiminus':
+        user_input_list = [ten_states_2,ten_states_5]
+        user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
+    elif InputBellState == 'psiplus':
+        user_input_list = [ten_states_3,ten_states_4]
+        user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
+    elif InputBellState == 'psiminus':
+        user_input_list = [ten_states_3,ten_states_4]
+        user_input_coeffs = [1/(n.sqrt(2)), -1/(n.sqrt(2))]
+    else:
+        print('[(00+11) = phiplus, (00-11) = phiminus, (01+10) = psiplus, (10-10) = psiminus] \n V : vector list, C: Coeffs list, Out: full result (string)')
+
+    # user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
+    user_input_matrix = 34                                       # uncomment to avoid imput: matrix  = 34 
+
+    M12 = MatrixAction('12', user_input_list,user_input_coeffs)                                         # making use of the beam splitter function, looping it over and over
+    M13 = MatrixAction('13', M12[0], M12[1])
+    M14 = MatrixAction('14', M13[0], M13[1])
+    M23 = MatrixAction('23', M14[0], M14[1])
+    M24 = MatrixAction('24', M23[0], M23[1])
+    M34 = MatrixAction('34', M24[0], M24[1])
+
+    if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
+        output_vectors = (M12[0])
+        output_coefficients = (M12[1])
+        output_display = (M12[2])
+    elif user_input_matrix == 13:
+        output_vectors = (M13[0])
+        output_coefficients = (M13[1])
+        output_display = (M13[2])
+    elif user_input_matrix == 14:
+        output_vectors = (M14[0])
+        output_coefficients = (M14[1])
+        output_display = (M14[2])
+    elif user_input_matrix == 23:
+        output_vectors = (M23[0])
+        output_coefficients = (M23[1])
+        output_display = (M23[2])
+    elif user_input_matrix == 24:
+        output_vectors = (M24[0])
+        output_coefficients = (M24[1])
+        output_display = (M24[2])
+    elif user_input_matrix == 34:
+        output_vectors = (M34[0])
+        output_coefficients = (M34[1])
+        output_display = (M34[2])
+
+    if VorCorOut == 'V':
+        return output_vectors
+    elif VorCorOut == 'C':
+        return output_coefficients
+    elif VorCorOut == 'Out':
+        return output_display
 
 
-MathematicaInputCoeffList = [removing_nSqrt(sym.mathematica_code(i)) for i in output_coefficients]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
-inputlist = '{'+ ','.join(MathematicaInputCoeffList)+'}'
-print(f'{InputBellState}CoeffList = {inputlist}')         
+
+
+
+# list of vector outputs for bell states
+# print(BellOutput('psiplus', 'V'))
+# print(BellOutput('psiminus', 'V'))
+# print(BellOutput('phiplus', 'V'))
+# print(BellOutput('phiminus', 'V'))
+
+
+# To create a list of lists (in mathematica language), each sublist being a list of all ten coefficients of output of one of the bell states 
+big_outlist = []
+
+MathematicaInputCoeffList_psiplus = [removing_nSqrt(sym.mathematica_code(i)) for i in BellOutput('psiplus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
+inputlist_psiplus = '{'+ ','.join(MathematicaInputCoeffList_psiplus)+'}'
+big_outlist.append(inputlist_psiplus)    
+
+MathematicaInputCoeffList_psiminus = [removing_nSqrt(sym.mathematica_code(i)) for i in BellOutput('psiminus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
+inputlist_psiminus = '{'+ ','.join(MathematicaInputCoeffList_psiminus)+'}'
+big_outlist.append(inputlist_psiminus)    
+
+MathematicaInputCoeffList_phiplus = [removing_nSqrt(sym.mathematica_code(i)) for i in BellOutput('phiplus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
+inputlist_phiplus = '{'+ ','.join(MathematicaInputCoeffList_phiplus)+'}'
+big_outlist.append(inputlist_phiplus)    
+
+MathematicaInputCoeffList_phiminus = [removing_nSqrt(sym.mathematica_code(i)) for i in BellOutput('phiminus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
+inputlist_phiminus = '{'+ ','.join(MathematicaInputCoeffList_phiminus)+'}'
+big_outlist.append(inputlist_phiminus)    
+
+all_bell_outputs_mathem =  '{'+ ','.join(big_outlist)+'}'
+print(all_bell_outputs_mathem)
+
+
+
+
+
+
 
 
 # text editing part for mathematica calculations

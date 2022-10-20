@@ -12,7 +12,7 @@ print('------BEGIN----------BEGIN---------BEGIN-----------BEGIN--------BEGIN----
 # LATEX function: to convert our output display state into latex code that can be directly copied and result can be seen easily
 def latex_conversion(A):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
 
-    AA = [(i+'+') for i in A]                               #adding the  + at the end of each term for display purpose    
+    AA = [(i+'') for i in A]                               #adding the  + at the end of each term for display purpose    
     B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
     C = [i for i in B]                                         # making a huge list composed of The letters of the huge string above
     C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
@@ -29,9 +29,9 @@ def latex_conversion(A):                                    # 'A' is a the outpu
         elif C[i] == '_' and C[i+1] != '{' :                        # added the 'and' part on 10/18 10 AM
             C[i] = '_{'
             C[i+2] += '}'
-        elif C[i] == '[':
+        elif C[i] == '['and C[i+2] != ']':
             C[i] = '|'
-        elif C[i] == ']':
+        elif i > 2 and C[i] == ']' and C[i-2] != '[':
             counter += 1
             if counter%1 ==0:                                 # change '1' to '2' or whatever for making new line (adding \\) after 2 terms
                 C[i] = '\\rangle \\\\ & '
@@ -121,24 +121,27 @@ def grouping(A):                                                    # 'A' is lis
     return grouped_A
 
 
-#fn for removing '_' nad '1.4142' etc for mathematica and latex (uncomment) from input strings 
-def removing_nSqrt(A):      
+#fn for removing '_' and '1.4142' n 1.0* etc for mathematica and latex (uncomment) from input strings 
+def removing_nSqrt(A,M):      # M = 'M' or 'L' for matheematica or latex
     b = [i for i in A]
     for i in range(len(b)):
         if b[i] == '_':
-            b[i] = ''
+            if M == 'M':
+                b[i] = ''
     if len(b) > 15:
         for i in range(len(b)):            # removing the 1.4142 
             if b[i] == '1' and b[i+1] == '.' and b[i+2] == '4' and b[i+3] == '1' and b[i+4] == '4':
                 b[i] = 'Sqrt[2]'
-                # b[i] = '\\sqrt{2}'              # uncomment for latex output without 1.4142
+                if M == 'L':
+                    b[i] = '\\sqrt{2}'              # uncomment for latex output without 1.4142
                 for j in range(14):
                     b[i+1+j] = ''
     if len(b) > 17:        
         for i in range(len(b)):            # removing the 0.7071
             if b[i] == '0' and b[i+1] == '.' and b[i+2] == '7' and b[i+3] == '0' and b[i+4] == '7':
                 b[i] = '(1/Sqrt[2])'                  
-                # b[i] = '\\frac{1}{\\sqrt{2}}'                  # uncomment for latex output without 1.4142
+                if M == 'L':
+                    b[i] = '\\frac{1}{\\sqrt{2}}'                  # uncomment for latex output without 1.4142
                 for j in range(16):
                     b[i+1+j] = ''
     for i in range(len(b)):
@@ -148,7 +151,16 @@ def removing_nSqrt(A):
             b[i+2] = ''
             if b[i+3] == '*':
                 b[i+3] = ''
-    c =''.join(b)      
+    for i in range(len(b)):
+        if i < (len(b)-7) and b[i] == 'S' and b[i+1] == 'q' and b[i+2] == 'r' and b[i+3] == 't' and b[i+4] == '[' and b[i+6] == ']':
+                for j in range(8):
+                    if j != 5:
+                        b[i+j] = '' 
+                if M == 'L':
+                    b[i+5] = '\\sqrt{'+b[i+5]+'}'
+
+    c =''.join(b)   
+       
     return c
 
 
@@ -452,26 +464,24 @@ def BellOutput(InputBellState, VorCorOut):              #input one one of the fo
 # To create a list of lists (in mathematica language), each sublist being a list of all ten coefficients of output of one of the bell states 
 big_outlist = []
 
-MathematicaInputCoeffList_psiplus = [removing_nSqrt(sym.mathematica_code(i)) for i in BellOutput('psiplus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
+MathematicaInputCoeffList_psiplus = [removing_nSqrt(sym.mathematica_code(i),'M') for i in BellOutput('psiplus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
 inputlist_psiplus = '{'+ ','.join(MathematicaInputCoeffList_psiplus)+'}'
 big_outlist.append(inputlist_psiplus)    
 
-MathematicaInputCoeffList_psiminus = [removing_nSqrt(sym.mathematica_code(i)) for i in BellOutput('psiminus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
+MathematicaInputCoeffList_psiminus = [removing_nSqrt(sym.mathematica_code(i),'M') for i in BellOutput('psiminus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
 inputlist_psiminus = '{'+ ','.join(MathematicaInputCoeffList_psiminus)+'}'
 big_outlist.append(inputlist_psiminus)    
 
-MathematicaInputCoeffList_phiplus = [removing_nSqrt(sym.mathematica_code(i)) for i in BellOutput('phiplus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
+MathematicaInputCoeffList_phiplus = [removing_nSqrt(sym.mathematica_code(i),'M') for i in BellOutput('phiplus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
 inputlist_phiplus = '{'+ ','.join(MathematicaInputCoeffList_phiplus)+'}'
 big_outlist.append(inputlist_phiplus)    
 
-MathematicaInputCoeffList_phiminus = [removing_nSqrt(sym.mathematica_code(i)) for i in BellOutput('phiminus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
+MathematicaInputCoeffList_phiminus = [removing_nSqrt(sym.mathematica_code(i),'M') for i in BellOutput('phiminus','C')]       # gives a mathematica list (with {}) of all ten coeff of the imput state 
 inputlist_phiminus = '{'+ ','.join(MathematicaInputCoeffList_phiminus)+'}'
 big_outlist.append(inputlist_phiminus)    
 
 all_bell_outputs_mathem =  '{'+ ','.join(big_outlist)+'}'
-print(all_bell_outputs_mathem)
-
-
+# print(all_bell_outputs_mathem)          
 
 
 
@@ -517,14 +527,14 @@ MathCoeffPsiminus = ['(-r14^2 r24 t12 t13+r14 (2 r12 r13 r24 t13 t14-r13 r23 t12
 # '(\\frac{1}{\\sqrt{2}})\left(' \right)
 
 
-MathLatexCoeff = [MathematicaToLatex(i) for i in MathCoeffPsiminus]    # list of latex coeffs converted from input code from mathematica
+# MathLatexCoeff = [MathematicaToLatex(i) for i in MathCoeffPsiminus]    # list of latex coeffs converted from input code from mathematica
 
 
 # print(latex_conversion(str(ten_states_1)))
+a = '{{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0}}'
 
 
-
-# print(NewNewlatex_conversion(MathLatexCoeff,output_vectors))
+print(removing_nSqrt(MathematicaToLatex(a),'L'))
 
 
 

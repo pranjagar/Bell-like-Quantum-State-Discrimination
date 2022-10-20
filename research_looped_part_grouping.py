@@ -164,7 +164,30 @@ def removing_nSqrt(A,M):      # M = 'M' or 'L' for matheematica or latex
     return c
 
 
+# Spearating lines from the big list containing outputs of the four bell states
 
+def separating_lines_mathem_output(A):             # A is string, containing mathem output list like {{4,5},{d},{''}}. This fn breaks it into different lines and adds parenthes to each part
+    counter = 0                                     
+    B = [i for i in A]
+    for i in range(len(B)):
+        if B[i] == '{':
+            counter += 1
+            if counter == 2:
+                k = 0
+                while k < 1:
+                    B[i] = '\\\\ & \\Bigl('
+                    k = k+1
+        if B[i] == '}':
+            counter -= 1
+            if counter == 1:
+                k = 0
+                while k < 1:
+                    B[i] = '\\Bigl)'
+                    k = k+1
+    B.insert(0,'\\begin{align*} & ')
+    B.append(' \\end{align*}')
+    c =''.join(B)   
+    return c
 
 
 
@@ -481,60 +504,33 @@ inputlist_phiminus = '{'+ ','.join(MathematicaInputCoeffList_phiminus)+'}'
 big_outlist.append(inputlist_phiminus)    
 
 all_bell_outputs_mathem =  '{'+ ','.join(big_outlist)+'}'
-# print(all_bell_outputs_mathem)          
+# print('BigList = ',all_bell_outputs_mathem)                  # uncomment to print the outputs of the four bell states
 
 
 
-
-
-
-# text editing part for mathematica calculations
-
-
-# mathcopy = '-r23 r34^2 t12 t13 t23-r12 r13 r34^2 t13 t23^2-r23^2 r24 r34 t12 t13 t34-2 r12 r13 r23 r24 r34 t13 t23 t34+r24 r34 t12 t13 t23^2 t34-r13 r14 r23 r34 t12 t24 t34-r12 r23 r34 t14 t24 t34-r12 r13^2 r14 r34 t23 t24 t34+r12 r14 r34 t13^2 t23 t24 t34+r13 r34 t12 t14 t23 t24 t34-r12 r13 r23^2 r24^2 t13 t34^2+r23 r24^2 t12 t13 t23 t34^2-r12 r13^2 r14 r23 r24 t24 t34^2+r12 r14 r23 r24 t13^2 t24 t34^2+r13 r23 r24 t12 t14 t24 t34^2+r13 r14 r24 t12 t23 t24 t34^2+r12 r24 t14 t23 t24 t34^2+r12 r13 r14^2 t13 t24^2 t34^2-r14 t12 t13 t14 t24^2 t34^2'
-MathCoeffPsiplus = ['(-r14^2 r24 t12 t13-r14 (2 r12 r13 r24 t13 t14+r13 r23 t12 t24+r12 t23 t24)+t14 (r24 t12 t13 t14+r12 r23 (-r13^2+t13^2) t24+r13 t12 t23 t24))/Sqrt[2]' ,'(1/Sqrt[2])(r34 t12 t13 (-r14^2+t14^2) t24+r12 r13^2 t14 (r23 r24 r34-t23 t34)+r12 (-r23 r24 r34 t13^2 t14+r14 r24 r34 t23+r14 r23 t34+t13^2 t14 t23 t34)-r13 (t12 t14 (r24 r34 t23+r23 t34)+r14 (-r23 r24 r34 t12+2 r12 r34 t13 t14 t24+t12 t23 t34)))',' (1/Sqrt[2])(t12 t13 (-r14^2+t14^2) t24 t34+r12 (r13^2-t13^2) t14 (r34 t23+r23 r24 t34)+r13 t12 (r23 r34 t14+r14 r34 t23+r14 r23 r24 t34-r24 t14 t23 t34)+r12 r14 (-r23 r34+r24 t23 t34-2 r13 t13 t14 t24 t34))', 't13 t14 (r14 t12+r12 r13 t14)',' (1/Sqrt[2])(t12 (-t13 t24 (2 r14 r24 r34 t14+2 r23 r24 r34 t23+r23^2 t34-t23^2 t34)+r13 (r14 r34 t23 (r24^2-t24^2)-r24 t14 t23 t34+r23 (r24^2 r34 t14-r34 t14 t24^2+r14 r24 t34)))+r12 (t14 (r24^2 r34 t23-r34 t23 t24^2+r23 r24 t34)+r14 t13^2 (r23 r34 (r24^2-t24^2)-r24 t23 t34)+r13^2 r14 (r23 r34 (-r24^2+t24^2)+r24 t23 t34)+2 r13 t13 t24 (r14^2 r24 r34+r23 (r23 r24 r34-t23 t34))))' ,'(1/Sqrt[2])(t12 t13 t24 (r23^2 r34-r34 t23^2-2 r14 r24 t14 t34-2 r23 r24 t23 t34)-r12 r13^2 r14 (r24 r34 t23+r23 r24^2 t34-r23 t24^2 t34)+r12 (r14 r24 r34 t13^2 t23+t14 t23 (r24^2-t24^2) t34+r23 (-r24 r34 t14+r14 r24^2 t13^2 t34-r14 t13^2 t24^2 t34))+r13 (r23 r24^2 t12 t14 t34+2 r12 r14^2 r24 t13 t24 t34+r24 (r34 t12 t14 t23+2 r12 r23^2 t13 t24 t34)+r23 t24 (2 r12 r34 t13 t23-t12 t14 t24 t34)-r14 t12 (r23 r24 r34+t23 (-r24^2+t24^2) t34)))',' -t12 (r14 r24 (r24 t13 t14+r13 t23 t24)+r23 t24 (r13 r24 t14-t13 t23 t24))+r12 (r13^2 r14 r23 r24 t24-r24 (r14 r23 t13^2+t14 t23) t24+r13 t13 (r14^2 r24^2-r23^2 t24^2))', '(1/Sqrt[2])(2 r34 t13 t23 (r23 t12+r12 r13 t23) t34-2 r34 (-t12 (r23 r24 (r24 t13 t23+r13 t14 t24)+r14 t24 (r13 r24 t23-t13 t14 t24))+r12 (r13^2 r14 r23 r24 t24-r24 (r14 r23 t13^2+t14 t23) t24+r13 t13 (r23^2 r24^2-r14^2 t24^2))) t34-(r23^2 r24 t12 t13+r23 (2 r12 r13 r24 t13 t23+r13 r14 t12 t24+r12 t14 t24)-t23 (r24 t12 t13 t23+r12 r14 (-r13^2+t13^2) t24+r13 t12 t14 t24)) (r34^2-t34^2))', 't12 (r23 r24^2 r34^2 t13 t23+r13 r23 r24 r34^2 t14 t24+r23^2 r24 r34 t13 t34+r13 r34 t23 t24 (r14 r24 r34-t14 t34)+r23 t34 (r13 r14 r34 t24-t13 t23 t34)-r34 t13 (r14 r34 t14 t24^2+r24 t23^2 t34))+r12 (r13^2 r14 r34 t24 (-r23 r24 r34+t23 t34)+r13 t13 (-r23^2 r24^2 r34^2+r14^2 r34^2 t24^2+2 r23 r24 r34 t23 t34-t23^2 t34^2)+r34 t24 (t14 (r24 r34 t23+r23 t34)+r14 t13^2 (r23 r24 r34-t23 t34)))',' -r23^2 r24 t13 t34 (r34 t12+r12 r13 r24 t34)-r23 (r34^2 t12 t13 t23+r34 (2 r12 r13 r24 t13 t23+r13 r14 t12 t24+r12 t14 t24) t34-r24 (r24 t12 t13 t23+r12 r14 (-r13^2+t13^2) t24+r13 t12 t14 t24) t34^2)+t12 t34 (r24 t23 (r34 t13 t23+r13 r14 t24 t34)+t14 t24 (r13 r34 t23-r14 t13 t24 t34))+r12 (-r13^2 r14 r34 t23 t24 t34+t23 t24 t34 (r14 r34 t13^2+r24 t14 t34)+r13 (-r34^2 t13 t23^2+r14^2 t13 t24^2 t34^2))']
-MathCoeffPsiplusExpanded = ['-(\\frac{1}{\\sqrt{2}})\\left(r14^2 r24 t12 t13-2 r12 r13 r14 r24 t13 t14+r24 t12 t13 t14^2-r13 r14 r23 t12 t24-r12 r13^2 r23 t14 t24+r12 r23 t13^2 t14 t24-r12 r14 t23 t24+r13 t12 t14 t23 t24\\right)',
-'(\\frac{1}{\\sqrt{2}})\\left(r13 r14 r23 r24 r34 t12+r12 r13^2 r23 r24 r34 t14-r12 r23 r24 r34 t13^2 t14+r12 r14 r24 r34 t23-r13 r24 r34 t12 t14 t23-r14^2 r34 t12 t13 t24-2 r12 r13 r14 r34 t13 t14 t24+r34 t12 t13 t14^2 t24+r12 r14 r23 t34-r13 r23 t12 t14 t34-r13 r14 t12 t23 t34-r12 r13^2 t14 t23 t34+r12 t13^2 t14 t23 t34\\right)',
-'-(\\frac{1}{\\sqrt{2}})\\left(r12 r14 r23 r34+r13 r23 r34 t12 t14+r13 r14 r34 t12 t23+r12 r13^2 r34 t14 t23-r12 r34 t13^2 t14 t23+r13 r14 r23 r24 t12 t34+r12 r13^2 r23 r24 t14 t34-r12 r23 r24 t13^2 t14 t34+r12 r14 r24 t23 t34-r13 r24 t12 t14 t23 t34-r14^2 t12 t13 t24 t34-2 r12 r13 r14 t13 t14 t24 t34+t12 t13 t14^2 t24 t34\\right)',
-'r14 t12 t13 t14+r12 r13 t13 t14^2',
-'-(\\frac{1}{\\sqrt{2}})\\left(r12 r13^2 r14 r23 r24^2 r34+r12 r14 r23 r24^2 r34 t13^2+r13 r23 r24^2 r34 t12 t14+r13 r14 r24^2 r34 t12 t23+r12 r24^2 r34 t14 t23+2 r12 r13 r14^2 r24 r34 t13 t24+2 r12 r13 r23^2 r24 r34 t13 t24-2 r14 r24 r34 t12 t13 t14 t24-2 r23 r24 r34 t12 t13 t23 t24+r12 r13^2 r14 r23 r34 t24^2-r12 r14 r23 r34 t13^2 t24^2-r13 r23 r34 t12 t14 t24^2-r13 r14 r34 t12 t23 t24^2-r12 r34 t14 t23 t24^2+r13 r14 r23 r24 t12 t34+r12 r23 r24 t14 t34+r12 r13^2 r14 r24 t23 t34-r12 r14 r24 t13^2 t23 t34-r13 r24 t12 t14 t23 t34-r23^2 t12 t13 t24 t34-2 r12 r13 r23 t13 t23 t24 t34+t12 t13 t23^2 t24 t34\\right)',
-'-(\\frac{1}{\\sqrt{2}})\\left(r13 r14 r23 r24 r34 t12-r12 r23 r24 r34 t14-r12 r13^2 r14 r24 r34 t23+r12 r14 r24 r34 t13^2 t23+r13 r24 r34 t12 t14 t23+r23^2 r34 t12 t13 t24+2 r12 r13 r23 r34 t13 t23 t24-r34 t12 t13 t23^2 t24-r12 r13^2 r14 r23 r24^2 t34+r12 r14 r23 r24^2 t13^2 t34+r13 r23 r24^2 t12 t14 t34+r13 r14 r24^2 t12 t23 t34+r12 r24^2 t14 t23 t34+2 r12 r13 r14^2 r24 t13 t24 t34+2 r12 r13 r23^2 r24 t13 t24 t34-2 r14 r24 t12 t13 t14 t24 t34-2 r23 r24 t12 t13 t23 t24 t34+r12 r13^2 r14 r23 t24^2 t34-r12 r14 r23 t13^2 t24^2 t34-r13 r23 t12 t14 t24^2 t34-r13 r14 t12 t23 t24^2 t34-r12 t14 t23 t24^2 t34\\right)',
-'r12 r13 r14^2 r24^2 t13-r14 r24^2 t12 t13 t14+r12 r13^2 r14 r23 r24 t24-r12 r14 r23 r24 t13^2 t24-r13 r23 r24 t12 t14 t24-r13 r14 r24 t12 t23 t24-r12 r24 t14 t23 t24-r12 r13 r23^2 t13 t24^2+r23 t12 t13 t23 t24^2',
-'-(\\frac{1}{\\sqrt{2}})\\left(r23^2 r24 r34^2 t12 t13-2 r12 r13 r23 r24 r34^2 t13 t23+r24 r34^2 t12 t13 t23^2-r13 r14 r23 r34^2 t12 t24-r12 r23 r34^2 t14 t24-r12 r13^2 r14 r34^2 t23 t24+r12 r14 r34^2 t13^2 t23 t24+r13 r34^2 t12 t14 t23 t24-2 r12 r13 r23^2 r24^2 r34 t13 t34+2 r23 r34 t12 t13 t23 t34+2 r23 r24^2 r34 t12 t13 t23 t34+2 r12 r13 r34 t13 t23^2 t34-2 r12 r13^2 r14 r23 r24 r34 t24 t34+2 r12 r14 r23 r24 r34 t13^2 t24 t34+2 r13 r23 r24 r34 t12 t14 t24 t34+2 r13 r14 r24 r34 t12 t23 t24 t34+2 r12 r24 r34 t14 t23 t24 t34+2 r12 r13 r14^2 r34 t13 t24^2 t34-2 r14 r34 t12 t13 t14 t24^2 t34+r23^2 r24 t12 t13 t34^2+2 r12 r13 r23 r24 t13 t23 t34^2-r24 t12 t13 t23^2 t34^2+r13 r14 r23 t12 t24 t34^2+r12 r23 t14 t24 t34^2+r12 r13^2 r14 t23 t24 t34^2-r12 r14 t13^2 t23 t24 t34^2-r13 t12 t14 t23 t24 t34^2\\right)',
-'-r12 r13 r23^2 r24^2 r34^2 t13+r23 r24^2 r34^2 t12 t13 t23-r12 r13^2 r14 r23 r24 r34^2 t24+r12 r14 r23 r24 r34^2 t13^2 t24+r13 r23 r24 r34^2 t12 t14 t24+r13 r14 r24 r34^2 t12 t23 t24+r12 r24 r34^2 t14 t23 t24+r12 r13 r14^2 r34^2 t13 t24^2-r14 r34^2 t12 t13 t14 t24^2+r23^2 r24 r34 t12 t13 t34+2 r12 r13 r23 r24 r34 t13 t23 t34-r24 r34 t12 t13 t23^2 t34+r13 r14 r23 r34 t12 t24 t34+r12 r23 r34 t14 t24 t34+r12 r13^2 r14 r34 t23 t24 t34-r12 r14 r34 t13^2 t23 t24 t34-r13 r34 t12 t14 t23 t24 t34-r23 t12 t13 t23 t34^2-r12 r13 t13 t23^2 t34^2',
-'-r23 r34^2 t12 t13 t23-r12 r13 r34^2 t13 t23^2-r23^2 r24 r34 t12 t13 t34-2 r12 r13 r23 r24 r34 t13 t23 t34+r24 r34 t12 t13 t23^2 t34-r13 r14 r23 r34 t12 t24 t34-r12 r23 r34 t14 t24 t34-r12 r13^2 r14 r34 t23 t24 t34+r12 r14 r34 t13^2 t23 t24 t34+r13 r34 t12 t14 t23 t24 t34-r12 r13 r23^2 r24^2 t13 t34^2+r23 r24^2 t12 t13 t23 t34^2-r12 r13^2 r14 r23 r24 t24 t34^2+r12 r14 r23 r24 t13^2 t24 t34^2+r13 r23 r24 t12 t14 t24 t34^2+r13 r14 r24 t12 t23 t24 t34^2+r12 r24 t14 t23 t24 t34^2+r12 r13 r14^2 t13 t24^2 t34^2-r14 t12 t13 t14 t24^2 t34^2',
-]
-
-
-
-
-MathCoeffPhiplus = ['','','','','','','','','',''] 
-
-
-MathCoeffPhiplusExpanded = []
-MathCoeffPsiminus = ['(-r14^2 r24 t12 t13+r14 (2 r12 r13 r24 t13 t14-r13 r23 t12 t24-r12 t23 t24)+t14 (r24 t12 t13 t14+r12 r23 (r13^2-t13^2) t24-r13 t12 t23 t24))/Sqrt[2]',
-'(1/Sqrt[2])(r34 t12 t13 (-r14^2+t14^2) t24+r13 t12 t14 (r24 r34 t23+r23 t34)+r12 r13^2 t14 (-r23 r24 r34+t23 t34)+r13 r14 (r23 r24 r34 t12+2 r12 r34 t13 t14 t24-t12 t23 t34)+r12 (r23 r24 r34 t13^2 t14+r14 r24 r34 t23+r14 r23 t34-t13^2 t14 t23 t34))',
-'(1/Sqrt[2])(t12 t13 (-r14^2+t14^2) t24 t34-r12 (r13^2-t13^2) t14 (r34 t23+r23 r24 t34)+r13 t12 (-r23 r34 t14+r14 r34 t23+r14 r23 r24 t34+r24 t14 t23 t34)+r12 r14 (-r23 r34+r24 t23 t34+2 r13 t13 t14 t24 t34))',
-'t13 t14 (r14 t12-r12 r13 t14)',
-'(1/Sqrt[2])(-2 r14 r24 r34 t13 (r12 r13 r14+t12 t14) t24-2 r23 r24 r34 t13 (r12 r13 r23-t12 t23) t24+r34 (r13 t12 (r23 t14-r14 t23)+r12 (r13^2 r14 r23-r14 r23 t13^2+t14 t23)) (r24^2-t24^2)-r24 (r12 r13^2 r14 t23-r12 (r23 t14+r14 t13^2 t23)+r13 t12 (r14 r23+t14 t23)) t34+t13 (r23^2 t12+2 r12 r13 r23 t23-t12 t23^2) t24 t34)',
-'(1/Sqrt[2])(t12 t13 t24 (-r23^2 r34+r34 t23^2-2 r14 r24 t14 t34+2 r23 r24 t23 t34)+r12 r13^2 r14 (r24 r34 t23+r23 r24^2 t34-r23 t24^2 t34)-r12 (r14 r24 r34 t13^2 t23+t14 t23 (-r24^2+t24^2) t34+r23 (r24 r34 t14+r14 r24^2 t13^2 t34-r14 t13^2 t24^2 t34))+r13 (r23 r24^2 t12 t14 t34-2 r12 r14^2 r24 t13 t24 t34+r24 (r34 t12 t14 t23-2 r12 r23^2 t13 t24 t34)-r23 t24 (2 r12 r34 t13 t23+t12 t14 t24 t34)+r14 t12 (r23 r24 r34+t23 (-r24^2+t24^2) t34)))',
-'-t12 (r14 r24 (r24 t13 t14-r13 t23 t24)+r23 t24 (r13 r24 t14+t13 t23 t24))-r12 (r13^2 r14 r23 r24 t24+r24 (-r14 r23 t13^2+t14 t23) t24+r13 t13 (r14^2 r24^2-r23^2 t24^2))',
-'(1/Sqrt[2])(-2 r34 t13 t23 (r23 t12+r12 r13 t23) t34+2 r34 (-t12 (r23 r24 (r24 t13 t23-r13 t14 t24)+r14 t24 (r13 r24 t23+t13 t14 t24))+r12 (r13^2 r14 r23 r24 t24+r24 (-r14 r23 t13^2+t14 t23) t24+r13 t13 (r23^2 r24^2-r14^2 t24^2))) t34+(r23^2 r24 t12 t13+r23 (2 r12 r13 r24 t13 t23+r13 r14 t12 t24-r12 t14 t24)+t23 (-r24 t12 t13 t23+r12 r14 (r13^2-t13^2) t24+r13 t12 t14 t24)) (r34^2-t34^2))',
-'-t12 (r23 r24^2 r34^2 t13 t23-r13 r23 r24 r34^2 t14 t24+r23^2 r24 r34 t13 t34+r13 r34 t23 t24 (r14 r24 r34+t14 t34)+r23 t34 (r13 r14 r34 t24-t13 t23 t34)+r34 t13 (r14 r34 t14 t24^2-r24 t23^2 t34))+r12 (r13^2 r14 r34 t24 (r23 r24 r34-t23 t34)+r13 t13 (r23^2 r24^2 r34^2-r14^2 r34^2 t24^2-2 r23 r24 r34 t23 t34+t23^2 t34^2)+r34 t24 (t14 (r24 r34 t23+r23 t34)+r14 t13^2 (-r23 r24 r34+t23 t34)))',
-'r23^2 r24 t13 t34 (r34 t12+r12 r13 r24 t34)+r23 (r34^2 t12 t13 t23+r34 (2 r12 r13 r24 t13 t23+r13 r14 t12 t24-r12 t14 t24) t34+r24 (-r24 t12 t13 t23+r12 r14 (r13^2-t13^2) t24+r13 t12 t14 t24) t34^2)-t12 t34 (r24 t23 (r34 t13 t23+r13 r14 t24 t34)+t14 t24 (-r13 r34 t23+r14 t13 t24 t34))+r12 (r13^2 r14 r34 t23 t24 t34+t23 t24 t34 (-r14 r34 t13^2+r24 t14 t34)+r13 t13 (r34^2 t23^2-r14^2 t24^2 t34^2))',
-]
-
-# '(\\frac{1}{\\sqrt{2}})\left(' \right)
-
-
-# MathLatexCoeff = [MathematicaToLatex(i) for i in MathCoeffPsiminus]    # list of latex coeffs converted from input code from mathematica
-
-
-# print(latex_conversion(str(ten_states_1)))
+# replace the big list output from mathematica in 'a' below and run
 a = '{{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0}}'
 
 
-print(removing_nSqrt(MathematicaToLatex(a),'L'))
+print(removing_nSqrt(MathematicaToLatex(separating_lines_mathem_output(a)),'L'))    # uncomment to print latex form of the solved big output list form mathematica
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

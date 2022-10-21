@@ -15,8 +15,7 @@ def latex_conversion(A,n=1):                                    # 'A' is a the o
     AA = [(i+'') for i in A]                               #adding the  + at the end of each term for display purpose    
     B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
     C = [i for i in B]                                         # making a huge list composed of The letters of the huge string above
-    C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
-    C.pop()                                               # removing the extra last + sign
+    # C.pop()
 
     counter = 0                                                    # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
     for i in range(len(C)):                                      # loop that converts symbols into their corresponding latex format
@@ -29,7 +28,7 @@ def latex_conversion(A,n=1):                                    # 'A' is a the o
         elif i <= len(C)-1 and C[i] == '_' and C[i+1] != '{' :                        # added the 'and' part on 10/18 10 AM
             C[i] = '_{'
             C[i+2] += '}'
-        elif i <= len(C)-2 and C[i] == '['and C[i+2] != ']':
+        elif i < len(C)-2 and C[i] == '['and C[i+2] != ']':
             C[i] = '|'
         elif i > 2 and C[i] == ']' and C[i-2] != '[':
             counter += 1
@@ -40,6 +39,7 @@ def latex_conversion(A,n=1):                                    # 'A' is a the o
         elif C[i] == '+' and C[i+1] == '-':
             C[i] = ''
 
+    C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
     C.append(' \\end{align*}')                         
     out = ''.join(C)                                                             # recombining into a final string for display 
     return out
@@ -92,21 +92,19 @@ def NewNewlatex_conversion(coeff, vects):                                    # '
 # fn from mathematica to latex
 
 def MathematicaToLatex(A):    # A is the input string
-    c = [i for i in A]
-    for i in range(len(c)):
-        if c[i] == 'r' or c[i] == 't':
-            if i < len(c)-2 and c[i+1] == '1' or c[i+1] == '2' or c[i+1] == '3':
-                if c[i+2]== '1' or c[i+2]== '2' or c[i+2]== '3' or c[i+2]== '4':
+    C = [i for i in A]
+    for i in range(len(C)):
+        if C[i] == 'r' or C[i] == 't':
+            if i < len(C)-2 and C[i+1] == '1' or C[i+1] == '2' or C[i+1] == '3':
+                if C[i+2]== '1' or C[i+2]== '2' or C[i+2]== '3' or C[i+2]== '4':
                     # print(c[i:i+3])
-                    c[i+1] = '_{'+ c[i+1]
-                    c[i+2] = c[i+2] + '}'
-        # elif c[i] != 'r' or 't'           
+                    C[i+1] = '_{'+ C[i+1]
+                    C[i+2] = C[i+2] + '}'
     # c.insert(0,'\\begin{align*} & ')
     # c.append(' \\end{align*}')  
-    out = ''.join(c)
+    out = ''.join(C)
     return out
 
-print(latex_conversion('asdfffffffdasffdsadfsadfr12_t12_c12{},[]'))
 
 # GROUPING FUNCTION
 
@@ -166,7 +164,7 @@ def removing_nSqrt(A,M= 'M'):      # M = 'M' or 'L' for matheematica or latex
 
 # Spearating lines from the big list containing outputs of the four bell states
 
-def separating_lines_mathem_output(A):             # A is string, containing mathem output list like {{4,5},{d},{''}}. This fn breaks it into different lines and adds parenthes to each part
+def separating_Big_list_fromMathem(A):             # A is string, containing mathem output list like {{4,5},{d},{''}}. This fn breaks it into different lines and adds parenthes to each part
     counter = 0                                     
     B = [i for i in A]
     for i in range(len(B)):
@@ -512,7 +510,7 @@ all_bell_outputs_mathem =  '{'+ ','.join(big_outlist)+'}'
 a = '{{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0}}'
 
 
-# print(removing_nSqrt(MathematicaToLatex(separating_lines_mathem_output(a)),'L'))    # uncomment to print latex form of the solved big output list form mathematica
+print(removing_nSqrt(MathematicaToLatex(separating_Big_list_fromMathem(a)),'L'))    # uncomment to print latex form of the solved big output list form mathematica
 
 
 

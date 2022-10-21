@@ -10,7 +10,7 @@ print('------BEGIN----------BEGIN---------BEGIN-----------BEGIN--------BEGIN----
 
 
 # LATEX function: to convert our output display state into latex code that can be directly copied and result can be seen easily
-def latex_conversion(A):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
+def latex_conversion(A,n=1):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
 
     AA = [(i+'') for i in A]                               #adding the  + at the end of each term for display purpose    
     B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
@@ -21,19 +21,19 @@ def latex_conversion(A):                                    # 'A' is a the outpu
     counter = 0                                                    # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
     for i in range(len(C)):                                      # loop that converts symbols into their corresponding latex format
         if C[i] == '*':
-            if C[i+1] == '*':
+            if i <= len(C)-1 and C[i+1] == '*':
                 C[i] = '^{'
                 C[i+2] += '}'
             else:
                 C[i] = '' 
-        elif C[i] == '_' and C[i+1] != '{' :                        # added the 'and' part on 10/18 10 AM
+        elif i <= len(C)-1 and C[i] == '_' and C[i+1] != '{' :                        # added the 'and' part on 10/18 10 AM
             C[i] = '_{'
             C[i+2] += '}'
-        elif C[i] == '['and C[i+2] != ']':
+        elif i <= len(C)-2 and C[i] == '['and C[i+2] != ']':
             C[i] = '|'
         elif i > 2 and C[i] == ']' and C[i-2] != '[':
             counter += 1
-            if counter%1 ==0:                                 # change '1' to '2' or whatever for making new line (adding \\) after 2 terms
+            if counter%n ==0:                                 # change '1' to '2' or whatever for making new line (adding \\) after 2 terms
                 C[i] = '\\rangle \\\\ & '
             else:
                 C[i] = '\\rangle'
@@ -82,7 +82,7 @@ def NewNewlatex_conversion(coeff, vects):                                    # '
                 C[i] = '\\rangle'
         elif C[i] == '+' and C[i+1] == '-':
             C[i] = ''
-
+    out = ''.join(c)
 
     C.append(' \\end{align*}')                         
     out = ''.join(C)                                                             # recombining into a final string for display 
@@ -93,9 +93,9 @@ def NewNewlatex_conversion(coeff, vects):                                    # '
 
 def MathematicaToLatex(A):    # A is the input string
     c = [i for i in A]
-    for i in range(len(c)-2):
+    for i in range(len(c)):
         if c[i] == 'r' or c[i] == 't':
-            if c[i+1] == '1' or c[i+1] == '2' or c[i+1] == '3':
+            if i < len(c)-2 and c[i+1] == '1' or c[i+1] == '2' or c[i+1] == '3':
                 if c[i+2]== '1' or c[i+2]== '2' or c[i+2]== '3' or c[i+2]== '4':
                     # print(c[i:i+3])
                     c[i+1] = '_{'+ c[i+1]
@@ -106,7 +106,7 @@ def MathematicaToLatex(A):    # A is the input string
     out = ''.join(c)
     return out
 
-
+print(latex_conversion('asdfffffffdasffdsadfsadfr12_t12_c12{},[]'))
 
 # GROUPING FUNCTION
 
@@ -122,7 +122,7 @@ def grouping(A):                                                    # 'A' is lis
 
 
 #fn for removing '_' and '1.4142' n 1.0* etc for mathematica and latex (uncomment) from input strings 
-def removing_nSqrt(A,M):      # M = 'M' or 'L' for matheematica or latex
+def removing_nSqrt(A,M= 'M'):      # M = 'M' or 'L' for matheematica or latex
     b = [i for i in A]
     for i in range(len(b)):
         if b[i] == '_':
@@ -415,7 +415,7 @@ else:
 
 
 
-def BellOutput(InputBellState, VorCorOut):              #input one one of the four bell states as string, second input is what is needed : list of coeffs or list of vectors or full output as a string 
+def BellOutput(InputBellState, V_or_C_or_Out = 'Out'):              #input one one of the four bell states as string, second input is what is needed : list of coeffs or list of vectors or full output as a string 
     if InputBellState == 'phiplus':
         user_input_list = [ten_states_2,ten_states_5]
         user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
@@ -466,11 +466,11 @@ def BellOutput(InputBellState, VorCorOut):              #input one one of the fo
         output_coefficients = (M34[1])
         output_display = (M34[2])
 
-    if VorCorOut == 'V':
+    if V_or_C_or_Out == 'V':
         return output_vectors
-    elif VorCorOut == 'C':
+    elif V_or_C_or_Out == 'C':
         return output_coefficients
-    elif VorCorOut == 'Out':
+    elif V_or_C_or_Out == 'Out':
         return output_display
 
 
@@ -478,10 +478,10 @@ def BellOutput(InputBellState, VorCorOut):              #input one one of the fo
 
 
 # list of vector outputs for bell states
-# print(BellOutput('psiplus', 'V'))
-# print(BellOutput('psiminus', 'V'))
-# print(BellOutput('phiplus', 'V'))
-# print(BellOutput('phiminus', 'V'))
+# print(latex_conversion(str(BellOutput('psiplus', 'V')), 10))
+# print(latex_conversion(str(BellOutput('psiminus', 'V')), 10))
+# print(latex_conversion(str(BellOutput('phiplus', 'V')), 10))
+# print(latex_conversion(str(BellOutput('phiminus', 'V')), 10))                           # 10 says that put '\\ &' after 10 \rangles in the latex 
 
 
 # To create a list of lists (in mathematica language), each sublist being a list of all ten coefficients of output of one of the bell states 
@@ -512,15 +512,7 @@ all_bell_outputs_mathem =  '{'+ ','.join(big_outlist)+'}'
 a = '{{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0}}'
 
 
-print(removing_nSqrt(MathematicaToLatex(separating_lines_mathem_output(a)),'L'))    # uncomment to print latex form of the solved big output list form mathematica
-
-
-
-
-
-
-
-
+# print(removing_nSqrt(MathematicaToLatex(separating_lines_mathem_output(a)),'L'))    # uncomment to print latex form of the solved big output list form mathematica
 
 
 

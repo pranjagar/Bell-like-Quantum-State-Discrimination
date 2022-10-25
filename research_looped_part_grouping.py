@@ -111,7 +111,7 @@ def MathematicaToLatex(A):    # A is the input string
 
 def grouping(A):                                                    # 'A' is list of strings particularly ending with string [1,0,0,1] etc.
     for i in range(len(A)):
-        for j in range(i+1,len(A)):
+        for j  in range(i+1,len(A)):
             if A[j][-9:] == A[i][-9:]:
                 A[i] = '('+(A[i][0:(len(A[i])-10)] +'+' + A[j][0:(len(A[j])-10)]) + ')*' + A[i][-9:]
                 A[j] = '@@@'

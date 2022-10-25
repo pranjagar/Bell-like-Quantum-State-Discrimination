@@ -15,6 +15,7 @@ Biglist = [[[0,2,3,4],[0,2,3,4],[0,2,3,4],[0,2,3,4]], [[1,2,3,4],[1,0,3,4],[1,0,
 
 def Discrimination(L):                         # L is a list (of lists of lists)
     listofcounterlists = []
+    instances = []
     # print(f'L :{len(L)}')
     for i in range(len(L)):
         counterlist = []                                # counter for each output component for each possibility : increases by 1 for each non-zero output for a given output component
@@ -27,9 +28,13 @@ def Discrimination(L):                         # L is a list (of lists of lists)
             counterlist.append(counter)
         # print(f'conterlist : {counterlist}')
         listofcounterlists.append(counterlist)
-    return listofcounterlists
+        for s in range(len(counterlist)):
+            if counterlist[s] == 1:
+                instances.append(f'Choice # {i}, output # {s} ')
 
-# Biglist = [[[0,2,3,4],[0,2,3,4],[0,2,3,4],[0,2,3,4]], [[1,2,3,4],[1,0,3,4],[1,0,3,4],[1,0,3,4]],[[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]]
+    return instances
+
+Biglist = [[[0,2,3,4],[0,2,3,4],[0,2,3,4],[0,2,3,4]], [[1,2,3,4],[1,0,3,4],[1,0,3,4],[1,0,3,4]],[[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]]
 
 
 
@@ -798,7 +803,7 @@ Data = [[[0,0,-(1/1.414),0,-(1/1.414),0,0,0,0,0],[0,0,-(1/1.414),0,1/1.414,0,0,0
 
 
 
-# print(f'ListofCounterLists: {Discrimination(Biglist)}')
+print(f'ListofCounterLists: {Discrimination(Data)}')
 
 
 

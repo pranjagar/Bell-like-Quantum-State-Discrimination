@@ -14,24 +14,39 @@ Biglist = [[[0,2,3,4],[0,2,3,4],[0,2,3,4],[0,2,3,4]], [[1,2,3,4],[1,0,3,4],[1,0,
 # second statelist contains three zeroes with one non-zero elt at position #2
 
 def Discrimination(L):                         # L is a list (of lists of lists)
-    listofcounterlists = []
+    listofdiscrimnations = []
     instances = []
     # print(f'L :{len(L)}')
     for i in range(len(L)):
         counterlist = []                                # counter for each output component for each possibility : increases by 1 for each non-zero output for a given output component
+        discrimination_list = []
         # print(f'len(L[i][0] : {len(L[i][0])}')
         for k in range(len(L[i][0])):                         # tells to go over each output component
             counter = 0
+            discrimination_position = 0                         # will add to this value for the ones that are non-zero. for the unambigous this value will coninceide with the state that is discriminated
             for j in range(len(L[i])):                  # it is saying we should go over all the output states, which is jsut the four output bell states
                 if L[i][j][k] != 0:
                     counter = counter+1
+                    discrimination_position=+ j             # (can add j+1 instead if we want starting from 1 instead of from 0 )
             counterlist.append(counter)
+            discrimination_list.append(discrimination_position)
         # print(f'conterlist : {counterlist}')
-        listofcounterlists.append(counterlist)
+        # listofcounterlists.append(counterlist)
+        # listofdiscrimnationpositions.append(discrimination_list)
+        discriminated_ones = []
         for s in range(len(counterlist)):
             if counterlist[s] == 1:
-                instances.append(f'Choice # {i}, output # {s} ')            # remember starts from zero, not one
-    return instances
+                instances.append(f'Choice # {i}, output # {s}, discriminates #{discrimination_list[s]+1}')            # remember starts from zero, not one. # also +1 in discrimination part is for starting at 1. 'Bell state 1' refers to psi+, 2 to psi-, 3 to phi+, 4 to phi-.
+                discriminated_ones.append(discrimination_list[s]+1)
+        if discriminated_ones != []:
+            # if 1 in discriminated_ones and 2 in discriminated_ones and 3 in discriminated_ones and 4 in discriminated_ones:
+            listofdiscrimnations.append(f' choice # {i}, discriminated : {(discriminated_ones)}')
+    return listofdiscrimnations
+""" 
+Following are the choices giving three state discrimination
+# choice # 158, discriminated : [2, 1, 1, 1, 1, 3]', ' choice # 159, discriminated : [2, 2, 1, 4, 2, 2]', ' choice # 160, discriminated : [2, 1, 2, 2, 4, 2]', choice # 206, discriminated : [4, 3, 3, 3, 3, 1],
+# choice # 401, discriminated : [3, 4, 4, 4, 4, 2]', ' choice # 402, discriminated : [3, 3, 4, 1, 3, 3]', ' choice # 403, discriminated : [3, 4, 3, 3, 1, 3]'choice # 449, discriminated : [1, 2, 2, 2, 2, 4]
+ """
 
 
 def compare_outputs(L):             # L is a list
@@ -820,9 +835,9 @@ print(f'ListofCounterLists: {Discrimination(Data)}')
 
 
 
-# interestingchoices = [137,146,153,154,156,157,158,159,160,161,194,204,205,206,380,389,396,399,400,401,402,403,404,437,447,448,449]
-# for i in interestingchoices:
-#     print(f'outputs {i} : {compare_outputs(Data[i])}')
+interestingchoices = [400,401,402,403,404]
+for i in interestingchoices:
+    print(f'outputs {i} : {compare_outputs(Data[i])}')
 
 
 

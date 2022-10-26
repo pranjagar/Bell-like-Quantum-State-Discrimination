@@ -30,13 +30,38 @@ def Discrimination(L):                         # L is a list (of lists of lists)
         listofcounterlists.append(counterlist)
         for s in range(len(counterlist)):
             if counterlist[s] == 1:
-                instances.append(f'Choice # {i}, output # {s} ')
-
+                instances.append(f'Choice # {i}, output # {s} ')            # remember starts from zero, not one
     return instances
 
-Biglist = [[[0,2,3,4],[0,2,3,4],[0,2,3,4],[0,2,3,4]], [[1,2,3,4],[1,0,3,4],[1,0,3,4],[1,0,3,4]],[[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]]
 
+def compare_outputs(L):             # L is a list
+    compared_list = []
+    for i in range(len(L[0])):
+        S = []
+        for j in range(len(L)):
+            S.append(L[j][i])
+        compared_list.append(S)
+    return compared_list
 
+# Biglist = [[[0,2,3,4],[0,2,3,4],[0,2,3,4],[0,2,3,4]], [[1,2,3,4],[1,0,3,4],[1,0,3,4],[1,0,3,4]],[[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]]
+""" 
+def data(A):        # A is mathematica output as a string, the huge list. the fn converts it into python list data
+    out = ''
+    for i in range(len(A)):
+        if A[i] == '}' and A[i+1] == '{' and i != (len(A)-1):
+            A[i] = '},'
+    for i in range(len(A)):
+        if A[i] == '{' :
+            A[i+1] = '['
+        elif A[i] == '}' :
+            A[i+1] = ']'
+        elif A[i] in [')' ,'1','2','3','4','5','6','7','8','9' ] :
+            if A[i+1] == ' ' and A[i+2] in ['(','1','2','3','4','5','6','7','8','9' ] :
+                A[i+1] = '*' 
+    return out
+ """
+
+# print(data("{{1 3/4}{}{}{}}"))
 
 
 # Data etc goes below
@@ -789,21 +814,29 @@ Data = [[[0,0,-(1/1.414),0,-(1/1.414),0,0,0,0,0],[0,0,-(1/1.414),0,1/1.414,0,0,0
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 print(f'ListofCounterLists: {Discrimination(Data)}')
+
+# all interesting cho8ices for combinations (0,1,1/root(2)): [137,146,153,154,156,157,158,159,160,161,194,204,205,206,380,389,396,399,400,401,402,403,404,437,447,448,449]
+
+
+
+# interestingchoices = [137,146,153,154,156,157,158,159,160,161,194,204,205,206,380,389,396,399,400,401,402,403,404,437,447,448,449]
+# for i in interestingchoices:
+#     print(f'outputs {i} : {compare_outputs(Data[i])}')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

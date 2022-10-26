@@ -10,7 +10,7 @@ print('------BEGIN----------BEGIN---------BEGIN-----------BEGIN--------BEGIN----
 
 
 # LATEX function: to convert our output display state into latex code that can be directly copied and result can be seen easily
-def latex_conversion(A,n=1):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
+def latex_conversion(A,x = 'kets',n=1):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code, 'x'  tells whether you want kets or without ket conversion
 
     AA = [(i+'') for i in A]                               #adding the  + at the end of each term for display purpose    
     B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
@@ -28,12 +28,12 @@ def latex_conversion(A,n=1):                                    # 'A' is a the o
         elif i <= len(C)-1 and C[i] == '_' and C[i+1] != '{' :                        # added the 'and' part on 10/18 10 AM
             C[i] = '_{'
             C[i+2] += '}'
-        elif i < len(C)-2 and C[i] == '['and C[i+2] != ']':
+        elif i < len(C)-2 and C[i] == '['and C[i+2] != ']' and x == 'kets':
             C[i] = '|'
-        elif i > 2 and C[i] == ']' and C[i-2] != '[':
+        elif i > 2 and x== 'kets' and C[i] == ']' and C[i-2] != '[':
             counter += 1
             if counter%n ==0:                                 # change '1' to '2' or whatever for making new line (adding \\) after 2 terms
-                C[i] = '\\rangle \\\\ & '
+                C[i] = '\\rangle \\\\ & ' 
             else:
                 C[i] = '\\rangle'
         elif C[i] == '+' and C[i+1] == '-':
@@ -510,11 +510,11 @@ all_bell_outputs_mathem =  '{'+ ','.join(big_outlist)+'}'
 a = '{{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0},{(r23 t24)/Sqrt[2],-((r23 r24 r34)/Sqrt[2])+(t23 t34)/Sqrt[2],-((r34 t23)/Sqrt[2])-(r23 r24 t34)/Sqrt[2],(r34 t23 (-r24^2+t24^2))/Sqrt[2]-(r23 r24 t34)/Sqrt[2],(r23 r24 r34)/Sqrt[2]+(t23 (-r24^2+t24^2) t34)/Sqrt[2],r24 t23 t24,-Sqrt[2] r24 r34 t23 t24 t34-(r23 t24 (-r34^2+t34^2))/Sqrt[2],-r24 r34^2 t23 t24-r23 r34 t24 t34,r23 r34 t24 t34-r24 t23 t24 t34^2,0}}'
 
 
-print(removing_nSqrt(MathematicaToLatex(separating_Big_list_fromMathem(a)),'L'))    # uncomment to print latex form of the solved big output list form mathematica
+# print(removing_nSqrt(MathematicaToLatex(separating_Big_list_fromMathem(a)),'L'))    # uncomment to print latex form of the solved big output list form mathematica
 
 
-
-
+AA = '[[0, 0, 0.7072135785007072, 0, -0.7072135785007072, 0, 0, 0, 0, 0], [0, 0.7072135785007072, 0, 0, 0, -0.7072135785007072, 0, 0, 0, 0], [0, 0, 0, 0.5, 0, 0, -0.5, 0, -0.5, 0.5], [0, 0, 0, 0.5, 0, 0, -0.5, 0, 0.5, -0.5]]'
+print(latex_conversion(AA,'nonkets',10))
 
 
 

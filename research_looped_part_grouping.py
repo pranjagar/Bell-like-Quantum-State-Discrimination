@@ -200,7 +200,7 @@ six_states_5 = n.array([0,2])
 empty = n.array([])
 
 ten_states_0 = n.array([0,0,0,0])                                                           # defining the ten possilbe output states
-ten_states_1 = n.array([1,1,0 ,0 ])
+ten_states_1 = n.array([1,1,0,0])
 ten_states_2 = n.array([1,0,1,0])
 ten_states_3 = n.array([1,0,0,1])
 ten_states_4 = n.array([0,1,1,0])

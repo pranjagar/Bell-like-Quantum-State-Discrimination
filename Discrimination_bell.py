@@ -13,7 +13,7 @@ import scipy.constants as const
 Biglist = [[[0,2,3,4],[0,2,3,4],[0,2,3,4],[0,2,3,4]], [[1,2,3,4],[1,0,3,4],[1,0,3,4],[1,0,3,4]],[[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]]
 # second statelist contains three zeroes with one non-zero elt at position #2
 
-def Discrimination(L):                         # L is a list (of lists of lists)
+def Discrimination(L, out = 'dis'):                         # L is a list (of lists of lists), set out to 'modes' for fn to return which choices and output modes are perfectly discriminating 
     listofdiscrimnations = []
     instances = []
     # print(f'L :{len(L)}')
@@ -41,7 +41,11 @@ def Discrimination(L):                         # L is a list (of lists of lists)
         if discriminated_ones != []:
             # if 1 in discriminated_ones and 2 in discriminated_ones and 3 in discriminated_ones and 4 in discriminated_ones:
             listofdiscrimnations.append(f' choice # {i}, discriminated : {(discriminated_ones)}')
-    return listofdiscrimnations
+    if out == 'dis':
+        return listofdiscrimnations
+    elif out == 'modes':
+        return instances 
+    
 """ 
 Following are the choices giving three state discrimination
 # choice # 158, discriminated : [2, 1, 1, 1, 1, 3]', ' choice # 159, discriminated : [2, 2, 1, 4, 2, 2]', ' choice # 160, discriminated : [2, 1, 2, 2, 4, 2]', choice # 206, discriminated : [4, 3, 3, 3, 3, 1],
@@ -835,17 +839,23 @@ print(f'ListofCounterLists: {Discrimination(Data)}')
 
 
 
-interestingchoices = [400,401,402,403,404]
+interestingchoices = [400,401,402,403,404,449]
 for i in interestingchoices:
     print(f'outputs {i} : {compare_outputs(Data[i])}')
 
 
+""" 
+def choice_mirrors(choice_number,n = 6, L = {0,1,1/(n.sqrt(2))}):              # N is a number
+    out = []
+    a = len(L)
+    for i in range(n):
+        number = choice_number//(a**(n-i))
+        t = L[number]
+        out.append(t)
+    return out
 
-
-
-
-
-
+print(choice_mirrors(241))
+ """
 
 
 

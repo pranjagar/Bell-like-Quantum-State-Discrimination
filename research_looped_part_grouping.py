@@ -82,7 +82,7 @@ def NewNewlatex_conversion(coeff, vects):                                    # '
                 C[i] = '\\rangle'
         elif C[i] == '+' and C[i+1] == '-':
             C[i] = ''
-    out = ''.join(c)
+    out = ''.join(C)
 
     C.append(' \\end{align*}')                         
     out = ''.join(C)                                                             # recombining into a final string for display 

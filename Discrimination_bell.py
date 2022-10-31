@@ -44,7 +44,7 @@ def Discrimination(L, out = 'dis'):                         # L is a list (of li
     if out == 'dis':
         return listofdiscrimnations
     elif out == 'modes':
-        return instances 
+        return instances
     
 """ 
 Following are the choices giving three state discrimination
@@ -81,7 +81,6 @@ def data(A):        # A is mathematica output as a string, the huge list. the fn
  """
 
 # print(data("{{1 3/4}{}{}{}}"))
-
 
 # Data etc goes below
 print('_______________END________________BEGIN_________BEGIN________________BEGIN___________--')
@@ -833,34 +832,32 @@ Data = [[[0,0,-(1/1.414),0,-(1/1.414),0,0,0,0,0],[0,0,-(1/1.414),0,1/1.414,0,0,0
 
 
 
-print(f'ListofCounterLists: {Discrimination(Data)}')
+# print(f'ListofCounterLists: {Discrimination(Data)}')
 
 # all interesting cho8ices for combinations (0,1,1/root(2)): [137,146,153,154,156,157,158,159,160,161,194,204,205,206,380,389,396,399,400,401,402,403,404,437,447,448,449]
+# three bellstates discriminated: [158,159,160,206,401,402,403,449]
 
 
 
-interestingchoices = [400,401,402,403,404,449]
-for i in interestingchoices:
-    print(f'outputs {i} : {compare_outputs(Data[i])}')
+interestingchoices = [158,159,160,206,401,402,403,449]
+
+# for i in interestingchoices:
+#     print(f'Outputs {i} : {compare_outputs(Data[i])}')
 
 
-""" 
-def choice_mirrors(choice_number,n = 6, L = {0,1,1/(n.sqrt(2))}):              # N is a number
+def choice_mirrors(choice_number,n = 6, L = [0,1,.707]):              # N is a number, n is number of mirrors, L is list of possible vaules of t, .707 correspoinds to 1/(n.sqrt(2))
     out = []
     a = len(L)
     for i in range(n):
-        number = choice_number//(a**(n-i))
+        number = choice_number//(a**(n-i-1))
         t = L[number]
         out.append(t)
+        choice_number = choice_number%(a**(n-i-1))
     return out
 
-print(choice_mirrors(241))
- """
 
-
-
-
-
+for i in range(len(interestingchoices)):
+    print(f'Choice {interestingchoices[i]} mirrors : {choice_mirrors(interestingchoices[i])}')
 
 
 

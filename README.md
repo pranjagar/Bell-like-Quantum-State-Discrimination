@@ -1,4 +1,6 @@
 # Research_Hunter
+PLEASE SEE THE 'MAIN' BRANCH FOR CURRENT VERSION OF CODE.
+
 Research related to quantum information carried out at Hunter College, City University of New York.
 
 The code solves the following problem and handles the related output data:

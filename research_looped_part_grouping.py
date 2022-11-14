@@ -213,7 +213,7 @@ ten_states_10 = n.array([0,0,0,2])
 
 
 
-def MatrixAction(matrix_index, input_vectors, input_coeffs):
+def MatrixAction(matrix_index, input_vectors, input_coeffs):               # matrix index is number in string format like '14', input vectors is list of lists, input coeff is a list  
     total_index = int(matrix_index)                                                              # finding the numbers 1, 2 ,12 etc so to choose appropriate elts from the full vectors etc.                            
     first_matrix_index = int(matrix_index[0]) 
     second_matrix_index = int(matrix_index[1])

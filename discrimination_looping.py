@@ -12,10 +12,9 @@ def Output_states_list(t12,r12,t13,r13,t14,r14,t23,r23,t24,r24,t34,r34):
 def Dummy(t12,r12,t13,r13,t14,r14,t23,r23,t24,r24,t34,r34):
     # f below is a trial
     f= t12+r12+t13+r13+t14+r14+t23+r23+t24+r24+t34+r34
-    return f
+    return f 
 
-
-possible_values = [0]#, 1/(np.sqrt(2))] #, -1/(np.sqrt(2)),-1]
+possible_values = [0,.5]#, 1/(np.sqrt(2))] #, -1/(np.sqrt(2)),-1]
 
 t12,r12,t13,r13,t14,r14,t23,r23,t24,r24,t34,r34 = sym.symbols("t12, r12, t13, r13, t14, r14, t23, r23, t24, r24, t34, r34")
 

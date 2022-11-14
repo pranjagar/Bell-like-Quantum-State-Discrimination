@@ -8,8 +8,6 @@ import sympy as sym
 import scipy.constants as const
 
 
-
-
 Biglist = [[[0,2,3,4],[0,2,3,4],[0,2,3,4],[0,2,3,4]], [[1,2,3,4],[1,0,3,4],[1,0,3,4],[1,0,3,4]],[[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]]
 # second statelist contains three zeroes with one non-zero elt at position #2
 

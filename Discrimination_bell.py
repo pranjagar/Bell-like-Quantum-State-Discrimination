@@ -830,7 +830,7 @@ Data = [[[0,0,-(1/1.414),0,-(1/1.414),0,0,0,0,0],[0,0,-(1/1.414),0,1/1.414,0,0,0
 
 
 
-# print(f'ListofCounterLists: {Discrimination(Data)}')
+print(f'ListofCounterLists: {Discrimination(Data)}')
 
 # all interesting cho8ices for combinations (0,1,1/root(2)): [137,146,153,154,156,157,158,159,160,161,194,204,205,206,380,389,396,399,400,401,402,403,404,437,447,448,449]
 # three bellstates discriminated: [158,159,160,206,401,402,403,449]

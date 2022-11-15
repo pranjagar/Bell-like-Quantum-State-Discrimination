@@ -194,12 +194,12 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs, specific_splitter = 
     return output
 
 
-phi_12 = (MatrixAction('12',[[0,1,0,1],[1,0,1,0]],[1,1],[0,1]))
-phi_13 = MatrixAction('13', phi_12[0],phi_12[1],[1,0])
-phi_14 = MatrixAction('14', phi_13[0],phi_13[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
-phi_23 = MatrixAction('23', phi_14[0],phi_14[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
-phi_24 = MatrixAction('24', phi_23[0],phi_23[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
-phi_34 = MatrixAction('34', phi_24[0],phi_24[1],[0,1])
+# phi_12 = (MatrixAction('12',[[0,1,0,1],[1,0,1,0]],[1,1],[0,1]))
+# phi_13 = MatrixAction('13', phi_12[0],phi_12[1],[1,0])
+# phi_14 = MatrixAction('14', phi_13[0],phi_13[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
+# phi_23 = MatrixAction('23', phi_14[0],phi_14[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
+# phi_24 = MatrixAction('24', phi_23[0],phi_23[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
+# phi_34 = MatrixAction('34', phi_24[0],phi_24[1],[0,1])
 
 
 # #omdify grouping algo to accomodate closeby irrationals
@@ -298,6 +298,53 @@ for i in range(len(Splitter_combinations_list)):            # looping over all p
 
 # print(Big_resultant)
 
+# alternative format to easier see the discriminations
+def compare_outputs(L):             # L is a list of ten bell outputs for four bell states, or a four list  
+    compared_list = []
+    for i in range(len(L[0])):
+        S = []
+        for j in range(len(L)):
+            S.append(L[j][i])
+        compared_list.append(S)
+    return compared_list
+    # Ex : print(compare_outputs(Big_resultant[0]))
+
+Big_resultant_compared = []               # the big list in the alternative format
+for i in range(len(Big_resultant)):
+    Big_resultant_compared.append(compare_outputs(Big_resultant[i]))
+
+# print(Big_resultant_compared[159])
+
+
+def Discrimination_Wrong(L, mode = 'Choices'):       # L is the alternative format Big List of four lists. change mode to 'Choices' for a list of good choices  
+    Big_counter_list = []
+    for i in range(len(L)):
+        counter_list = []
+        for j in range(len(L[0])):
+            counter = 0
+            for k in range(len(L[0][0])):
+                if L[i][j][k] != 0:
+                    counter += 1
+            counter_list.append(counter)
+        Big_counter_list.append(counter_list)
+    Good_choices = []
+    Best_choices = []
+    for i in range(len(Big_counter_list)):
+        count = 0
+        for j in range(len(Big_counter_list[0])):
+            if Big_counter_list[i][j] == 1:
+                count += 1
+        if count == 3:
+            Good_choices.append(i)
+        elif count == 4:
+            Best_choices.append(i)
+    Choices = [Good_choices,Best_choices]
+    
+    if mode == 'Choices':
+        return Choices
+    elif mode == 'List':
+        return Big_counter_list
+
 
 def Discrimination(L, out = 'dis'):                         # L is a list (of lists of lists) of bell output coefficients , set out to 'modes' for fn to return which choices and output modes are perfectly discriminating 
     string_discriminated = []
@@ -347,6 +394,22 @@ def Discrimination(L, out = 'dis'):                         # L is a list (of li
 
 #Good Results : choice # 158, discriminated : [4, 3, 3, 3, 3, 1]', ' choice # 159, discriminated : [4, 4, 3, 2, 4, 4]', ' choice # 160, discriminated : [4, 3, 4, 4, 2, 4]', choice # 206, discriminated : [2, 1, 1, 1, 1, 3]',  choice # 401, discriminated : [1, 2, 2, 2, 2, 4]', ' choice # 402, discriminated : [1, 1, 2, 3, 1, 1]', ' choice # 403, discriminated : [1, 2, 1, 1, 3, 1]', choice # 449, discriminated : [3, 4, 4, 4, 4, 2]']
 
-# Ex: choice #449 gives : [[0, 0, 0, 0, 0, 0.0, 0.5, 0.5, -0.5, -0.5], [0, 0, 0, 0, 0, 0.707, 0.5, -0.5, 0.0, 0.0], [0.707, 0, 0, 0, 0, 0, 0, 0, -0.5, 0.5], [0, 0.5, 0.5, -0.5, 0.5, 0, 0, 0, 0, 0]] coefficients of the four bell states, it's clear that states #3, #4, and #2 are discriminated according to the previous paragraph.
+# Ex: choice #449 gives : [[0, 0, 0, 0, 0, 0.0, 0.5, 0.5, -0.5, -0.5], [0, 0, 0, 0, 0, 0.707, 0.5, -0.5, 0.0, 0.0], [0.707, 0, 0, 0, 0, 0, 0, 0, -0.5, 0.5], [0, 0.5, 0.5, -0.5, 0.5, 0, 0, 0, 0, 0]] coefficients of the four bell states, it's clear that states #3, #4, and #2 are discriminated according to the previous paragraph. Manual calculation for psi+ matches perfectly!! 
 
-print(Big_resultant[449])
+# TO DO : it didn't catch choice #159 even though it discriminates three! (although caught #158)  
+
+
+
+# print(Big_resultant[158])
+# print(Big_resultant[159])
+# print(Splitter_combinations_list[449])
+
+
+
+
+
+
+
+
+
+

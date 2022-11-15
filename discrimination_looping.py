@@ -40,7 +40,6 @@ for i in range(len(possible_values)):
                         t34 = possible_values[n]
                         r34 = np.sqrt(1-possible_values[n]**2)
                         print(Dummy(t12,r12,t13,r13,t14,r14,t23,r23,t24,r24,t34,r34))
-                        # print('yo')
                        
 
 # print(AllCombinations(Dummy))

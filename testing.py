@@ -252,7 +252,7 @@ def BellOutput(InputBellState, Coeffs_or_Out = 'Out', specific_splitters = []): 
         nonzeroVectors = M34[0]
         nonzeroCoefficients = (M34[1])
 
-    roundoffs = [.5,.707,1]
+    roundoffs = [.5,.707,1,0,.353]
     for j in roundoffs:
         for i in range(len(nonzeroCoefficients)):              # removing the .499999, .70734.. etc. roundoff errors
             # if abs(nonzeroCoefficients[i]) < 1e-12:
@@ -281,14 +281,6 @@ def BellOutput(InputBellState, Coeffs_or_Out = 'Out', specific_splitters = []): 
         return output_display
 
 
-
-# choice159_splittes = [[0,1],[1,0],[1/(n.sqrt(2)),1/(n.sqrt(2))],[1/(n.sqrt(2)),1/(n.sqrt(2))],[1/(n.sqrt(2)),1/(n.sqrt(2))],[0,1]]
-
-# choiceslist = [[0,1],[ 1,0],[1/(n.sqrt(2)), 1/(n.sqrt(2))]]
-
-
-
-
 def four_outputs(splitters):     # splitters is a list of six lists like [t,r] for the six splitters. Order of output is phi+,phi-,psi+,psi- 
         Four_resultant_Bellstates = []
         Four_resultant_Bellstates.append(BellOutput('phiplus','C', splitters))    # adding to create a list of the four resultant bell states, for the ith choice of the splitter configuration 
@@ -300,14 +292,16 @@ def four_outputs(splitters):     # splitters is a list of six lists like [t,r] f
 # print(four_outputs(Splitter_combinations_list[159]))
 
 
-# Big_resultant = []
-# for i in range(len(Splitter_combinations_list)):
+Big_resultant = [] 
+for i in range(len(Splitter_combinations_list)):            # looping over all possible splitter combinations and appedning to make a big list of all possible four bell state outputs
+    Big_resultant.append(four_outputs(Splitter_combinations_list[i]))
 
-
+# print(Big_resultant)
 
 
 def Discrimination(L, out = 'dis'):                         # L is a list (of lists of lists) of bell output coefficients , set out to 'modes' for fn to return which choices and output modes are perfectly discriminating 
-    listofdiscrimnations = []
+    string_discriminated = []
+    discriminated_list_list = []
     instances = []
     # print(f'L :{len(L)}')
     for i in range(len(L)):
@@ -326,24 +320,33 @@ def Discrimination(L, out = 'dis'):                         # L is a list (of li
         # print(f'conterlist : {counterlist}')
         # listofcounterlists.append(counterlist)
         # listofdiscrimnationpositions.append(discrimination_list)
-        discriminated_ones = []
+        discriminated_outputs = []
+        choice_list = []
         for s in range(len(counterlist)):
             if counterlist[s] == 1:
                 instances.append(f'Choice # {i}, output # {s}, discriminates #{discrimination_list[s]+1}')            # remember starts from zero, not one. # also +1 in discrimination part is for starting at 1. 'Bell state 1' refers to psi+, 2 to psi-, 3 to phi+, 4 to phi-.
-                discriminated_ones.append(discrimination_list[s]+1)
-        if discriminated_ones != []:
+                discriminated_outputs.append(discrimination_list[s]+1)
+        if discriminated_outputs != []:
             # if 1 in discriminated_ones and 2 in discriminated_ones and 3 in discriminated_ones and 4 in discriminated_ones:
-            listofdiscrimnations.append(f' choice # {i}, discriminated : {(discriminated_ones)}')
-    if out == 'dis':
-        return listofdiscrimnations
-    elif out == 'modes':
-        return instances
+            string_discriminated.append(f' choice # {i}, discriminated : {discriminated_outputs}')
+            discriminated_list_list.append(discriminated_outputs)
+            # choice_list.append(i)
+    if out == 'str':
+        return string_discriminated          #returns a list fo strings having the choice number and discriminated outputs for the good discriminated choices
+    elif out == 'dis':
+        return discriminated_list_list       # return a pure list of discriminated outputs for each splitter combination
+    elif out == 'choices':         # returns list of good choices
+        return choice_list
 
 
 # NEXT IDEA : use another mehtod : use the coeffficient list for four bell states in general, in terms of variables, and then substitute values of r and t using a loop. That way, no problems of varying number of coeff in lists
 
 
+# print(Discrimination(Big_resultant, 'choices'))
 
-print(BellOutput('phiplus', 'C', Splitter_combinations_list[159]))
 
+#Good Results : choice # 158, discriminated : [4, 3, 3, 3, 3, 1]', ' choice # 159, discriminated : [4, 4, 3, 2, 4, 4]', ' choice # 160, discriminated : [4, 3, 4, 4, 2, 4]', choice # 206, discriminated : [2, 1, 1, 1, 1, 3]',  choice # 401, discriminated : [1, 2, 2, 2, 2, 4]', ' choice # 402, discriminated : [1, 1, 2, 3, 1, 1]', ' choice # 403, discriminated : [1, 2, 1, 1, 3, 1]', choice # 449, discriminated : [3, 4, 4, 4, 4, 2]']
 
+# Ex: choice #449 gives : [[0, 0, 0, 0, 0, 0.0, 0.5, 0.5, -0.5, -0.5], [0, 0, 0, 0, 0, 0.707, 0.5, -0.5, 0.0, 0.0], [0.707, 0, 0, 0, 0, 0, 0, 0, -0.5, 0.5], [0, 0.5, 0.5, -0.5, 0.5, 0, 0, 0, 0, 0]] coefficients of the four bell states, it's clear that states #3, #4, and #2 are discriminated according to the previous paragraph.
+
+print(Big_resultant[449])

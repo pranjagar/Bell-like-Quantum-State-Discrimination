@@ -47,10 +47,6 @@ ten_states_9= n.array([0,0,2,0])
 ten_states_10 = n.array([0,0,0,2])
 
 
-
-
-
-
 def MatrixAction(matrix_index, input_vectors, input_coeffs, specific_splitter = []):
     total_index = int(matrix_index)                                                              # finding the numbers 1, 2 ,12 etc so to choose appropriate elts from the full vectors etc.                            
     first_matrix_index = int(matrix_index[0]) 
@@ -58,20 +54,17 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs, specific_splitter = 
     t = sym.Symbol('t'+f'_{total_index}')                                                        # creating matching coeficients
     r = sym.Symbol('r'+f'_{total_index}')
 
-
     if specific_splitter != [] :
         t = specific_splitter[0]
         r = specific_splitter[1]
 
     input_state_display = [('(' + str(input_coeffs[i]) + ')*'+ str(input_vectors[i])) for i in range(len(input_coeffs)) if input_coeffs[i] != 0 ]          # list for displaying purpose so its easy to read. it's product of corresponding coeffs and the vectors
     working_states = [[input_vectors[i][first_matrix_index-1], input_vectors[i][second_matrix_index-1]] for i in range(len(input_vectors))]                 # 'reducing' the dimensionality of the given input states, so to apply the 2d matrices
-    
+
     basis = [six_states_0,six_states_1, six_states_2,six_states_3,six_states_4,six_states_5]                 
     new_states = [[i for i in input_vectors[j]] for j in range(len(input_vectors))]                 # copy of input state list to change them into results
-
     output_vectors_full = []                                                                       # main lists of new vectors and coeffs 
     output_coeffs_full = []
-
     output_coeffs_display = []
     output_vectors_display = []                                                                     # new vectors/coeff lists for display purposes
 
@@ -173,10 +166,6 @@ phi_24 = MatrixAction('24', phi_23[0],phi_23[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
 phi_34 = MatrixAction('34', phi_24[0],phi_24[1],[0,1])
 
 
-
-
-
-
 # #omdify grouping algo to accomodate closeby irrationals
 # print(phi_12)
 # print(phi_13)
@@ -184,9 +173,6 @@ phi_34 = MatrixAction('34', phi_24[0],phi_24[1],[0,1])
 # print(phi_23)
 # print(phi_24)
 # print(phi_34)
-
-
-
 
 
 def BellOutput(InputBellState, V_or_C_or_Out = 'Out', specific_splitters = []):              #input one one of the four bell states as string, second input is what is needed : list of coeffs or list of vectors or full output as a string, input a list of six lists of t and r respectively for splitters 12,13,..34 respectively. 
@@ -247,12 +233,60 @@ def BellOutput(InputBellState, V_or_C_or_Out = 'Out', specific_splitters = []): 
     elif V_or_C_or_Out == 'Out':
         return output_display
 
-
-
-
 choice159_splittes = [[0,1],[1,0],[1/(n.sqrt(2)),1/(n.sqrt(2))],[1/(n.sqrt(2)),1/(n.sqrt(2))],[1/(n.sqrt(2)),1/(n.sqrt(2))],[0,1]]
+""" 
 choice401_splittes = [[1,0],[1,0],[1/(n.sqrt(2)),1/(n.sqrt(2))],[1/(n.sqrt(2)),1/(n.sqrt(2))],[1,0],[1/(n.sqrt(2)),1/(n.sqrt(2))]]
+choice0_splittes = [[0,1],[0,1],[0,1],[0,1],[0,1],[0,1]]
+choice1_splittes = [[0,1],[0,1],[0,1],[0,1],[0,1],[1/(n.sqrt(2)),1/(n.sqrt(2))]]
 
+# print(BellOutput('psiplus','Out', choice159_splittes))
+print(BellOutput('psiplus','Out', choice1_splittes))
+# correct 0 : [[0,0,-(1/1.414),0,-(1/1.414),0,0,0,0,0], we get ['(-0.7071067811865475)*[1, 0, 0, 1]', '(-0.7071067811865475)*[0, 1, 1, 0]']
+# correct 1 : [0,1/1.414,0,0,0,-(1/1.414),0,0,0,0]
+ """
+
+def Dummy(t12,r12,t13,r13,t14,r14,t23,r23,t24,r24,t34,r34):
+    # f below is a trial
+    f= t12+r12+t13+r13+t14+r14+t23+r23+t24+r24+t34+r34
+    return f 
+
+# choices = [0,.5]#, 1/(n.sqrt(2))] #, -1/(n.sqrt(2)),-1]
+
+
+choices = [[0,1],[ 1,0],[1/(n.sqrt(2)), 1/(n.sqrt(2))]]
+
+
+
+count = 0
+Splitter_choices_list = []
+for i in range(len(choices)):
+    M12 = choices[i]
+    for j in range(len(choices)):
+        M13 = choices[j]
+        for k in range(len(choices)):
+            M14 = choices[k]
+            for l in range(len(choices)):
+                M23 = choices[l]
+                for m in range(len(choices)):
+                    M24 = choices[m]
+                    for n in range(len(choices)):
+                        M34 = choices[n]
+                        Splitter_choices_list.append([M12,M13,M14,M23,M24,M34])
+
+# print(len(Big_splitters_list[0]))
+
+# for i in range(len(Splitter_choices_list)):
+# print(Splitter_choices_list[159])
 print(BellOutput('psiplus','Out', choice159_splittes))
+
+
+
+
+
+
+
+
+
+
 
 

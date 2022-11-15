@@ -413,7 +413,7 @@ else:
 
 
 
-def BellOutput(InputBellState, V_or_C_or_Out = 'Out'):              #input one one of the four bell states as string, second input is what is needed : list of coeffs or list of vectors or full output as a string 
+def BellOutput(InputBellState, V_or_C_or_Out = 'Out'):              #input one one of the four bell states as string, second input is what is needed : list of coeffs 'C' or list of vectors 'V' or full output as a string 'Out'
     if InputBellState == 'phiplus':
         user_input_list = [ten_states_2,ten_states_5]
         user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]

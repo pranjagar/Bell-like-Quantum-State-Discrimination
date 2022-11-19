@@ -14,3 +14,10 @@ def f(a = '5'):
     return 5
 
 aa = 6
+
+l = [3,45,5]
+
+if 5 in l:
+    print('yay')
+else:
+    print('bbay')

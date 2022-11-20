@@ -207,8 +207,7 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs, specific_splitter = 
 
 # #omdify grouping algo to accomodate closeby irrationals
 # print(phi_12)
-# print(phi_13)
-# print(phi_14)
+
 
 def BellOutput(InputBellState, Coeffs_or_Out = 'Out', specific_splitters = []):              #input one one of the four bell states as string, second input is what is needed : list of coeffs or list of vectors or full output as a string, input a list of six lists of t and r respectively for splitters 12,13,..34 respectively. Choose 'C' for coeff lists, 'Out' for full state output
     if InputBellState == 'phiplus':
@@ -349,7 +348,7 @@ for i in range(len(Big_resultant)):
 #         return Big_counter_list
 
 
-def Discrimination(L, out = 'dis'):                         # L is a list (of lists of lists) of bell output coefficients , set out to 'modes' for fn to return which choices and output modes are perfectly discriminating 
+def Discrimination_old(L, out = 'dis'):                         # L is a list (of lists of lists) of bell output coefficients , set out to 'modes' for fn to return which choices and output modes are perfectly discriminating 
     string_discriminated = []
     discriminated_list_list = []
     instances = []
@@ -401,34 +400,24 @@ def Discrimination(L, out = 'dis'):                         # L is a list (of li
 
 # TO DO : it didn't catch choice #159 even though it discriminates three! (although caught #158)  
 
-
-
-# print(Big_resultant[158])
-# print(Big_resultant[159])
-# print(Big_resultant[449])
-
-
-
  
-def Discrimination_new(L):        # L is list of ten outputs
-    discriminated_bell_states = []
+def Discrimination(L):        # L is list of ten outputs
+    nonzero_positions_list = []
     for i in range(len(L[0])):
         zeroes = 0
         nonzero_position = 0
         for j in range(len(L)):
             if L[j][i] == 0:
                 zeroes +=1
-            else:
+            elif L[j][i] != 0:
                 nonzero_position += j
         if zeroes == 3:
-            if nonzero_position not in discriminated_bell_states:
-                discriminated_bell_states.append(nonzero_position+1)    # +1 is to have discrimination 1,2,3,4 instead of 0,1,2,3
-    
-    out = []
-    for k in range(len(discriminated_bell_states)):
-        if discriminated_bell_states[k] not in out:
-            out.append(k)
-
+            nonzero_positions_list.append(nonzero_position+1)    # +1 is to have discrimination 1,2,3,4 instead of 0,1,2,3
+    discriminated_bell_states = []
+    for k in range(len(nonzero_positions_list)):
+        if nonzero_positions_list[k] not in discriminated_bell_states:
+            discriminated_bell_states.append(nonzero_positions_list[k])
+    return discriminated_bell_states
     
 
 
@@ -436,14 +425,14 @@ def Discrimination_new(L):        # L is list of ten outputs
 # print(compare_outputs(Big_resultant[159]))
 # print(Discrimination_new(Big_resultant[159]))
 
-
+""" 
 def Discrimination_Big(L, Expand = 'disc'):           # fn to discriminate the big list directly, it's basically a loop over the big list that uses discrimination_new function; and adds some other properties. change expand to 'compare' or 'full' to see the corresponding compared bell output lists and raw bell output lists repectively. 'numbers' for just a list of number of discriminations.
     Big_discrimination_list =[]        # the big list of three tuples, elements being list of bell states discriminated, compared outputs, raw outputs resp.
     choices = [] 
     # Number_of_discrimination_list = []       # list of two tuples containing number of discriminations and corresponding choices
     for i in range(len(L)):
-        if len(Discrimination_new(L[i])) >= 3:
-            Big_discrimination_list.append(Discrimination_new(L[i]))
+        if len(Discrimination(L[i])) >= 3:
+            Big_discrimination_list.append(Discrimination(L[i]))
             choices.append(i)
     full = [[choices[i], Big_discrimination_list[i]] for i in range(len(Big_discrimination_list))]
     if Expand == 'disc':
@@ -451,14 +440,22 @@ def Discrimination_Big(L, Expand = 'disc'):           # fn to discriminate the b
     elif Expand == 'choices':
         return choices
     elif Expand == 'full':
-        return full
+        return full """
+
+Big_discrimination_listt = []
+
+for i in range(len(Big_resultant)):
+    Big_discrimination_listt.append(Discrimination(Big_resultant[i]))        # A big list of discriminations like [1,2,3] indiccatiing bell states 1,2,3 got discriminated 
 
 
-# print(Discrimination_Big(Big_resultant, 'choices'))
-# print(Discrimination_Big(Big_resultant, 'full'))
+Good_lists = []
+Good_choices = []
 
-# for i in Discrimination_Big(Big_resultant, 'numbers'):
-#     print(compare_outputs(Big_resultant[i[1]]))
-# print((compare_outputs(Big_resultant[437])))
-# print((compare_outputs(Big_resultant[449])))
-print((Discrimination_new(Big_resultant[403])))
+for i in range(len(Big_discrimination_listt)):
+    if len(Big_discrimination_listt[i]) >= 3:
+        Good_lists.append(Big_discrimination_listt[i])
+        Good_choices.append(i)           # so choices are counted from zero, not 1.  
+
+print(len(Big_discrimination_listt))
+print(Good_lists)
+print(Good_choices)

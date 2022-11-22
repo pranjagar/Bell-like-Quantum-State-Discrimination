@@ -422,4 +422,9 @@ def NewNewlatex_conversion(coeff, vects):                                    # '
     return out
 
 
+Big_resultant[11024]
+
+# comapred(Big_resultant[])
+
+
 # print(len(Good_choices))

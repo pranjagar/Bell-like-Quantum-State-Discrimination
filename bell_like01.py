@@ -31,27 +31,6 @@ ten_states_8 = n.array([0,2,0,0])
 ten_states_9= n.array([0,0,2,0])
 ten_states_10 = n.array([0,0,0,2])
 
-
-six_states_0 = n.array([0,0])                                                                # defining the six possilbe output states
-six_states_1 = n.array([1,0])
-six_states_2 = n.array([0,1])
-six_states_3 = n.array([1,1])
-six_states_4 = n.array([2,0])
-six_states_5 = n.array([0,2])
-empty = n.array([])
-
-ten_states_0 = n.array([0,0,0,0])                                                           # defining the ten possilbe output states
-ten_states_1 = n.array([1,1,0,0])
-ten_states_2 = n.array([1,0,1,0])
-ten_states_3 = n.array([1,0,0,1])
-ten_states_4 = n.array([0,1,1,0])
-ten_states_5 = n.array([0,1,0,1])
-ten_states_6 = n.array([0,0,1,1])
-ten_states_7= n.array([2,0,0,0])
-ten_states_8 = n.array([0,2,0,0])
-ten_states_9= n.array([0,0,2,0])
-ten_states_10 = n.array([0,0,0,2])
-
 TenStateBasis = [ten_states_1,ten_states_2,ten_states_3,ten_states_4,ten_states_5,ten_states_6,ten_states_7,ten_states_8,ten_states_9,ten_states_10]
 TenZeroCoeffs = [0,0,0,0,0,0,0,0,0,0]
 
@@ -318,7 +297,7 @@ def AvgProbability(L):
     return avg_prob
 
 
-def compare_outputs(L):             # L is a list of ten bell outputs for four bell states, or a four list  
+def compare_outputs(L):             # L is the raw list:  four bell states' four 10-outputs lists
     compared_list = []
     for i in range(len(L[0])):
         S = []

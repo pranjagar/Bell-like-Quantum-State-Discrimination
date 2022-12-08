@@ -1,16 +1,11 @@
 import numpy as n
 import pandas as pd
-# import dummy as D
 import math as m
 import sympy as sym
 
-# Dummy = np.loadtxt('dummy.csv', delimiter=',', dtype=int)
-# # Dummy = pd.read_csv('dummy.csv', delimiter=',',dtype=None)
-# print(Dummy)
 
 
-# List= []
-# D.Data(List)
+
 
 
 
@@ -34,8 +29,12 @@ ten_states_8 = n.array([0,2,0,0])
 ten_states_9= n.array([0,0,2,0])
 ten_states_10 = n.array([0,0,0,2])
 
+
+
 TenStateBasis = [ten_states_1,ten_states_2,ten_states_3,ten_states_4,ten_states_5,ten_states_6,ten_states_7,ten_states_8,ten_states_9,ten_states_10]
 TenZeroCoeffs = [0,0,0,0,0,0,0,0,0,0]
+
+
 
 
 
@@ -160,15 +159,6 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs, phi = 3000):
 
 
 
-    
-
-# phi_12 = (MatrixAction('12',[[0,1,0,1],[1,0,1,0]],[1,1],(m.pi)/2))
-phi_12 = (MatrixAction('12',[[0,1,0,1],[1,0,1,0]],[1,1]))
-# print(phi_12)
-
-
-
-
 def ordering(L):        # L is a ket like [1,0,0,1]
     if L == [1,1,0,0]:
         position = 0
@@ -192,219 +182,3 @@ def ordering(L):        # L is a ket like [1,0,0,1]
         position = 9
     return position
 
-
-
-
-def BellOutput(InputBellState, Coeffs_or_Out = 'Out', phi_list =False, roundoff = 'no'):   #for rounding, make sure to include "no" within argument and yes in the if statement
-    if phi_list == False:
-        phi_list = [3000,3000,3000,3000,3000,3000]              #input one one of the four bell states as string, second input is what is needed : list of coeffs or list of vectors or full output as a string, input a list of six lists of t and r respectively for splitters 12,13,..34 respectively. Choose 'C' for coeff lists, 'Out' for full state output
-    if InputBellState == 'phiplus':
-        user_input_list = [ten_states_2,ten_states_5]
-        user_input_coeffs = [1/n.sqrt(2), 1/n.sqrt(2)]
-    elif InputBellState == 'phiminus':
-        user_input_list = [ten_states_2,ten_states_5]
-        user_input_coeffs = [1/n.sqrt(2), -1/n.sqrt(2)]
-    elif InputBellState == 'psiplus':
-        user_input_list = [ten_states_3,ten_states_4]
-        user_input_coeffs = [1/n.sqrt(2), 1/n.sqrt(2)]
-    elif InputBellState == 'psiminus':
-        user_input_list = [ten_states_3,ten_states_4]
-        user_input_coeffs = [1/n.sqrt(2), -1/n.sqrt(2)]
-    else:
-        print('[(00+11) = phiplus, (00-11) = phiminus, (01+10) = psiplus, (10-10) = psiminus] \n V : vector list, C: Coeffs list, Out: full result (string)')
-
-    # user_input_matrix = int(input("Till which Beam splitter (enter input as 13, 14 etc.) ? "))
-    user_input_matrix = 34                                       # uncomment to avoid imput: matrix  = 34 
-    M12 = MatrixAction('12', user_input_list, user_input_coeffs , phi_list[0])                                         # making use of the beam splitter function, looping it over and over
-    M13 = MatrixAction('13', M12[0], M12[1], phi_list[1])
-    M14 = MatrixAction('14', M13[0], M13[1], phi_list[2])
-    M23 = MatrixAction('23', M14[0], M14[1], phi_list[3])
-    M24 = MatrixAction('24', M23[0], M23[1], phi_list[4])
-    M34 = MatrixAction('34', M24[0], M24[1], phi_list[5])
-
-    if user_input_matrix == 12:                                                            #this is just so the output matches the corresponding input
-        nonzeroVectors = M12[0]
-        nonzeroCoefficients = (M12[1])
-    elif user_input_matrix == 13:
-        nonzeroVectors = M13[0]
-        nonzeroCoefficients = (M13[1])
-    elif user_input_matrix == 14:
-        nonzeroVectors = M14[0]
-        nonzeroCoefficients = (M14[1])
-    elif user_input_matrix == 23:
-        nonzeroVectors = M23[0]
-        nonzeroCoefficients = (M23[1])
-    elif user_input_matrix == 24:
-        nonzeroVectors = M24[0]
-        nonzeroCoefficients = (M24[1])
-    elif user_input_matrix == 34:
-        nonzeroVectors = M34[0]
-        nonzeroCoefficients = (M34[1])
-
-    if roundoff == 'roundoff':          
-        roundoffs = [.5,.707,1,0,.353]
-        for j in roundoffs:
-            for i in range(len(nonzeroCoefficients)):              # removing the .499999, .70734.. etc. roundoff errors
-                # if abs(nonzeroCoefficients[i]) < 1e-12:
-                #     nonzeroCoefficients[i] = 0
-                if abs((abs(nonzeroCoefficients[i])-j)) < .002:
-                    if nonzeroCoefficients[i] > 0:
-                        nonzeroCoefficients[i] = j
-                    elif nonzeroCoefficients[i] < 0:
-                        nonzeroCoefficients[i] = -j
-    
-    output_coeffs = [i for i in TenZeroCoeffs]         # ten zero list
-    
-    for i in range(len(nonzeroVectors)):
-        a = ordering(nonzeroVectors[i])
-        output_coeffs[a] = nonzeroCoefficients[i]
-
-    # print(nonzeroCoefficients,nonzeroVectors,output_coeffs)
-
-    output_display = [str(output_coeffs[i])+'*'+str(TenStateBasis[i]) for i in range(10) if output_coeffs[i] != 0 ]
-
-    if Coeffs_or_Out == 'C':
-        return output_coeffs
-    elif Coeffs_or_Out == 'V':
-        return nonzeroVectors
-    elif Coeffs_or_Out == 'Out':
-        return output_display
-
-a = [0,0,0,0,0,0]
-# print(BellOutput('phiplus', 'C', a, 'yes'))
-
-
-def four_outputs(phi_vals_list, roundoff ='no'):                                     # splitters is a list of 6 elements for the six splitters. Order of output is phi+,phi-,psi+,psi-        
-        if roundoff == 'roundoff':
-            c = 'roundoff'
-        elif roundoff == 'no':
-            c = 'no'
-        Four_resultant_Bellstates = []
-        Four_resultant_Bellstates.append(BellOutput('phiplus','C', phi_vals_list, c))    # adding to create a list of the four resultant bell states, for the ith choice of the splitter configuration 
-        Four_resultant_Bellstates.append(BellOutput('phiminus','C', phi_vals_list,c))
-        Four_resultant_Bellstates.append(BellOutput('psiplus','C', phi_vals_list, c))
-        Four_resultant_Bellstates.append(BellOutput('psiminus','C', phi_vals_list, c))
-        return Four_resultant_Bellstates
-
-# print(four_outputs(Splitter_combinations_list[159]))
-
-
-
-phi_combinations_list = []                                                                        
-phi_values = [0, (m.pi)/2, (m.pi)/4, m.pi, -(m.pi/4)]           # these five possible selections for each splitter
-length = len(phi_values)
-for i in range(length):              # creating all possible combinations, the big phi list
-    for j in range(length):
-        for k in range(length):
-            for l in range(length):
-                for o in range(length):
-                    for w in range(length):
-                        combination = [phi_values[i],phi_values[j],phi_values[k],phi_values[l],phi_values[o],phi_values[w]]
-                        phi_combinations_list.append(combination)
-                      
-
-
-
-Big_resultant = [] 
-for i in range(len(phi_combinations_list)):            # looping over all possible splitter combinations and appedning to make a big list of all possible four bell state outputs
-    Big_resultant.append(four_outputs(phi_combinations_list[i], 'roundoff'))
-
-# print(Big_resultant)  # BIG LIST
-
-
-
-def Discrimination(L):        # L is list of ten outputs
-    nonzero_positions_list = []
-    for i in range(len(L[0])):
-        zeroes = 0
-        nonzero_position = 0
-        for j in range(len(L)):
-            if L[j][i] == 0:
-                zeroes +=1
-            elif L[j][i] != 0:
-                nonzero_position += j
-        if zeroes == 3:
-            nonzero_positions_list.append(nonzero_position+1)    # +1 is to have discrimination 1,2,3,4 instead of 0,1,2,3
-    discriminated_bell_states = []
-    for k in range(len(nonzero_positions_list)):
-        if nonzero_positions_list[k] not in discriminated_bell_states:
-            discriminated_bell_states.append(nonzero_positions_list[k])
-    return discriminated_bell_states
-
-
-Big_discrimination_list = []
-
-for i in range(len(Big_resultant)):
-    Big_discrimination_list.append(Discrimination(Big_resultant[i]))        # A big list of discriminations like [1,2,3] indiccatiing bell states 1,2,3 got discriminated 
-
-
-Good_lists = []
-Good_choices = []
-
-for i in range(len(Big_discrimination_list)):
-    if len(Big_discrimination_list[i]) >= 3:
-        Good_lists.append(Big_discrimination_list[i])
-        Good_choices.append(i)           # so choices are counted from zero, not 1.  
-
-# print(len(Big_discrimination_list))
-print(Good_lists)
-print(Good_choices)
-
-print('fddddf')
-for i in Good_lists:
-    if len(i) ==4:
-        print(i)
-
-
-# Actual_List = []
-# for i in range(len(Good_choices)):
-#     Actual_List.append(Big_resultant[i])
-
-# print(Actual_List)
-def NewNewlatex_conversion(coeff, vects):                                    # 'A' is a the output (a list of strings) that you wanna convert into latex code
-
-    AA = [(str(coeff[i])+str(vects[i])+ '+') for i in range(len(vects))]       #adding the  + at the end of each term for display purpose    
-    B = ''.join(AA)                                        # making a huge string by adding all the elements of the list
-    C = [i for i in B]                                         # making a huge list composed of The letters of the huge string above
-    C.insert(0,'\\begin{align*} & ')                        # adding begin align command for latex type setting, and adding also at the end
-    C.pop()                                               # removing the extra last + sign
-
-    counter = 0                                                    # Dummy variable forkeeping track of even and odd,for adding slashes appropriately
-    for i in range(len(C)):                                      # loop that converts symbols into their corresponding latex format
-        if C[i] == '*':
-            if C[i+1] == '*':
-                C[i] = '^{'
-                C[i+2] += '}'
-            else:
-                C[i] = '' 
-        elif C[i] == '_' and C[i+1] != '{' :                        # added the 'and' part on 10/18 10 AM
-            C[i] = '_{'
-            C[i+2] += '}'
-        elif C[i] == '[' and C[i+2] != ']':
-            C[i] = '|' 
-        elif i < (len(C)-7) and C[i] == 'S' and C[i+1] == 'q' and C[i+2] == 'r' and C[i+3] == 't' and C[i+4] == '[' and C[i+6] == ']':
-            for j in range(8):
-                if j != 5:
-                    C[i+j] = '' 
-            C[i+5] = '\\sqrt{'+C[i+5]+'}' 
-        elif i > 2 and C[i] == ']' and C[i-2] != '[':
-            counter += 1
-            if counter%1 ==0:                                 # change '1' to '2' or whatever for making new line (adding \\) after 2 terms
-                C[i] = '\\rangle \\\\ & '
-            else:
-                C[i] = '\\rangle'
-        elif C[i] == '+' and C[i+1] == '-':
-            C[i] = ''
-    out = ''.join(C)
-
-    C.append(' \\end{align*}')                         
-    out = ''.join(C)                                                             # recombining into a final string for display 
-    return out
-
-
-Big_resultant[11024]
-
-# comapred(Big_resultant[])
-
-
-# print(len(Good_choices))

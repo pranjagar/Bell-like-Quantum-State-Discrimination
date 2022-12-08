@@ -42,7 +42,7 @@ def phi_combination_list_new(abstract = False):          # works for only 5 inpu
 
 
 
-print(phi_combination_list_new())
+# print(phi_combination_list_new())
 
 
 

@@ -7,6 +7,19 @@ import sympy as sym
 
 
 
+def rounding(L):                        #L is a list
+    for i in range(len(L)):
+        L_new = (L[i]*1000)//1
+        L[i] = L_new/1000
+    return L
+
+# print(rounding([.657,55.6789]))       # Ex.
+
+
+
+
+
+
 
 
 six_states_0 = n.array([0,0])                                                                # defining the six possilbe output states

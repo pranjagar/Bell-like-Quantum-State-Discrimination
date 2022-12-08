@@ -4,8 +4,8 @@ import scipy as s
 import sympy as sym
 import pandas as p
 
-
 # Splitter_combinations_list = p.read_csv('data.csv', sep= ',', header= None)
+
 
 # list of all possible mirror combinations. format = list of lists like [[t12,r12],[],[],[],[],[t34,r34]]
 
@@ -81,7 +81,7 @@ def ordering(L):        # L is a ket like [1,0,0,1]
     return position
 
 
-def MatrixAction(matrix_index, input_vectors, input_coeffs, specific_splitter = []):
+def MatrixAction(matrix_index, input_vectors, input_coeffs, specific_splitter = []):        #  string, list of lists, list of numbers, list of lists like [t,r] 
     total_index = int(matrix_index)                                                              # finding the numbers 1, 2 ,12 etc so to choose appropriate elts from the full vectors etc.                            
     first_matrix_index = int(matrix_index[0]) 
     second_matrix_index = int(matrix_index[1])
@@ -197,7 +197,7 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs, specific_splitter = 
     return output
 
 
-# phi_12 = (MatrixAction('12',[[0,1,0,1],[1,0,1,0]],[1,1],[0,1]))
+# phi_12 = (MatrixAction('12',[[0,1,0,1],[1,0,1,0]],[1,1]))
 # phi_13 = MatrixAction('13', phi_12[0],phi_12[1],[1,0])
 # phi_14 = MatrixAction('14', phi_13[0],phi_13[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
 # phi_23 = MatrixAction('23', phi_14[0],phi_14[1],[1/(n.sqrt(2)), 1/(n.sqrt(2))])
@@ -209,7 +209,7 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs, specific_splitter = 
 # print(phi_12)
 
 
-def BellOutput(InputBellState, Coeffs_or_Out = 'Out', specific_splitters = []):              #input one one of the four bell states as string, second input is what is needed : list of coeffs or list of vectors or full output as a string, input a list of six lists of t and r respectively for splitters 12,13,..34 respectively. Choose 'C' for coeff lists, 'Out' for full state output
+def InterferometerResult(InputBellState, Coeffs_or_Out = 'Out', specific_splitters = []):              #input one one of the four bell states as string, second input is what output is needed : list of coeffs or list of vectors or full output as a string, input a list of six lists of t and r respectively for splitters 12,13,..34 respectively. Choose 'C' for coeff lists, 'Out' for full state output
     if InputBellState == 'phiplus':
         user_input_list = [ten_states_2,ten_states_5]
         user_input_coeffs = [1/(n.sqrt(2)), 1/(n.sqrt(2))]
@@ -283,12 +283,14 @@ def BellOutput(InputBellState, Coeffs_or_Out = 'Out', specific_splitters = []): 
         return output_display
 
 
+
+
 def four_outputs(splitters):     # splitters is a list of six lists like [t,r] for the six splitters. Order of output is phi+,phi-,psi+,psi- 
         Four_resultant_Bellstates = []
-        Four_resultant_Bellstates.append(BellOutput('phiplus','C', splitters))    # adding to create a list of the four resultant bell states, for the ith choice of the splitter configuration 
-        Four_resultant_Bellstates.append(BellOutput('phiminus','C', splitters))
-        Four_resultant_Bellstates.append(BellOutput('psiplus','C', splitters))
-        Four_resultant_Bellstates.append(BellOutput('psiminus','C', splitters))
+        Four_resultant_Bellstates.append(InterferometerResult('phiplus','C', splitters))    # adding to create a list of the four resultant bell states, for the ith choice of the splitter configuration 
+        Four_resultant_Bellstates.append(InterferometerResult('phiminus','C', splitters))
+        Four_resultant_Bellstates.append(InterferometerResult('psiplus','C', splitters))
+        Four_resultant_Bellstates.append(InterferometerResult('psiminus','C', splitters))
         return Four_resultant_Bellstates
 
 # print(four_outputs(Splitter_combinations_list[159]))
@@ -425,37 +427,56 @@ def Discrimination(L):        # L is list of ten outputs
 # print(compare_outputs(Big_resultant[159]))
 # print(Discrimination_new(Big_resultant[159]))
 
-""" 
-def Discrimination_Big(L, Expand = 'disc'):           # fn to discriminate the big list directly, it's basically a loop over the big list that uses discrimination_new function; and adds some other properties. change expand to 'compare' or 'full' to see the corresponding compared bell output lists and raw bell output lists repectively. 'numbers' for just a list of number of discriminations.
-    Big_discrimination_list =[]        # the big list of three tuples, elements being list of bell states discriminated, compared outputs, raw outputs resp.
-    choices = [] 
-    # Number_of_discrimination_list = []       # list of two tuples containing number of discriminations and corresponding choices
-    for i in range(len(L)):
-        if len(Discrimination(L[i])) >= 3:
-            Big_discrimination_list.append(Discrimination(L[i]))
-            choices.append(i)
-    full = [[choices[i], Big_discrimination_list[i]] for i in range(len(Big_discrimination_list))]
-    if Expand == 'disc':
-        return Big_discrimination_list
-    elif Expand == 'choices':
-        return choices
-    elif Expand == 'full':
-        return full """
 
-Big_discrimination_listt = []
+Big_discrimination_list = []
 
 for i in range(len(Big_resultant)):
-    Big_discrimination_listt.append(Discrimination(Big_resultant[i]))        # A big list of discriminations like [1,2,3] indiccatiing bell states 1,2,3 got discriminated 
+    Big_discrimination_list.append(Discrimination(Big_resultant[i]))        # A big list of discriminations like [1,2,3] indiccatiing bell states 1,2,3 got discriminated 
 
 
 Good_lists = []
 Good_choices = []
 
-for i in range(len(Big_discrimination_listt)):
-    if len(Big_discrimination_listt[i]) >= 3:
-        Good_lists.append(Big_discrimination_listt[i])
+for i in range(len(Big_discrimination_list)):
+    if len(Big_discrimination_list[i]) >= 3:
+        Good_lists.append(Big_discrimination_list[i])
         Good_choices.append(i)           # so choices are counted from zero, not 1.  
 
-print(len(Big_discrimination_listt))
-print(Good_lists)
-print(Good_choices)
+print((Big_discrimination_list))
+# print(Good_lists)
+# print(Good_choices)
+
+# print(Big_resultant[159])
+# print(Splitter_combinations_list[159])
+
+
+#159 = [[0, 0, 0, 0, 0, 0, 0.5, -0.5, -0.5, 0.5], [0, 0, 0, 0.707, 0, 0, -0.5, 0, 0, 0.5], [0, 0, -0.707, 0, 0, 0, 0, -0.5, 0.5, 0], [-0.5, 0.5, 0, 0, -0.5, -0.5, 0, 0, 0, 0]]
+
+
+
+
+
+
+# Avg prob function, works on raw output : list of four lists containing 10 outputs each
+
+def AvgProbability(L):
+    sum = 0
+    nonzero_positions_list = []
+    sum_coeff_sq = 0
+    for i in range(len(L[0])):
+        zeroes = 0
+        nonzero_position = 0
+        for j in range(len(L)):
+            if L[j][i] == 0:
+                zeroes +=1
+            elif L[j][i] != 0:
+                nonzero_position += j
+        if zeroes == 3:
+            sum_coeff_sq += (abs(L[nonzero_position][i]))**2
+    avg_prob = (1/4)*sum_coeff_sq
+    return avg_prob
+            
+# test = [[1/(m.sqrt(2)),0,0,0,0,0,0,0,0,0],[0,1/2,0,0,1/2,1/2,1/2,0,0,0],[0,0,1/(m.sqrt(2)),0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]           
+# print(AvgProbability(test))       # ex usage
+
+# print(InterferometerResult('phiplus','out' ,Splitter_combinations_list[89]))

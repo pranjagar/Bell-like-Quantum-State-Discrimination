@@ -88,8 +88,6 @@ def create_ten_lists(V,C):
     return [new_V,new_C]
 
 
-t12,r12 = sym.symbols('t12,r12')
-phi = sym.symbols('phi')
 
 # calling angle phi for python typing purposes
 
@@ -127,8 +125,9 @@ def equations12(v,c, angle = False):            # v,c are vector, corresponding 
         return C
     else:
         return fn.rounding(C)
-    # print(equations12([1,1,0,0],.5))          # Example use
+
     
+print(equations12([1,1,0,0],.5, np.pi/2))          # Example use
 
 
 def Matrix12(V,C,phi = False):
@@ -141,26 +140,11 @@ def Matrix12(V,C,phi = False):
         # print(f'print(equations12({ten_V[i]},{ten_C[i]}))')
     return list(result_C)
 
-belltest_V = [[1,0,0,1],[0,1,1,0]]
-belltest_C = [1/(m.sqrt(2)),1/(m.sqrt(2))]
-
-
+# belltest_V = [[1,0,0,1],[0,1,1,0]]
+# belltest_C = [1/(m.sqrt(2)),1/(m.sqrt(2))]
 # print(Matrix12(belltest_V,belltest_C))
 
-""" 
-print(equations12([0, 0, 0, 0],0))
-print(equations12([0, 0, 0, 0],0))
-print(equations12([1, 0, 0, 1],0.7071067811865475))
-print(equations12([0, 1, 1, 0],0.7071067811865475))
-print(equations12([0, 0, 0, 0],0))
-print(equations12([0, 0, 0, 0],0))
-print(equations12([0, 0, 0, 0],0))
-print(equations12([0, 0, 0, 0],0))
-print(equations12([0, 0, 0, 0],0))
-print(equations12([0, 0, 0, 0],0))
 
- """
- 
 
 
 

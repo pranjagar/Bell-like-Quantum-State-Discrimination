@@ -7,19 +7,21 @@ import sympy as sym
 
 
 
-def rounding(L):                        #L is a list of numbers
+def rounding(L, digits = 3):                        #L is a list of numbers, digits is jjust number ofdigits after decimal upto which we want rounding
+    factor = 10**digits
     for i in range(len(L)):
-        L_new = (L[i]*1000)//1
-        L[i] = float(L_new/1000)
+        L_new = (abs(L[i])*factor)//1
+        if L[i] < 0:
+            L[i] = float(-1*L_new/factor)
+        else:
+            L[i] = float(L_new/factor)
     return L
 
 # print(rounding([.657,55.6789]))       # Ex.
 
 
+print(rounding([.11,.01,.09, 2.3, 4.5, 6.7, 3.3, 1.3,2.1, 2.0, 1.8, .3, -.3],2))
 
-
-
-test_variable = [5]
 
 
 six_states_0 = [0,0]                                                               # defining the six possilbe output state

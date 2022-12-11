@@ -19,33 +19,58 @@ def rounding(L):                        #L is a list
 
 
 
+test_variable = [5]
 
 
+six_states_0 = [0,0]                                                               # defining the six possilbe output state
+six_states_1 = [1,0]
+six_states_2 = [0,1]
+six_states_3 = [1,1]
+six_states_4 = [2,0]
+six_states_5 = [0,2]
+empty_two = []
 
-six_states_0 = n.array([0,0])                                                                # defining the six possilbe output states
-six_states_1 = n.array([1,0])
-six_states_2 = n.array([0,1])
-six_states_3 = n.array([1,1])
-six_states_4 = n.array([2,0])
-six_states_5 = n.array([0,2])
-empty = n.array([])
-
-ten_states_0 = n.array([0,0,0,0])                                                           # defining the ten possilbe output states
-ten_states_1 = n.array([1,1,0,0])
-ten_states_2 = n.array([1,0,1,0])
-ten_states_3 = n.array([1,0,0,1])
-ten_states_4 = n.array([0,1,1,0])
-ten_states_5 = n.array([0,1,0,1])
-ten_states_6 = n.array([0,0,1,1])
-ten_states_7= n.array([2,0,0,0])
-ten_states_8 = n.array([0,2,0,0])
-ten_states_9= n.array([0,0,2,0])
-ten_states_10 = n.array([0,0,0,2])
-
+ten_states_0 = [0,0,0,0]                                                        # defining the ten possilbe output state
+ten_states_1 = [1,1,0,0]
+ten_states_2 = [1,0,1,0]
+ten_states_3 = [1,0,0,1]
+ten_states_4 = [0,1,1,0]
+ten_states_5 = [0,1,0,1]
+ten_states_6 = [0,0,1,1]
+ten_states_7= [2,0,0,0]
+ten_states_8 = [0,2,0,0]
+ten_states_9= [0,0,2,0]
+ten_states_10 = [0,0,0,2]
 
 
 TenStateBasis = [ten_states_1,ten_states_2,ten_states_3,ten_states_4,ten_states_5,ten_states_6,ten_states_7,ten_states_8,ten_states_9,ten_states_10]
+TenEmptyBasis = [ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0]
 TenZeroCoeffs = [0,0,0,0,0,0,0,0,0,0]
+
+
+
+def ordering(L):        # L is a ket like [1,0,0,1]
+    if L == [1,1,0,0]:
+        position = 0
+    elif L == [1,0,1,0]:
+        position = 1
+    elif L == [1,0,0,1]:
+        position = 2
+    elif L == [0,1,1,0]:
+        position = 3
+    elif L == [0,1,0,1]:
+        position = 4
+    elif L == [0,0,1,1]:
+        position = 5
+    elif L == [2,0,0,0]:
+        position = 6
+    elif L == [0,2,0,0]:
+        position = 7
+    elif L == [0,0,2,0]:
+        position = 8
+    elif L == [0,0,0,2]:
+        position = 9
+    return position
 
 
 
@@ -172,26 +197,12 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs, phi = 3000):
 
 
 
-def ordering(L):        # L is a ket like [1,0,0,1]
-    if L == [1,1,0,0]:
-        position = 0
-    elif L == [1,0,1,0]:
-        position = 1
-    elif L == [1,0,0,1]:
-        position = 2
-    elif L == [0,1,1,0]:
-        position = 3
-    elif L == [0,1,0,1]:
-        position = 4
-    elif L == [0,0,1,1]:
-        position = 5
-    elif L == [2,0,0,0]:
-        position = 6
-    elif L == [0,2,0,0]:
-        position = 7
-    elif L == [0,0,2,0]:
-        position = 8
-    elif L == [0,0,0,2]:
-        position = 9
-    return position
+
+
+# print(MatrixAction('12',[[1,0,0,1]],[1]))
+
+
+
+
+
 

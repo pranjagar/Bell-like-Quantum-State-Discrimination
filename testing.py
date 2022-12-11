@@ -442,7 +442,7 @@ for i in range(len(Big_discrimination_list)):
         Good_lists.append(Big_discrimination_list[i])
         Good_choices.append(i)           # so choices are counted from zero, not 1.  
 
-print((Big_discrimination_list))
+# print((Big_discrimination_list))
 # print(Good_lists)
 # print(Good_choices)
 
@@ -480,3 +480,4 @@ def AvgProbability(L):
 # print(AvgProbability(test))       # ex usage
 
 # print(InterferometerResult('phiplus','out' ,Splitter_combinations_list[89]))
+print(MatrixAction('12', [[1,0,0,1]],[1]))

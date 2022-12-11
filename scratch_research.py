@@ -1,31 +1,14 @@
 
 from matplotlib.dates import ConciseDateConverter
 
-import sympy as sym
 import numpy as n
 import random as r
 import matplotlib.pyplot as plt
 from pyparsing import original_text_for
 import scipy.constants as const
 import math as m
+import sympy as sym
 
-
-
-
-
-
-
-# phi_combinations_list = []                                                                        
-# phi_values = [0, (m.pi)/2, (m.pi)/4, m.pi, -(m.pi/4)]           # these five possible selections for each splitter
-# length = len(phi_values)
-# for i in range(length):              # creating all possible combinations, the big phi list
-#     for j in range(length):
-#         for k in range(length):
-#             for l in range(length):
-#                 for o in range(length):
-#                     for w in range(length):
-#                         combination = [phi_values[i],phi_values[j],phi_values[k],phi_values[l],phi_values[o],phi_values[w]]
-#                         phi_combinations_list.append(combination)
 
 
 
@@ -53,10 +36,29 @@ phi_values_symbols = [phi0,phi1,phi2,phi3,phi4]
 
 
 
+mydict = [0 , "Apple", 1 , "Orange", [1,5,7,0]]
+
+import Functions_module as fn
+from Functions_module import MatrixAction
+import comp_phys_project_rough01 as comp
+from comp_phys_project_rough01 import create_ten_lists
+# print(type(fn.TenEmptyBasis.tolist()))
+
+V = [fn.ten_states_0]
+print(f'For------0--------------')
+c = sym.symbols('c')
+C = [c]
+
+index = '12'
+
+V_new = MatrixAction(index, V,C)[0]
+C_new = MatrixAction(index, V,C)[1]
+
+# print(f'{V_new}{C_new}')
+print(create_ten_lists(V_new,C_new))
 
 
-
-
+print('------------end-------------------')
 
 
 

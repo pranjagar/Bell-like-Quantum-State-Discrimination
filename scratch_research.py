@@ -55,7 +55,12 @@ V_new = MatrixAction(index, V,C)[0]
 C_new = MatrixAction(index, V,C)[1]
 
 # print(f'{V_new}{C_new}')
-print(create_ten_lists(V_new,C_new))
+# print(create_ten_lists(V_new,C_new))
+
+
+print(float(sym.sqrt(2)))
+
+
 
 
 print('------------end-------------------')

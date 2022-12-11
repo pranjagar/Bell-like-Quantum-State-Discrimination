@@ -4,12 +4,52 @@ import numpy as np
 import random as rand
 import math as m
 import sympy as sym
-
+import sympy.printing as printing
 import sys
 sys.path.append('C:/Users/pranj/Desktop/Python/Research_python')
 import Functions_module_new as fn 
 import Data
 
+
+""" 
+
+def equations12(v,c, angle = False):            # v,c are vector, corresponding coeff. 
+    if angle is not False:
+        if type(angle) is float or type(angle) is int:
+            c_phi,s_phi = m.cos(angle),m.sin(angle)
+        elif type(angle) is str:
+            print('please input a number for angle!!')
+    elif angle is False:
+        phi, c_phi, s_phi = sym.symbols('phi, cos(phi), sin(phi)')
+
+    if list(v) == fn.ten_states_1: 
+        C = [c*(-r12**2 + t12**2), 0, 0, 0, 0, 0, 1.4142135623731*c*r12*t12, -1.4142135623731*c*r12*t12, 0, 0]                    # TO BE CHECKED with the notes
+    elif list(v) == fn.ten_states_2: 
+        C = [0, c*t12, 0, -c*r12, 0, 0, 0, 0, 0, 0]                    # TO BE CHECKED by printing and comparing with notes
+    elif list(v) == fn.ten_states_3:                                # equations for the ten possible states input.
+        C = [0,0,c*c_phi,0,c*(-s_phi),0,0,0,0,0]                    
+    elif list(v) == fn.ten_states_4: 
+        C = [0,c*(r12),0,c*t12,0,0,0,0,0,0]                    
+    elif list(v) == fn.ten_states_5: 
+        C = [0, 0, c*r12, 0, c*t12, 0, 0, 0, 0, 0]                    
+    elif list(v) == fn.ten_states_6: 
+        C = [0, 0, 0, 0, 0, c, 0, 0, 0, 0]                    
+    elif list(v) == fn.ten_states_7: 
+        C = [-1.4142135623731*c*r12*t12, 0, 0, 0, 0, 0, c*t12**2, c*r12**2, 0, 0]                    
+    elif list(v) == fn.ten_states_8: 
+        C =  [1.4142135623731*c*r12*t12, 0, 0, 0, 0, 0, c*r12**2, c*t12**2, 0, 0]                   
+    elif list(v) == fn.ten_states_9: 
+        C = [0, 0, 0, 0, 0, 0, 0, 0, c, 0]                    
+    elif list(v) == fn.ten_states_10: 
+        C = [0, 0, 0, 0, 0, 0, 0, 0, 0, c]                    
+
+    if angle is False:                      # returning the coeff list
+        return C
+    else:
+        return fn.rounding(C)
+    # print(equations12([1,0,0,1],.5,np.pi/2))          # Example use
+    
+"""
 
 
 def Toss():
@@ -37,9 +77,6 @@ def Toss(x):
     H, T = outcomes.count('H'), outcomes.count('T')
     return [H/T, H+T]
 
-
-
-
 def create_ten_lists(V,C):
     new_V = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     new_C = [0,0,0,0,0,0,0,0,0,0]
@@ -51,55 +88,48 @@ def create_ten_lists(V,C):
     return [new_V,new_C]
 
 
+t12,r12 = sym.symbols('t12,r12')
+phi = sym.symbols('phi')
 
-def equations12(v,c, phi = False):            # v,c are vector, corresponding coeff. 
-    t12,r12 = sym.symbols('t12,r12')
+# calling angle phi for python typing purposes
 
-    if phi is not False:
-        if type(phi) is float or type(phi) is int:
-            t12,r12 = m.cos(phi),m.sin(phi)
-        elif type(phi) is str:
-            print('please input a number for phi!!')
-    
-    # if list(v) == [1,0,0,1]:                                # equations for the ten possible states input.
+def equations12(v,c, angle = False):            # v,c are vector, corresponding coeff. 
+    if angle is not False:
+        if type(angle) is float or type(angle) is int:
+            phi = angle
+        elif type(angle) is str:
+            print('please input a number for angle!!')
+    else:
+        phi = sym.symbols('phi')
+
     if list(v) == fn.ten_states_1: 
-        C = [c*(-r12**2 + t12**2), 0, 0, 0, 0, 0, 1.4142135623731*c*r12*t12, -1.4142135623731*c*r12*t12, 0, 0]                    # TO BE CHECKED with the notes
-        
+        C = [c*(sym.cos(2*phi)), 0, 0, 0, 0, 0, c*sym.sin(2*phi)/sym.sqrt(2), -c*sym.sin(2*phi)/sym.sqrt(2), 0, 0]                    # TO BE CHECKED with the notes
     elif list(v) == fn.ten_states_2: 
-        C = [0, c*t12, 0, -c*r12, 0, 0, 0, 0, 0, 0]                    # TO BE CHECKED by printing and comparing with notes
-
+        C = [0, c*sym.cos(phi), 0, -c*sym.cos(phi), 0, 0, 0, 0, 0, 0]                    # TO BE CHECKED by printing and comparing with notes
     elif list(v) == fn.ten_states_3:                                # equations for the ten possible states input.
-        C = [0,0,c*t12,0,c*(-r12),0,0,0,0,0]                    
-        
+        C = [0,0,c*sym.cos(phi),0,c*(-sym.sin(phi)),0,0,0,0,0]                    
     elif list(v) == fn.ten_states_4: 
-        C = [0,c*(r12),0,c*t12,0,0,0,0,0,0]                    
-
-
+        C = [0,c*(sym.cos(phi)),0,c*sym.cos(phi),0,0,0,0,0,0]                    
     elif list(v) == fn.ten_states_5: 
-        C = [0, 0, c*r12, 0, c*t12, 0, 0, 0, 0, 0]                    
-
+        C = [0, 0, c*sym.cos(phi), 0, c*sym.cos(phi), 0, 0, 0, 0, 0]                    
     elif list(v) == fn.ten_states_6: 
         C = [0, 0, 0, 0, 0, c, 0, 0, 0, 0]                    
-        
     elif list(v) == fn.ten_states_7: 
-        C = [-1.4142135623731*c*r12*t12, 0, 0, 0, 0, 0, c*t12**2, c*r12**2, 0, 0]                    
-
+        C = [-c*sym.sin(2*phi)/sym.sqrt(2), 0, 0, 0, 0, 0, c*sym.cos(phi)**2, c*sym.sin(phi)**2, 0, 0]                    
     elif list(v) == fn.ten_states_8: 
-        C =  [1.4142135623731*c*r12*t12, 0, 0, 0, 0, 0, c*r12**2, c*t12**2, 0, 0]                   
-        
+        C =  [c*sym.sin(2*phi)/sym.sqrt(2), 0, 0, 0, 0, 0, c*sym.cos(phi)**2, c*sym.cos(phi)**2, 0, 0]                   
     elif list(v) == fn.ten_states_9: 
         C = [0, 0, 0, 0, 0, 0, 0, 0, c, 0]                    
-        
     elif list(v) == fn.ten_states_10: 
         C = [0, 0, 0, 0, 0, 0, 0, 0, 0, c]                    
-        
-    # elif list(v) == fn.ten_states_0: 
-    #     C =                     
 
-    return C
+    if angle is False:                      # returning the coeff list
+        return C
+    else:
+        return fn.rounding(C)
+    # print(equations12([1,1,0,0],.5))          # Example use
+    
 
-# print(equations12([1,0,0,1],1/(m.sqrt(2))))
-# print(equations12([2,0,0,0],1))
 
 def Matrix12(V,C,phi = False):
     ten_V = create_ten_lists(V,C)[0]

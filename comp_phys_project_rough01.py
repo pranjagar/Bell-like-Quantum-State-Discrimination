@@ -9,7 +9,7 @@ import sys
 sys.path.append('C:/Users/pranj/Desktop/Python/Research_python')
 import Functions_module_new as fn 
 # import Data
-from Functions_module_new import MatrixAction
+from Functions_module_new import MatrixAction_old
 
 """ 
 
@@ -298,7 +298,7 @@ def equations34(v,c,angle = False):
 
 
 # print(equations12([1,0,1,0], 1/(m.sqrt(2))))          # Example use
-# print(equations13([1,0,1,0],.5, np.pi/8))          # Example use
+
 
 
 belltest_V = [[1,0,1,0],[0,1,0,1]]
@@ -315,7 +315,7 @@ def Matrix12(V,C, angle12 = False):
 
 # belltest_V = [[1,0,0,1],[0,1,1,0]]
 # belltest_C = [1/(m.sqrt(2)),1/(m.sqrt(2))]
-print(Matrix12(belltest_V,belltest_C, np.pi/2))
+print(Matrix12(belltest_V,belltest_C))
 
 
 

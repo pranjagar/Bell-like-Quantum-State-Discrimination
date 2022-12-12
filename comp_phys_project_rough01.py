@@ -8,8 +8,8 @@ import sympy.printing as printing
 import sys
 sys.path.append('C:/Users/pranj/Desktop/Python/Research_python')
 import Functions_module_new as fn 
-import Data
-
+# import Data
+from Functions_module_new import MatrixAction
 
 """ 
 
@@ -119,30 +119,205 @@ def equations12(v,c, angle = False):            # v,c are vector, corresponding 
     elif list(v) == fn.ten_states_9: 
         C = [0, 0, 0, 0, 0, 0, 0, 0, c, 0]                    
     elif list(v) == fn.ten_states_10: 
-        C = [0, 0, 0, 0, 0, 0, 0, 0, 0, c]                    
+        C = [0, 0, 0, 0, 0, 0, 0, 0, 0, c]   
 
     if angle is False:                      # returning the coeff list
         return C
     else:
         return fn.rounding(C)
 
-    
-print(equations12([1,1,0,0],.5, np.pi/2))          # Example use
+def equations13(v,c,angle = False):
+    if angle is not False:
+        if type(angle) is float or type(angle) is int:
+            phi = angle
+        elif type(angle) is str:
+            print('please input a number for angle!!')
+    else:
+        phi = sym.symbols('phi')
+    if list(v) == fn.ten_states_1: 
+        C = [c*sym.cos(phi), 0, 0, -c*sym.sin(phi), 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_2: 
+        C = [0, c*(sym.cos(2*phi)), 0, 0, 0, 0, c*sym.sin(2*phi)/sym.sqrt(2), 0, -c*sym.sin(2*phi)/sym.sqrt(2), 0]
+    elif list(v) == fn.ten_states_3:                                # equations for the ten possible states input.
+        C = [0, 0, c*sym.cos(phi), 0, 0, -c*sym.sin(phi), 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_4: 
+        C = [c*sym.sin(phi), 0, 0, c*sym.cos(phi), 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_5: 
+        C = [0, 0, 0, 0, c, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_6: 
+        C = [0, 0, c*sym.sin(phi), 0, 0, c*sym.cos(phi), 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_7: 
+        C =[0, -c*sym.sin(2*phi)/sym.sqrt(2), 0, 0, 0, 0, c*sym.cos(phi)**2, 0, c*sym.sin(phi)**2, 0]
+    elif list(v) == fn.ten_states_8: 
+        C = [0, 0, 0, 0, 0, 0, 0, c, 0, 0]
+    elif list(v) == fn.ten_states_9: 
+        C = [0, c*sym.sin(2*phi)/sym.sqrt(2), 0, 0, 0, 0, c*sym.sin(phi)**2, 0, c*sym.cos(phi)**2, 0]
+    elif list(v) == fn.ten_states_10: 
+        C = [0, 0, 0, 0, 0, 0, 0, 0, 0, c]
+
+    if angle is False:                      # returning the coeff list
+        return C
+    else:
+        return fn.rounding(C)
+
+def equations14(v,c,angle = False):
+    if angle is not False:
+        if type(angle) is float or type(angle) is int:
+            phi = angle
+        elif type(angle) is str:
+            print('please input a number for angle!!')
+    else:
+        phi = sym.symbols('phi')
+    if list(v) == fn.ten_states_1: 
+        C = [c*sym.cos(phi), 0, 0, 0, -c*sym.sin(phi), 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_2: 
+        C = [0, c*sym.cos(phi), 0, 0, 0, -c*sym.sin(phi), 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_3:                                # equations for the ten possible states input.
+        C = [0, 0, c*(sym.cos(phi)**2 - sym.sin(phi)**2), 0, 0, 0, 1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, -1.4142135623731*c*sym.cos(phi)*sym.sin(phi)]
+    elif list(v) == fn.ten_states_4: 
+        C = [0, 0, 0, c, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_5: 
+        C = [c*sym.sin(phi), 0, 0, 0, c*sym.cos(phi), 0, 0, 0, 0, 0] 
+    elif list(v) == fn.ten_states_6: 
+        C = [0, c*sym.sin(phi), 0, 0, 0, c*sym.cos(phi), 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_7: 
+        C = [0, 0, -1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, 0, c*sym.cos(phi)**2, 0, 0, c*sym.sin(phi)**2]
+    elif list(v) == fn.ten_states_8: 
+        C = [0, 0, 0, 0, 0, 0, 0, c, 0, 0] 
+    elif list(v) == fn.ten_states_9: 
+        C = [0, 0, 0, 0, 0, 0, 0, 0, c, 0]
+    elif list(v) == fn.ten_states_10: 
+        C = [0, 0, 1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, 0, c*sym.sin(phi)**2, 0, 0, c*sym.cos(phi)**2]
+
+    if angle is False:                      # returning the coeff list
+        return C
+    else:
+        return fn.rounding(C)
+
+def equations23(v,c,angle = False):
+    if angle is not False:
+        if type(angle) is float or type(angle) is int:
+            phi = angle
+        elif type(angle) is str:
+            print('please input a number for angle!!')
+    else:
+        phi = sym.symbols('phi')
+    if list(v) == fn.ten_states_1: 
+        C = [c*sym.cos(phi), -c*sym.sin(phi), 0, 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_2: 
+        C = [c*sym.sin(phi), c*sym.cos(phi), 0, 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_3:                                # equations for the ten possible states input.
+        C = [0, 0, c, 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_4: 
+        C = [0, 0, 0, c*(sym.cos(phi)**2 - sym.sin(phi)**2), 0, 0, 0, 1.4142135623731*c*sym.cos(phi)*sym.sin(phi), -1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0]
+    elif list(v) == fn.ten_states_5: 
+        C = [0, 0, 0, 0, c*sym.cos(phi), -c*sym.sin(phi), 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_6: 
+        C = [0, 0, 0, 0, c*sym.sin(phi), c*sym.cos(phi), 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_7: 
+        C = [0, 0, 0, 0, 0, 0, c, 0, 0, 0]
+    elif list(v) == fn.ten_states_8: 
+        C = [0, 0, 0, -1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, 0, c*sym.cos(phi)**2, c*sym.sin(phi)**2, 0]
+    elif list(v) == fn.ten_states_9: 
+        C = [0, 0, 0, 1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, 0, c*sym.sin(phi)**2, c*sym.cos(phi)**2, 0]
+    elif list(v) == fn.ten_states_10: 
+        C = [0, 0, 0, 0, 0, 0, 0, 0, 0, c]
+
+    if angle is False:                      # returning the coeff list
+        return C
+    else:
+        return fn.rounding(C)
+
+def equations24(v,c,angle = False):
+    if angle is not False:
+        if type(angle) is float or type(angle) is int:
+            phi = angle
+        elif type(angle) is str:
+            print('please input a number for angle!!')
+    else:
+        phi = sym.symbols('phi')
+    if list(v) == fn.ten_states_1: 
+        C = [c*sym.cos(phi), 0, -c*sym.sin(phi), 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_2: 
+        C = [0, c, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_3:                                # equations for the ten possible states input.
+        C = [c*sym.sin(phi), 0, c*sym.cos(phi), 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_4: 
+        C = [0, 0, 0, c*sym.cos(phi), 0, -c*sym.sin(phi), 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_5: 
+        C = [0, 0, 0, 0, c*(sym.cos(phi)**2 - sym.sin(phi)**2), 0, 0, 1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, -1.4142135623731*c*sym.cos(phi)*sym.sin(phi)]
+    elif list(v) == fn.ten_states_6: 
+        C = [0, 0, 0, c*sym.sin(phi), 0, c*sym.cos(phi), 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_7: 
+        C = [0, 0, 0, 0, 0, 0, c, 0, 0, 0]
+    elif list(v) == fn.ten_states_8: 
+        C = [0, 0, 0, 0, -1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, c*sym.cos(phi)**2, 0, c*sym.sin(phi)**2]
+    elif list(v) == fn.ten_states_9: 
+        C = [0, 0, 0, 0, 0, 0, 0, 0, c, 0]
+    elif list(v) == fn.ten_states_10: 
+        C = [0, 0, 0, 0, 1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, c*sym.sin(phi)**2, 0, c*sym.cos(phi)**2]
+
+    if angle is False:                      # returning the coeff list
+        return C
+    else:
+        return fn.rounding(C)
+
+def equations34(v,c,angle = False):
+    if angle is not False:
+        if type(angle) is float or type(angle) is int:
+            phi = angle
+        elif type(angle) is str:
+            print('please input a number for angle!!')
+    else:
+        phi = sym.symbols('phi')
+    if list(v) == fn.ten_states_1: 
+        C = [c, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_2: 
+        C = [0, c*sym.cos(phi), -c*sym.sin(phi), 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_3:                                # equations for the ten possible states input.
+        C = [0, c*sym.sin(phi), c*sym.cos(phi), 0, 0, 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_4: 
+        C = [0, 0, 0, c*sym.cos(phi), -c*sym.sin(phi), 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_5: 
+        C = [0, 0, 0, c*sym.sin(phi), c*sym.cos(phi), 0, 0, 0, 0, 0]
+    elif list(v) == fn.ten_states_6: 
+        C = [0, 0, 0, 0, 0, c*(sym.cos(phi)**2 - sym.sin(phi)**2), 0, 0, 1.4142135623731*c*sym.cos(phi)*sym.sin(phi), -1.4142135623731*c*sym.cos(phi)*sym.sin(phi)]
+    elif list(v) == fn.ten_states_7: 
+        C = [0, 0, 0, 0, 0, 0, c, 0, 0, 0]
+    elif list(v) == fn.ten_states_8: 
+        C = [0, 0, 0, 0, 0, 0, 0, c, 0, 0]
+    elif list(v) == fn.ten_states_9: 
+        C = [0, 0, 0, 0, 0, -1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, c*sym.cos(phi)**2, c*sym.sin(phi)**2]
+    elif list(v) == fn.ten_states_10: 
+        C = [0, 0, 0, 0, 0, 1.4142135623731*c*sym.cos(phi)*sym.sin(phi), 0, 0, c*sym.sin(phi)**2, c*sym.cos(phi)**2]
+
+    if angle is False:                      # returning the coeff list
+        return C
+    else:
+        return fn.rounding(C)
 
 
-def Matrix12(V,C,phi = False):
+
+
+# print(equations12([1,0,1,0], 1/(m.sqrt(2))))          # Example use
+# print(equations13([1,0,1,0],.5, np.pi/8))          # Example use
+
+
+belltest_V = [[1,0,1,0],[0,1,0,1]]
+belltest_C = [1/(m.sqrt(2)),1/(m.sqrt(2))]
+def Matrix12(V,C, angle12 = False):
     ten_V = create_ten_lists(V,C)[0]
     ten_C = create_ten_lists(V,C)[1]
     result_C = np.array([0,0,0,0,0,0,0,0,0,0])
     for i in range(len(ten_V)):
-        print(equations12(ten_V[i],ten_C[i], phi))
-        result_C = result_C+ np.array(equations12(ten_V[i],ten_C[i], phi))
+        # result_C = result_C+ np.array(equations12(ten_V[i],ten_C[i], angle12))
+        print(equations12(ten_V[0],ten_C[0]))
         # print(f'print(equations12({ten_V[i]},{ten_C[i]}))')
     return list(result_C)
 
 # belltest_V = [[1,0,0,1],[0,1,1,0]]
 # belltest_C = [1/(m.sqrt(2)),1/(m.sqrt(2))]
-# print(Matrix12(belltest_V,belltest_C))
+print(Matrix12(belltest_V,belltest_C))
 
 
 

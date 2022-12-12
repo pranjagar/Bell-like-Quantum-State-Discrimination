@@ -15,5 +15,5 @@ import sys
 
 
 
-phis = [sym.pi/2,0,sym.pi/4,sym.pi/4,sym.pi/4,sym.pi/2]
+# phis = [sym.pi/2,0,sym.pi/4,sym.pi/4,sym.pi/4,sym.pi/2]
 

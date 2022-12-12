@@ -154,7 +154,7 @@ for i in fn.TenStateBasis:
     V = [i]
     c = sym.symbols('c')
     C = [c]
-    index = '34'
+    index = '12'
     V_new = MatrixActiontemp(index, V,C,2000)[0]
     C_new = MatrixActiontemp(index, V,C,2000)[1]
     # 

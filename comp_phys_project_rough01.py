@@ -84,8 +84,8 @@ def create_ten_lists(V,C):
     for i in range(len(V)):
         pos = fn.TenStateBasis.index(V[i])      # findinfg position of each vector in basis list
         new_C[pos] += C[i]           # creating corresponding ten coeff list
-        new_V[pos] = V[i]            # corresponding ten basis list with oither vecotrs zero
-    return [new_V,new_C]
+        # new_V[pos] = V[i]            # corresponding ten basis list with oither vecotrs zero
+    return [ten_V,new_C]
 
 
 
@@ -103,19 +103,19 @@ def equations12(v,c, angle = False):            # v,c are vector, corresponding 
     if list(v) == fn.ten_states_1: 
         C = [c*(sym.cos(2*phi)), 0, 0, 0, 0, 0, c*sym.sin(2*phi)/sym.sqrt(2), -c*sym.sin(2*phi)/sym.sqrt(2), 0, 0]                    # TO BE CHECKED with the notes
     elif list(v) == fn.ten_states_2: 
-        C = [0, c*sym.cos(phi), 0, -c*sym.cos(phi), 0, 0, 0, 0, 0, 0]                    # TO BE CHECKED by printing and comparing with notes
+        C = [0, c*sym.cos(phi), 0, -c*sym.sin(phi), 0, 0, 0, 0, 0, 0]                    # TO BE CHECKED by printing and comparing with notes
     elif list(v) == fn.ten_states_3:                                # equations for the ten possible states input.
         C = [0,0,c*sym.cos(phi),0,c*(-sym.sin(phi)),0,0,0,0,0]                    
     elif list(v) == fn.ten_states_4: 
-        C = [0,c*(sym.cos(phi)),0,c*sym.cos(phi),0,0,0,0,0,0]                    
+        C = [0,c*(sym.sin(phi)),0,c*sym.cos(phi),0,0,0,0,0,0]                    
     elif list(v) == fn.ten_states_5: 
-        C = [0, 0, c*sym.cos(phi), 0, c*sym.cos(phi), 0, 0, 0, 0, 0]                    
+        C = [0, 0, c*sym.sin(phi), 0, c*sym.cos(phi), 0, 0, 0, 0, 0]                    
     elif list(v) == fn.ten_states_6: 
         C = [0, 0, 0, 0, 0, c, 0, 0, 0, 0]                    
     elif list(v) == fn.ten_states_7: 
         C = [-c*sym.sin(2*phi)/sym.sqrt(2), 0, 0, 0, 0, 0, c*sym.cos(phi)**2, c*sym.sin(phi)**2, 0, 0]                    
     elif list(v) == fn.ten_states_8: 
-        C =  [c*sym.sin(2*phi)/sym.sqrt(2), 0, 0, 0, 0, 0, c*sym.cos(phi)**2, c*sym.cos(phi)**2, 0, 0]                   
+        C =  [c*sym.sin(2*phi)/sym.sqrt(2), 0, 0, 0, 0, 0, c*sym.sin(phi)**2, c*sym.cos(phi)**2, 0, 0]                   
     elif list(v) == fn.ten_states_9: 
         C = [0, 0, 0, 0, 0, 0, 0, 0, c, 0]                    
     elif list(v) == fn.ten_states_10: 
@@ -297,27 +297,25 @@ def equations34(v,c,angle = False):
         return fn.rounding(C)
 
 
-
-
 # print(equations12([1,0,1,0], 1/(m.sqrt(2))))          # Example use
 # print(equations13([1,0,1,0],.5, np.pi/8))          # Example use
 
 
 belltest_V = [[1,0,1,0],[0,1,0,1]]
-belltest_C = [1/(m.sqrt(2)),1/(m.sqrt(2))]
+belltest_C = [1/(sym.sqrt(2)),1/(sym.sqrt(2))]
 def Matrix12(V,C, angle12 = False):
     ten_V = create_ten_lists(V,C)[0]
     ten_C = create_ten_lists(V,C)[1]
     result_C = np.array([0,0,0,0,0,0,0,0,0,0])
     for i in range(len(ten_V)):
-        # result_C = result_C+ np.array(equations12(ten_V[i],ten_C[i], angle12))
-        print(equations12(ten_V[0],ten_C[0]))
+        result_C = result_C+ np.array(equations12(ten_V[i],ten_C[i], angle12))
+        print(result_C)
         # print(f'print(equations12({ten_V[i]},{ten_C[i]}))')
-    return list(result_C)
+    return [list(ten_V),list(result_C)]
 
 # belltest_V = [[1,0,0,1],[0,1,1,0]]
 # belltest_C = [1/(m.sqrt(2)),1/(m.sqrt(2))]
-print(Matrix12(belltest_V,belltest_C))
+print(Matrix12(belltest_V,belltest_C, np.pi/2))
 
 
 

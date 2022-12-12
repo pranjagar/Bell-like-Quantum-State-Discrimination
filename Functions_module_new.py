@@ -20,7 +20,7 @@ def rounding(L, digits = 3):                        #L is a list of numbers, dig
 # print(rounding([.657,55.6789]))       # Ex.
 
 
-# print(rounding([.11,.01,.09, 2.3, 4.5, 6.7, 3.3, 1.3,2.1, 2.0, 1.8, .3, -.3],2))
+print(rounding([.11,.01,.09, 2.3, 4.5, 6.7, 3.3, 1.3,2.1, 2.0, 1.8, .3, -.3],2))
 
 
 
@@ -33,9 +33,9 @@ six_states_5 = [0,2]
 empty_two = []
 
 ten_states_0 = [0,0,0,0]                                                        # defining the ten possilbe output state
-ten_states_1 = [1,1,0,0]
 ten_states_2 = [1,0,1,0]
 ten_states_3 = [1,0,0,1]
+ten_states_1 = [1,1,0,0]
 ten_states_4 = [0,1,1,0]
 ten_states_5 = [0,1,0,1]
 ten_states_6 = [0,0,1,1]

@@ -3,24 +3,26 @@ import pandas as pd
 import math as m
 import sympy as sym
 import random as rand
-import Functions_module as fn
-import Data
+import scratch_research as sr
+# import Data
 
-from Functions_module import MatrixAction, SystemAction
+from scratch_research import MatrixAction, SystemAction
 
 
-bell_V = [fn.phiplus_V,fn.phiminus_V,fn.psiplus_V,fn.psiminus_V]
-bell_C = [fn.phiplus_C,fn.phiminus_C,fn.psiplus_C,fn.psiminus_C]
+bell_V = [sr.phiplus_V,sr.phiminus_V,sr.psiplus_V,sr.psiminus_V]
+bell_C = [sr.phiplus_C,sr.phiminus_C,sr.psiplus_C,sr.psiminus_C]
 
 
 y = [12,13,14,23,24,34]
 angles = [sym.pi/2,0,sym.pi/4,sym.pi/4,sym.pi/4,sym.pi/2]
 
-for i in range(len(bell_C)):
-    a = (SystemAction(bell_V[i],bell_C[i],angles, 34))
-    # z= [f'{a[1][j]}*{a[0][j]}' for j in range(len(a[0]))]
-    print(a[1])
-    print('')
+for i in y:
+    if i == 34:
+        # a = [k for k in SystemAction(bell_V[2],bell_C[2],angles, i)[1] if k != 0]
+        print(SystemAction(bell_V[2],bell_C[2],angles, i))
+        # z= [f'{a[1][j]}*{a[0][j]}' for j in range(len(a[0]))]
+        # print(a)
+print('above for state psi+')
 
 #Chekcs out:  phiplus
 

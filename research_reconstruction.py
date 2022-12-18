@@ -41,18 +41,7 @@ psiminus_like_C = [sym.sin(radians(theta)), -sym.cos(radians(theta))]
 bell_like_V = [phiplus_like_V,phiminus_like_V,psiplus_like_V,psiminus_like_V]
 bell_like_C = [phiplus_like_C,phiminus_like_C,psiplus_like_C,psiminus_like_C]
 
-
-for i in y:                             # loop to create four raw output states
-    if i == 34:
-        # a = [k for k in SystemAction(bell_V[2],bell_C[2],angles, i)[1] if k != 0]
-        print(SystemAction(bell_V[1],bell_C[1],angles, i, True))
-        print('')
-        print(SystemAction(bell_like_V[1],bell_like_C[1],angles, i, True))
-        # z= [f'{a[1][j]}*{a[0][j]}' for j in range(len(a[0]))]
-
-
-
-
+print(fn.SystemAction(psiminus_V,psiminus_C, [0,sym.pi/2,sym.pi/4,0,0,0], 7))
 
 
 

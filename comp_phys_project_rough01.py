@@ -8,7 +8,7 @@ import sympy.printing as printing
 import sys
 import Functions_module_beta as fn 
 from Functions_module_beta import MatrixAction_old
-# import Data
+import Data
 sys.path.append('C:/Users/pranj/Desktop/Python/Research_python')
 
 
@@ -99,7 +99,7 @@ def MatrixAction_full(matrix_index, inputstate, phi):            # matrixindex i
     full_out[matrix_index_12_2-1] = reduced_out[1]
     return full_out
 
-def SystemAction(inputstate ,splitter_comb):                    # inputstate is a vector like [1,0,0,1], splitter_comb is a list of six splitter angles
+def SystemAction_classical(inputstate ,splitter_comb):                    # inputstate is a vector like [1,0,0,1], splitter_comb is a list of six splitter angles
     M12_out = MatrixAction_full('12', inputstate, splitter_comb[0])
     M13_out = MatrixAction_full('13', M12_out, splitter_comb[1])
     M14_out = MatrixAction_full('14', M13_out, splitter_comb[2])
@@ -112,27 +112,6 @@ splitters = [m.pi/4,m.pi/4,m.pi/4,m.pi/4,m.pi/4,m.pi/4]
 # SystemAction(fn.ten_states_9, splitters)
     
 
-# loop for checking probabilities
-# for i in range(10):
-#     x2 = MatrixAction_full('34',[1,0,1,0],splitters[0])
-#     # print(f' and {x2}')
-#     if x2 == [1,0,1,0]:
-#         counter+=1
-#     elif x2 == [0,0,2,0]:
-#         counter2+=1
-#     elif x2 == [2,0,0,0]:
-#         counter3+=1
-#     elif x2 == [0,1,0,0]:
-#         counter4+=1
-#     elif x2 == [1,0,0,0]:
-#         counter5+=1
-#     elif x2 == [1,0,0,1]:
-#         counter6+=1
-#     else:
-#         counterelse +=1
-
-# print([counter, counter2,counter3,counter4,counter5,counter6,counterelse])
-
 
 
 def probabilities(inputstate_list, coeff_list, splitter_comb, n = 10000):            # n is #of trials
@@ -140,18 +119,21 @@ def probabilities(inputstate_list, coeff_list, splitter_comb, n = 10000):       
     input_prob_list = [abs(i)**2 for i in coeff_list ] 
     for i in range(n):
         collapsed_state = rand.choices(inputstate_list, input_prob_list, k =1)[0]           # [0] coz the choices fn outputs a list but we just want the element
-        counterrr.append(collapsed_state)
-        # print(collapsed_state)
-        out = SystemAction(collapsed_state, splitter_comb)
+        out = SystemAction_classical(collapsed_state, splitter_comb)
         j = fn.TenStateBasis.index(out)             # tells the position where we want to add +1
         numbers[j] +=1
     out_prob_list = [i/n for i in numbers] 
     return out_prob_list
 
 
+bell_V = [fn.phiplus_V,fn.phiminus_V,fn.psiplus_V,fn.psiminus_V]
+bell_C = [fn.phiplus_C,fn.phiminus_C,fn.psiplus_C,fn.psiminus_C]
 
 
 
+print(probabilities(bell_V[0], bell_C[0], splitters))
+
+print(fn.SystemAction(bell_V[0], bell_C[0], splitters, 34, True)[1])
 
 
 

@@ -451,8 +451,8 @@ def SystemAction(V,C, angles = False, stop = 34, roundoff = False):             
         return System_result
     else:
         return [System_result[0], rounding(System_result[1])]
-    # print(SystemAction([[1,0,0,1]],[1], False, 12))     # Ex use#1
-    # print(SystemAction(psiminus_V,psiminus_C, [0,sym.pi/2,sym.pi/4,0,0,0], 14))     # Ex use#2
+    # print(SystemAction([[1,0,0,1]],[1], False, 34, True))     # Ex use#1
+    # print(SystemAction(psiminus_V,psiminus_C, [0,sym.pi/2,sym.pi/4,0,0,0], 23 ))     # Ex use#2
 
 
 

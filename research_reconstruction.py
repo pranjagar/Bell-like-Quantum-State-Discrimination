@@ -3,28 +3,93 @@ import pandas as pd
 import math as m
 import sympy as sym
 import random as rand
-import scratch_research as sr
+import Functions_module_beta as fn
 # import Data
 
-from scratch_research import MatrixAction, SystemAction
+from Functions_module_beta import MatrixAction, SystemAction
 
 
-bell_V = [sr.phiplus_V,sr.phiminus_V,sr.psiplus_V,sr.psiminus_V]
-bell_C = [sr.phiplus_C,sr.phiminus_C,sr.psiplus_C,sr.psiminus_C]
+bell_V = [fn.phiplus_V,fn.phiminus_V,fn.psiplus_V,fn.psiminus_V]
+bell_C = [fn.phiplus_C,fn.phiminus_C,fn.psiplus_C,fn.psiminus_C]
 
 
 y = [12,13,14,23,24,34]
 angles = [sym.pi/2,0,sym.pi/4,sym.pi/4,sym.pi/4,sym.pi/2]
 
-for i in y:
-    if i == 34:
-        # a = [k for k in SystemAction(bell_V[2],bell_C[2],angles, i)[1] if k != 0]
-        print(SystemAction(bell_V[2],bell_C[2],angles, i))
-        # z= [f'{a[1][j]}*{a[0][j]}' for j in range(len(a[0]))]
-        # print(a)
-print('above for state psi+')
 
 #Chekcs out:  phiplus
+
+def radians(degrees):           # degrees  to radians
+    rad = (sym.pi/180)*degrees
+    return rad 
+
+
+theta = sym.symbols('theta')
+theta = 45                                          # theta in degrees, default 45 gives Bell states
+
+phiplus_like_V = [fn.ten_states_2,fn.ten_states_5]
+phiminus_like_V = [fn.ten_states_2,fn.ten_states_5]
+psiplus_like_V = [fn.ten_states_3,fn.ten_states_4]
+psiminus_like_V = [fn.ten_states_3,fn.ten_states_4]
+
+phiplus_like_C = [sym.cos(radians(theta)),sym.sin(radians(theta))]                             # disturbing C slightly away from the perfect ones in bell states, like theta degrees instead of theta
+phiminus_like_C = [sym.sin(radians(theta)), -sym.cos(radians(theta))]
+psiplus_like_C = [sym.cos(radians(theta)),sym.sin(radians(theta))]
+psiminus_like_C = [sym.sin(radians(theta)), -sym.cos(radians(theta))]
+
+
+bell_like_V = [phiplus_like_V,phiminus_like_V,psiplus_like_V,psiminus_like_V]
+bell_like_C = [phiplus_like_C,phiminus_like_C,psiplus_like_C,psiminus_like_C]
+
+
+for i in y:                             # loop to create four raw output states
+    if i == 34:
+        # a = [k for k in SystemAction(bell_V[2],bell_C[2],angles, i)[1] if k != 0]
+        print(SystemAction(bell_V[1],bell_C[1],angles, i, True))
+        print('')
+        print(SystemAction(bell_like_V[1],bell_like_C[1],angles, i, True))
+        # z= [f'{a[1][j]}*{a[0][j]}' for j in range(len(a[0]))]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -62,9 +62,6 @@ psiminus_V =[[1,0,0,1],[0,1,1,0]]
 psiminus_C = [1/(sym.sqrt(2)),-1/(sym.sqrt(2))]
 
 
-
-
-
 def create_ten_lists(V,C):
     new_V = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     new_C = [0,0,0,0,0,0,0,0,0,0]
@@ -74,8 +71,6 @@ def create_ten_lists(V,C):
         new_C[pos] += C[i]           # creating corresponding ten coeff list
         # new_V[pos] = V[i]            # corresponding ten basis list with oither vecotrs zero
     return [ten_V,new_C]
-
-
 
 def ordering(L):        # L is a ket like [1,0,0,1]
     if L == [1,1,0,0]:
@@ -100,7 +95,6 @@ def ordering(L):        # L is a ket like [1,0,0,1]
         position = 9
     return position
 
-
 def MatrixAction_old(matrix_index, input_vectors, input_coeffs, phi = 3000):
     total_index = int(matrix_index)                                                              # finding the numbers 1, 2 ,12 etc so to choose appropriate elts from the full vectors etc.                            
     first_matrix_index = int(matrix_index[0]) 
@@ -108,12 +102,9 @@ def MatrixAction_old(matrix_index, input_vectors, input_coeffs, phi = 3000):
     t = sym.Symbol('t'+f'_{total_index}')                                                        # creating matching coeficients
     r = sym.Symbol('r'+f'_{total_index}')
 
-
-   
     if phi != 3000:
         t = m.cos(phi)
-        r = m.sin(phi)
-        
+        r = m.sin(phi)       
 
     input_state_display = [('(' + str(input_coeffs[i]) + ')*'+ str(input_vectors[i])) for i in range(len(input_coeffs)) if input_coeffs[i] != 0 ]          # list for displaying purpose so its easy to read. it's product of corresponding coeffs and the vectors
     working_states = [[input_vectors[i][first_matrix_index-1], input_vectors[i][second_matrix_index-1]] for i in range(len(input_vectors))]                 # 'reducing' the dimensionality of the given input states, so to apply the 2d matrices
@@ -219,8 +210,6 @@ def MatrixAction_old(matrix_index, input_vectors, input_coeffs, phi = 3000):
     output = [output_vectors_full_reduced, output_coeffs_full_reduced, output_state_display]                                         # final list to be returned by the function, in this form so that it can be looped later on
     return output
 # print(MatrixAction('12',[[1,0,0,1]],[1]))         # Eg use
-
-
 
 def equations12(v,c, angle = False):            # v,c are vector, corresponding coeff. 
     if angle is not False:

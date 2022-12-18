@@ -93,9 +93,7 @@ def MatrixAction_onephoton_reduced(reducedstate, phi= m.pi/4):                # 
     upper = 10000
     x = rand.randint(1,upper)
 
-    if reducedstate != [1,0] and reducedstate != [0,1]:
-        print('bad input. Make sure redueced states is [1,0] or [0,1]!!')
-    elif reducedstate == [1,0]:
+    if reducedstate == [1,0]:
         if x <= prob_t*upper:
             out = [1,0]
         else:
@@ -105,6 +103,8 @@ def MatrixAction_onephoton_reduced(reducedstate, phi= m.pi/4):                # 
             out = [0,1]
         else:
             out = [1,0]
+    elif reducedstate == [0,0]:
+        out = [0,0]
     return out
 
 # print(MatrixAction([0,1],.5))
@@ -112,8 +112,8 @@ def MatrixAction_onephoton_reduced(reducedstate, phi= m.pi/4):                # 
 
 
 def MatrixAction_reduced_complete(reducedstate, phi= m.pi/4):                # reduced state is either [1,0] or [0,1]. phi is splitter angle
-    if reducedstate == [1,0] or reducedstate == [0,1]:
-        out = MatrixAction_onephoton_reduced(reducedstate, phi)
+    if reducedstate == [1,0] or reducedstate == [0,1] or reducedstate == [0,0]:
+        out_full = MatrixAction_onephoton_reduced(reducedstate, phi)
     elif reducedstate == [2,0]:
         out_1 = MatrixAction_onephoton_reduced([1,0],phi)
         out_2 = MatrixAction_onephoton_reduced([1,0],phi)
@@ -126,14 +126,14 @@ def MatrixAction_reduced_complete(reducedstate, phi= m.pi/4):                # r
     
     if reducedstate == [2,0] or reducedstate == [0,2] or reducedstate == [1,1]:
         if out_1 == [1,0] and out_2==[1,0]:
-            out = [2,0]
+            out_full = [2,0]
         elif out_1 == [0,1] and out_2==[0,1]:
-            out = [0,2]
+            out_full = [0,2]
         elif out_1 == [1,0] and out_2==[0,1]:
-            out = [1,1]
+            out_full = [1,1]
         elif out_1 == [0,1] and out_2==[1,0]:
-            out = [1,1]
-    return out
+            out_full = [1,1]
+    return out_full
 
 
 # print(full_MatrixAction([2,0], m.pi/15))
@@ -169,26 +169,28 @@ def SystemAction(inputstate ,splitter_comb):                    # inputstate is 
 
 splitters = [m.pi/4,m.pi/4,m.pi/4,m.pi/4,m.pi/4,m.pi/4]  
     
-# loop for checking probabilities
-for i in range(10):
-    x2 = MatrixAction_full('34',[1,0,1,0],splitters[0])
-    print(f' and {x2}')
-    if x2 == [1,0,1,0]:
-        counter+=1
-    elif x2 == [0,0,2,0]:
-        counter2+=1
-    elif x2 == [2,0,0,0]:
-        counter3+=1
-    elif x2 == [0,1,0,0]:
-        counter4+=1
-    elif x2 == [1,0,0,0]:
-        counter5+=1
-    elif x2 == [1,0,0,1]:
-        counter6+=1
-    else:
-        counterelse +=1
 
-print([counter, counter2,counter3,counter4,counter5,counter6,counterelse])
+
+# loop for checking probabilities
+# for i in range(10):
+#     x2 = MatrixAction_full('34',[1,0,1,0],splitters[0])
+#     # print(f' and {x2}')
+#     if x2 == [1,0,1,0]:
+#         counter+=1
+#     elif x2 == [0,0,2,0]:
+#         counter2+=1
+#     elif x2 == [2,0,0,0]:
+#         counter3+=1
+#     elif x2 == [0,1,0,0]:
+#         counter4+=1
+#     elif x2 == [1,0,0,0]:
+#         counter5+=1
+#     elif x2 == [1,0,0,1]:
+#         counter6+=1
+#     else:
+#         counterelse +=1
+
+# print([counter, counter2,counter3,counter4,counter5,counter6,counterelse])
 
 
 """ 
@@ -218,6 +220,9 @@ print(counter)
     
     
     
+SystemAction([1,0,0,1], splitters)
+
+
     
     
     

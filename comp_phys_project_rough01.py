@@ -134,18 +134,19 @@ splitters = [m.pi/4,m.pi/4,m.pi/4,m.pi/4,m.pi/4,m.pi/4]
 # print([counter, counter2,counter3,counter4,counter5,counter6,counterelse])
 
 
-def probabilities(inputstate, splitter_comb, n = 10000):            # n is #of trials
-    numbers = [0,0,0,0,0,0,0,0,0,0]
 
+def probabilities(inputstate_list, coeff_list, splitter_comb, n = 10000):            # n is #of trials
+    numbers = [0,0,0,0,0,0,0,0,0,0]
+    input_prob_list = [abs(i)**2 for i in coeff_list ] 
     for i in range(n):
-        out = SystemAction(inputstate, splitter_comb)
+        collapsed_state = rand.choices(inputstate_list, input_prob_list, k =1)[0]           # [0] coz the choices fn outputs a list but we just want the element
+        counterrr.append(collapsed_state)
+        # print(collapsed_state)
+        out = SystemAction(collapsed_state, splitter_comb)
         j = fn.TenStateBasis.index(out)             # tells the position where we want to add +1
         numbers[j] +=1
     out_prob_list = [i/n for i in numbers] 
     return out_prob_list
-
-print(f'{probabilities([1,0,0,1], splitters)} and sum is {sum(probabilities([1,0,0,1], splitters))}')
-
 
 
 

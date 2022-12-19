@@ -41,7 +41,7 @@ psiminus_like_C = [sym.sin(radians(theta)), -sym.cos(radians(theta))]
 bell_like_V = [phiplus_like_V,phiminus_like_V,psiplus_like_V,psiminus_like_V]
 bell_like_C = [phiplus_like_C,phiminus_like_C,psiplus_like_C,psiminus_like_C]
 
-print(fn.SystemAction(psiminus_V,psiminus_C, [0,sym.pi/2,sym.pi/4,0,0,0], 7))
+print(fn.SystemAction(bell_V[0],bell_C[0], [0,sym.pi/2,sym.pi/4,0,0,0], 34, True))
 
 
 

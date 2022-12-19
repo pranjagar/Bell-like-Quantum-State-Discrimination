@@ -1,40 +1,22 @@
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import numpy as np
 import random as rand
 import math as m
 import sympy as sym
-import sympy.printing as printing
 import sys
 import Functions_module_beta as fn 
 from Functions_module_beta import MatrixAction_old
 import Data
 sys.path.append('C:/Users/pranj/Desktop/Python/Research_python')
+from Data import big_phi, big_phi_abstract
+
+
+choice159 =[0, 1, 1/(np.sqrt(2)), 1/(np.sqrt(2)), 1/(np.sqrt(2)), 0]
+choice401 =[1, 1, 1/(np.sqrt(2)), 1/(np.sqrt(2)), 1, 1/(np.sqrt(2))]
+choice449 =[1, 1/(np.sqrt(2)), 1, 1, 1/(np.sqrt(2)), 1/(np.sqrt(2))]
 
 
 
-# def Toss():
-#     L = ["H","T"]
-#     i =0
-#     outcomes = []
-#     while i < 10000:
-#         a = rand.choice(L)
-#         outcomes.append(a)
-#         i += 1
-#     H, T = outcomes.count('H'), outcomes.count('T')
-#     return H/T
-
-# def Toss_(x):
-#     L = ["H","T"]
-#     i =0
-#     randoms = []
-#     while i < 10000:
-#         a = rand.random()
-#         randoms.append(a)
-#         i += 1
-#     outcomes = ['H' if i <= x else 'T' for i in randoms ]
-#     H, T = outcomes.count('H'), outcomes.count('T')
-#     return [H/T, H+T]
 
 outs = [[1,0],[0,1]]
 def MatrixAction_onephoton_reduced(reducedstate, phi= m.pi/4):                # reduced state is either [1,0] or [0,1]. phi is splitter angle
@@ -111,7 +93,19 @@ def SystemAction_classical(inputstate ,splitter_comb):                    # inpu
 splitters = [m.pi/4,m.pi/4,m.pi/4,m.pi/4,m.pi/4,m.pi/4]  
 # SystemAction(fn.ten_states_9, splitters)
     
-
+def rounding_centered(L):
+    roundoffs = [.5,.70710,1,0]
+    for j in roundoffs:
+        for i in range(len(L)):              # removing the .499999, .70734.. etc. roundoff errors
+            # if abs(L[i]) < 1e-12:
+            #     L[i] = 0
+            if abs((abs(L[i])-j)) < .002:
+                if L[i] > 0:
+                    L[i] = j
+                elif L[i] < 0:
+                    L[i] = -j
+    return L
+    
 
 
 def probabilities(inputstate_list, coeff_list, splitter_comb, n = 10000):            # n is #of trials
@@ -130,17 +124,67 @@ bell_V = [fn.phiplus_V,fn.phiminus_V,fn.psiplus_V,fn.psiminus_V]
 bell_C = [fn.phiplus_C,fn.phiminus_C,fn.psiplus_C,fn.psiminus_C]
 
 
+def coeff_to_prob(L):
+    return [abs(i)**2 for i in L] 
+    
 
-print(probabilities(bell_V[0], bell_C[0], splitters))
+ac = (probabilities(bell_V[0], bell_C[0], big_phi[105]))
 
-print(fn.SystemAction(bell_V[0], bell_C[0], splitters, 34, True)[1])
-
-
-
-
-
+aq = (coeff_to_prob(fn.SystemAction(bell_V[0], bell_C[0], big_phi_abstract[105], 34, True)[1]))
 
 
+# print(f'{rounding_centered(ac)} , with sum {sum(ac)}')
+# print(f'{rounding_centered(aq)} , with sum {sum(aq)}')
+
+
+def fourlist(splitters, kind = 'qm'):                   # change kind to 'cm' for classical probabilities 
+    out_four = []
+    if kind == 'cm':
+        out_four.append(rounding_centered(probabilities(bell_V[0], bell_C[0], splitters)))
+        out_four.append(rounding_centered(probabilities(bell_V[1], bell_C[1], splitters)))
+        out_four.append(rounding_centered(probabilities(bell_V[2], bell_C[2], splitters)))
+        out_four.append(rounding_centered(probabilities(bell_V[3], bell_C[3], splitters)))
+    elif kind == 'qm':
+        out_four.append(fn.rounding((coeff_to_prob(fn.SystemAction(bell_V[0], bell_C[0], splitters,34,True)[1])),3))
+        out_four.append(fn.rounding((coeff_to_prob(fn.SystemAction(bell_V[1], bell_C[1], splitters,34,True)[1])),3))
+        out_four.append(fn.rounding((coeff_to_prob(fn.SystemAction(bell_V[2], bell_C[2], splitters,34,True)[1])),3))
+        out_four.append(fn.rounding((coeff_to_prob(fn.SystemAction(bell_V[3], bell_C[3], splitters,34,True)[1])),3))
+    return out_four
+
+print(fourlist(choice159, 'cm'))
+
+# take : big_phi: 0, 105
+
+# PLOTTING
+
+barWidth = 0.15
+fig = plt.subplots(figsize =(12, 8))
+ 
+# set height of bar
+prob_classical = rounding_centered(ac)
+prob_QM = rounding_centered(aq)
+
+# Set position of bar on X axis
+br1 = np.arange(len(prob_classical))
+br2 = [x + barWidth for x in br1]
+# br3 = [x + barWidth for x in br2]
+ 
+# Make the plot
+plt.bar(br1, prob_classical, color ='r', width = barWidth,
+        edgecolor ='grey', label ='IT')
+plt.bar(br2, prob_QM, color ='g', width = barWidth,
+        edgecolor ='grey', label ='ECE')
+# plt.bar(br3, CSE, color ='b', width = barWidth,
+#         edgecolor ='grey', label ='CSE')
+ 
+# Adding Xticks
+plt.xlabel('Branch', fontweight ='bold', fontsize = 15)
+plt.ylabel('Students passed', fontweight ='bold', fontsize = 15)
+plt.xticks([r + barWidth for r in range(len(prob_classical))],
+        ['2015', '2016', '2017', '2018', '2019','d1f','df2','d3f','d3f','df4'])
+ 
+plt.legend()
+# plt.show()
 
 
 

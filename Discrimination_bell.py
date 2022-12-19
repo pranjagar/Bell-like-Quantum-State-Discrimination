@@ -854,10 +854,12 @@ def choice_mirrors(choice_number,n = 6, L = [0,1,.707]):              # N is a n
     return out
 
 
-for i in range(len(interestingchoices)):
-    print(f'Choice {interestingchoices[i]} mirrors : {choice_mirrors(interestingchoices[i])}')
+# for i in range(len(interestingchoices)):
+#     print(f'Choice {interestingchoices[i]} mirrors : {choice_mirrors(interestingchoices[i])}')
 
 print(choice_mirrors(159))
+print(choice_mirrors(401))
+print(choice_mirrors(449))
 
 
 print('_______________END________________END_________END________________END___________--')

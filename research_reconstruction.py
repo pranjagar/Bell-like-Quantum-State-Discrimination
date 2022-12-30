@@ -4,7 +4,7 @@ import math as m
 import sympy as sym
 import random as rand
 import Functions_module_beta as fn
-# import Data
+import Data
 
 from Functions_module_beta import MatrixAction, SystemAction
 
@@ -27,24 +27,25 @@ def radians(degrees):           # degrees  to radians
 theta = sym.symbols('theta')
 theta = 45                                          # theta in degrees, default 45 gives Bell states
 
-phiplus_like_V = [fn.ten_states_2,fn.ten_states_5]
+phiplus_like_V = [fn.ten_states_2,fn.ten_states_5]                      #Bell-like vectors
 phiminus_like_V = [fn.ten_states_2,fn.ten_states_5]
 psiplus_like_V = [fn.ten_states_3,fn.ten_states_4]
 psiminus_like_V = [fn.ten_states_3,fn.ten_states_4]
 
-phiplus_like_C = [sym.cos(radians(theta)),sym.sin(radians(theta))]                             # disturbing C slightly away from the perfect ones in bell states, like theta degrees instead of theta
+phiplus_like_C = [sym.cos(radians(theta)),sym.sin(radians(theta))]              #Bell-like coeffs ie. disturbing C slightly away from the perfect ones in bell states, like theta degrees instead of theta
 phiminus_like_C = [sym.sin(radians(theta)), -sym.cos(radians(theta))]
 psiplus_like_C = [sym.cos(radians(theta)),sym.sin(radians(theta))]
 psiminus_like_C = [sym.sin(radians(theta)), -sym.cos(radians(theta))]
 
-
-bell_like_V = [phiplus_like_V,phiminus_like_V,psiplus_like_V,psiminus_like_V]
+bell_like_V = [phiplus_like_V,phiminus_like_V,psiplus_like_V,psiminus_like_V]           # making lists of bell-like vectos (and coeffs) so easier to change them as arguments later
 bell_like_C = [phiplus_like_C,phiminus_like_C,psiplus_like_C,psiminus_like_C]
 
-print(fn.SystemAction(bell_V[0],bell_C[0], [0,sym.pi/2,sym.pi/4,0,0,0], 34, True))
+zz = fn.SystemAction(bell_V[0],bell_C[0], [0,sym.pi/2,sym.pi/4,0,0,0], 34, True)[1]
 
-
-
+mirr0 = Data.big_phi_abstract[100]
+dd = fn.SystemAction(bell_V[0],bell_C[0], mirr0, 34, True)[1]
+print(dd)
+# print(fn.AvgProbability([zz,zz,zz,zz]))
 
 
 

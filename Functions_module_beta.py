@@ -22,6 +22,25 @@ def rounding(L, digits = 6):                        #L is a list of numbers, dig
 # print(rounding([.0099]))
 
 
+def AvgProbability(L):                      # works on a raw list (ie. list of four lists of 10 outs each), gives out the avg prob (assuming equal priors = .25 for the four input bell states)
+    sum = 0
+    nonzero_positions_list = []
+    sum_coeff_sq = 0
+    for i in range(len(L[0])):
+        zeroes = 0
+        nonzero_position = 0
+        for j in range(len(L)):
+            if L[j][i] == 0:
+                zeroes +=1
+            elif L[j][i] != 0:
+                nonzero_position += j
+        if zeroes == 3:
+            sum_coeff_sq += (abs(L[nonzero_position][i]))**2
+    avg_prob = (1/4)*sum_coeff_sq
+    return avg_prob
+    # test = [[1/(sym.sqrt(2)),0,0,0,0,0,0,0,0,0],[0,1/2,0,0,1/2,1/2,1/2,0,0,0],[0,0,1/(sym.sqrt(2)),0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]           
+    # print(AvgProbability(test))       
+            
 
 six_states_0 = [0,0]                                                               # defining the six possilbe output state
 six_states_1 = [1,0]
@@ -431,7 +450,7 @@ def MatrixAction(V,C, index, angle12 = False):
         #print(MatrixAction(phiplus_V,phiplus_C, 12, np.pi/2))      #  Ex. use
 
 
-def SystemAction(V,C, angles = False, stop = 34, roundoff = False):                # angles is a list of six numbers namely [angle12, angle13,..., angle34], Stop tells till which splitter output is desired (defualt 34 means whole interferometer)
+def SystemAction(V,C, angles = False, stop_at = 34, roundoff = False):                # angles is a list of six numbers namely [angle12, angle13,..., angle34], Stop tells till which splitter output is desired (defualt 34 means whole interferometer)
     if angles is False:
         angle12,angle13,angle14,angle23,angle24,angle34 = False,False,False,False,False,False 
     else:
@@ -446,7 +465,7 @@ def SystemAction(V,C, angles = False, stop = 34, roundoff = False):             
 
     y = [12,13,14,23,24,34]
     X = [Matrix_result12,Matrix_result13,Matrix_result14,Matrix_result23,Matrix_result24,Matrix_result34]
-    System_result = X[y.index(stop)] 
+    System_result = X[y.index(stop_at)] 
     if roundoff is False:
         return System_result
     else:

@@ -158,15 +158,11 @@ def MatrixAction(matrix_index, input_vectors, input_coeffs, phi = 3000):
     output = [output_vectors_full_reduced, output_coeffs_full_reduced, output_state_display]                                         # final list to be returned by the function, in this form so that it can be looped later on
     return output
 
-
-
-    
+   
 
 # phi_12 = (MatrixAction('12',[[0,1,0,1],[1,0,1,0]],[1,1],(m.pi)/2))
 phi_12 = (MatrixAction('12',[[0,1,0,1],[1,0,1,0]],[1,1]))
 # print(phi_12)
-
-
 
 
 def ordering(L):        # L is a ket like [1,0,0,1]
@@ -191,8 +187,6 @@ def ordering(L):        # L is a ket like [1,0,0,1]
     elif L == [0,0,0,2]:
         position = 9
     return position
-
-
 
 
 def BellOutput(InputBellState, Coeffs_or_Out = 'Out', phi_list =False, roundoff = 'no'):   #for rounding, make sure to include "no" within argument and yes in the if statement

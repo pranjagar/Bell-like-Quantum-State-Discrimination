@@ -3,20 +3,15 @@ import numpy as np
 import random as rand
 import math as m
 import sympy as sym
-import sys
 import Functions_module_beta as fn 
 from Functions_module_beta import MatrixAction_old
 import Data
-sys.path.append('C:/Users/pranj/Desktop/Python/Research_python')
 from Data import big_phi, big_phi_abstract
 
 
-choice159 =[0, 1, 1/(np.sqrt(2)), 1/(np.sqrt(2)), 1/(np.sqrt(2)), 0]
-choice401 =[1, 1, 1/(np.sqrt(2)), 1/(np.sqrt(2)), 1, 1/(np.sqrt(2))]
-choice449 =[1, 1/(np.sqrt(2)), 1, 1, 1/(np.sqrt(2)), 1/(np.sqrt(2))]
+choice159 =[m.pi/2, 0, m.pi/4, m.pi/4, m.pi/4, m.pi/2]
 
-
-
+# choice159 =[\frac{\pi}{2}, 0, \frac{\pi}{4}, \frac{\pi}{4}, \frac{\pi}{4}, \frac{\pi}{2}]
 
 outs = [[1,0],[0,1]]
 def MatrixAction_onephoton_reduced(reducedstate, phi= m.pi/4):                # reduced state is either [1,0] or [0,1]. phi is splitter angle
@@ -70,7 +65,6 @@ def MatrixAction_reduced_complete(reducedstate, phi= m.pi/4):                # r
 counter,counter2,counter3,counter4,counter5,counter6,counterelse = 0,0,0,0,0,0,0
 # print([counter3,counter4,counter2, counter5,counter6, (counter2+counter3+counter4)])
 
-
 def MatrixAction_full(matrix_index, inputstate, phi):            # matrixindex is a string like '12' etc, inputstate is a list like [1,0,0,1]
     matrix_index_12_1 = int(matrix_index[0])
     matrix_index_12_2 = int(matrix_index[1])
@@ -105,8 +99,6 @@ def rounding_centered(L):
                 elif L[i] < 0:
                     L[i] = -j
     return L
-    
-
 
 def probabilities(inputstate_list, coeff_list, splitter_comb, n = 10000):            # n is #of trials
     numbers = [0,0,0,0,0,0,0,0,0,0]
@@ -119,23 +111,14 @@ def probabilities(inputstate_list, coeff_list, splitter_comb, n = 10000):       
     out_prob_list = [i/n for i in numbers] 
     return out_prob_list
 
-
 bell_V = [fn.phiplus_V,fn.phiminus_V,fn.psiplus_V,fn.psiminus_V]
 bell_C = [fn.phiplus_C,fn.phiminus_C,fn.psiplus_C,fn.psiminus_C]
 
-
 def coeff_to_prob(L):
-    return [abs(i)**2 for i in L] 
-    
+    return [abs(i)**2 for i in L]  
 
-ac = (probabilities(bell_V[0], bell_C[0], big_phi[105]))
-
-aq = (coeff_to_prob(fn.SystemAction(bell_V[0], bell_C[0], big_phi_abstract[105], 34, True)[1]))
-
-
-# print(f'{rounding_centered(ac)} , with sum {sum(ac)}')
-# print(f'{rounding_centered(aq)} , with sum {sum(aq)}')
-
+ac = (probabilities(bell_V[3], bell_C[3], choice159))
+aq = (coeff_to_prob(fn.SystemAction(bell_V[3], bell_C[3], choice159, 34, True)[1]))
 
 def fourlist(splitters, kind = 'qm'):                   # change kind to 'cm' for classical probabilities 
     out_four = []
@@ -151,40 +134,41 @@ def fourlist(splitters, kind = 'qm'):                   # change kind to 'cm' fo
         out_four.append(fn.rounding((coeff_to_prob(fn.SystemAction(bell_V[3], bell_C[3], splitters,34,True)[1])),3))
     return out_four
 
-print(fourlist(choice159, 'cm'))
-
-# take : big_phi: 0, 105
+four_ac = fourlist(choice159, 'cm')
+four_aq = fourlist(choice159, 'qm')
 
 # PLOTTING
 
-barWidth = 0.15
-fig = plt.subplots(figsize =(12, 8))
+barWidth = 0.10
+fig = plt.subplots(figsize =(12,8))
  
-# set height of bar
-prob_classical = rounding_centered(ac)
-prob_QM = rounding_centered(aq)
+l1 = four_ac[0]
+l2 = four_ac[1]
+l3 = four_ac[2]
+l4 = four_ac[3]
 
-# Set position of bar on X axis
-br1 = np.arange(len(prob_classical))
+br1 = np.arange(len(l1))
 br2 = [x + barWidth for x in br1]
-# br3 = [x + barWidth for x in br2]
+br3 = [x + barWidth for x in br2]
+br4 = [x + barWidth for x in br3]
  
-# Make the plot
-plt.bar(br1, prob_classical, color ='r', width = barWidth,
-        edgecolor ='grey', label ='IT')
-plt.bar(br2, prob_QM, color ='g', width = barWidth,
-        edgecolor ='grey', label ='ECE')
-# plt.bar(br3, CSE, color ='b', width = barWidth,
-#         edgecolor ='grey', label ='CSE')
+plt.bar(br1, l1, color ='r', width = barWidth,
+         label =r'$|\Phi_+\rangle$')
+plt.bar(br2, l2, color ='g', width = barWidth,
+         label =r'$|\Phi_+\rangle$')
+# 3 and 4
+plt.bar(br3, l3, color ='b', width = barWidth,
+        edgecolor ='grey', label =r'$|\Psi_+\rangle$')
+plt.bar(br4, l4, color = 'y', width = barWidth,
+        edgecolor ='grey', label =r'$|\Psi_-\rangle$')
  
-# Adding Xticks
-plt.xlabel('Branch', fontweight ='bold', fontsize = 15)
-plt.ylabel('Students passed', fontweight ='bold', fontsize = 15)
-plt.xticks([r + barWidth for r in range(len(prob_classical))],
-        ['2015', '2016', '2017', '2018', '2019','d1f','df2','d3f','d3f','df4'])
- 
+plt.xlabel('Outputs', fontweight ='bold', fontsize = 15)
+plt.ylabel('Probability', fontweight ='bold', fontsize = 15)
+plt.xticks([r + barWidth for r in range(len(l1))],
+        [r'$|1100>$',r'$|1010>$',r'$|1001>$',r'$|0110>$',r'$|0101>$',r'$|0011>$',r'$|2000>$',r'$|0200>$',r'$|0020>$',r'$|0002>$'])
+plt.title(r'Classical (Monte-Carlo simulation): different Input Bell states with beam splitters angles $(\frac{\pi}{2}, 0, \frac{\pi}{4}, \frac{\pi}{4}, \frac{\pi}{4}, \frac{\pi}{2})$ ')
 plt.legend()
-# plt.show()
+plt.show()
 
 
 

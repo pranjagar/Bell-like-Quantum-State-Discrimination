@@ -4,10 +4,12 @@ import math as m
 import sympy as sym
 import random as rand
 
+def radians(degrees):           # degrees  to radians
+    rad = (sym.pi/180)*degrees
+    return rad 
 
 
-
-def rounding(L, digits = 6):                        #L is a list of numbers, digits is jjust number ofdigits after decimal upto which we want rounding
+def rounding(L, digits = 5):                        #L is a list of numbers, digits is just the number ofdigits after decimal upto which we want rounding
     factor = 10**digits
     for i in range(len(L)):
         L_new = (abs(L[i])*factor)//1
@@ -16,10 +18,9 @@ def rounding(L, digits = 6):                        #L is a list of numbers, dig
         else:
             L[i] = float(L_new/factor)
     return L
-# print(rounding([.657,55.6789]))       # Ex. use
+    #print(rounding([.657,55.6789]))       # Ex. use
 
 
-# print(rounding([.0099]))
 
 
 def AvgProbability(L):                      # works on a raw list (ie. list of four lists of 10 outs each), gives out the avg prob (assuming equal priors = .25 for the four input bell states)

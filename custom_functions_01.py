@@ -9,7 +9,7 @@ from Functions_module_beta import MatrixAction, SystemAction
 
 
 
-def bell_like_C(theta = 'theta', state_number = 'all'):          # to generate a list of bell-like coeffs' lists that are functions of the angle (degrees), default theta gives symbolic results, state_number (starts with 1 not 0) is in order to select a particular states' coeffs
+def Bell_like_C(theta = 'theta', state_number = 'all'):          # to generate a list of bell-like coeffs' lists that are functions of the angle (degrees), default theta gives symbolic results, state_number (starts with 1 not 0) is in order to select a particular states' coeffs
     if theta == 'theta':
         theta = sym.symbols('theta')
     phiplus_like_C = [sym.cos(fn.radians(theta)),sym.sin(fn.radians(theta))]              #Bell-like coeffs ie. disturbing C slightly away from the perfect ones in bell states, like theta degrees instead of theta
@@ -20,12 +20,12 @@ def bell_like_C(theta = 'theta', state_number = 'all'):          # to generate a
     if state_number != 'all':
         return bell_like_C[state_number-1]
     return bell_like_C
-    #bell_like_C(45, state_number= 1) >>>  [sqrt(2)/2, sqrt(2)/2] 
-    #bell_like_C()                    >>>  [[cos(pi*theta/180), sin(pi*theta/180)], [sin(pi*theta/180), -cos(pi*theta/180)], [cos(pi*theta/180), sin(pi*theta/180)], [sin(pi*theta/180), -cos(pi*theta/180)]]
-    #bell_like_C(40)                  >>>  [[cos(2*pi/9), sin(2*pi/9)], [sin(2*pi/9), -cos(2*pi/9)], [cos(2*pi/9), sin(2*pi/9)], [sin(2*pi/9), -cos(2*pi/9)]]
+    #Bell_like_C(45, state_number= 1) >>>  [sqrt(2)/2, sqrt(2)/2] 
+    #Bell_like_C()                    >>>  [[cos(pi*theta/180), sin(pi*theta/180)], [sin(pi*theta/180), -cos(pi*theta/180)], [cos(pi*theta/180), sin(pi*theta/180)], [sin(pi*theta/180), -cos(pi*theta/180)]]
+    #Bell_like_C(40)                  >>>  [[cos(2*pi/9), sin(2*pi/9)], [sin(2*pi/9), -cos(2*pi/9)], [cos(2*pi/9), sin(2*pi/9)], [sin(2*pi/9), -cos(2*pi/9)]]
     
 
-def bell_like_V(theta = sym.symbols('theta'), state_number = 'all'):          #to generate list of vectors of each bell like state.angle is obsolete, included jsut for sake of similarity
+def Bell_like_V(theta = sym.symbols('theta'), state_number = 'all'):          #to generate list of vectors of each bell like state.angle is obsolete, included jsut for sake of similarity
     phiplus_like_V = [fn.ten_states_2,fn.ten_states_5]                      
     phiminus_like_V = [fn.ten_states_2,fn.ten_states_5]
     psiplus_like_V = [fn.ten_states_3,fn.ten_states_4]
@@ -35,24 +35,24 @@ def bell_like_V(theta = sym.symbols('theta'), state_number = 'all'):          #t
     if state_number != 'all':
         return bell_like_V[state_number-1]
     return bell_like_V
-    #bell_like_V()                    >>> [[[1, 0, 1, 0], [0, 1, 0, 1]], [[1, 0, 1, 0], [0, 1, 0, 1]], [[1, 0, 0, 1], [0, 1, 1, 0]], [[1, 0, 0, 1], [0, 1, 1, 0]]]
-    #bell_like_V(20, state_number= 4) >>>   [[1, 0, 1, 0], [0, 1, 0, 1]]
+    #Bell_like_V()                    >>> [[[1, 0, 1, 0], [0, 1, 0, 1]], [[1, 0, 1, 0], [0, 1, 0, 1]], [[1, 0, 0, 1], [0, 1, 1, 0]], [[1, 0, 0, 1], [0, 1, 1, 0]]]
+    #Bell_like_V(20, state_number= 4) >>>   [[1, 0, 1, 0], [0, 1, 0, 1]]
 
 
 
 
-def four_list(splitter_comb = [0,0,0,0,0,0], theta = 'theta', roundoff = True, compared = False):     # splitter comb is a six-list of the six splitters, change to 'BL' for bell like, change to True for rounding, compared to True if want in output-by-output comparison format 
+def Four_list(splitter_comb = [0,0,0,0,0,0], theta = 'theta', roundoff = True, compared = False):     # splitter comb is a six-list of the six splitters, change to 'BL' for bell like, change to True for rounding, compared to True if want in output-by-output comparison format 
     if roundoff == True and theta == 'theta':
         print('Wait a minute!!! You are trying to round off an abstract calculation!!! Give a number to "theta" argument if you want to roundoff, or manually set "roundoff" argument to False!!')
-    four_list = [(fn.SystemAction(bell_like_V(theta, state_number = i), bell_like_C(theta, state_number = i),splitter_comb, 34, roundoff)[1]) for i in range(1,5)]      # list comprehension, looping from state 1-4. Creates 'raw list' ie. list of four lists of 10 elts, each sublist is output prob-amps of an input state at the ten detectors                                       
+    four_list = [(fn.SystemAction(Bell_like_V(theta, state_number = i), Bell_like_C(theta, state_number = i),splitter_comb, 34, roundoff)[1]) for i in range(1,5)]      # list comprehension, looping from state 1-4. Creates 'raw list' ie. list of four lists of 10 elts, each sublist is output prob-amps of an input state at the ten detectors                                       
     if compared == False:
         return four_list
     else:
         compared_four_list = [[four_list[i][j] for i in range(4)] for j in range(10)]       #creating the compared version ie. list of ten lists of four elts, each sublist is an output detector with prob amps of the four states to make it click
         return compared_four_list
-    # four_list(Data.big_phi_abstract[1405] , theta = 33)    >>>  [[0.0, 0.0, 0.0, 0.14701, 0.0, 0.0, 0.38511, -0.48907, -0.48907, 0.59302], [0.0, 0.0, 0.0, 0.69165, 0.0, 0.0, -0.59302, 0.10395, 0.10395, 0.38511], [-0.10395, 0.10395, -0.69165, 0.0, -0.10395, -0.10395, 0.0, -0.48907, 0.48907, 0.0], [-0.48907, 0.48907, 0.14701, 0.0, -0.48907, -0.48907, 0.0, 0.10395, -0.10395, 0.0]]     # gives bell-like states' outputs when angle is 33 degrees, in raw format
-    # four_list(Data.big_phi_abstract[1405] , theta = 33,compared= True)   >>> [[0.0, 0.0, -0.10395, -0.48907], [0.0, 0.0, 0.10395, 0.48907], [0.0, 0.0, -0.69165, 0.14701], [0.14701, 0.69165, 0.0, 0.0], [0.0, 0.0, -0.10395, -0.48907], [0.0, 0.0, -0.10395, -0.48907], [0.38511, -0.59302, 0.0, 0.0], [-0.48907, 0.10395, -0.48907, 0.10395], [-0.48907, 0.10395, 0.48907, -0.10395], [0.59302, 0.38511, 0.0, 0.0]]       # same but in compared format
-    # four_list(Data.big_phi_abstract[1405] ,compared= True, roundoff = False )  # gives compared list of the output prob amps that are abstract here 
+    # Four_list(Data.big_phi_abstract[1405] , theta = 33)    >>>  [[0.0, 0.0, 0.0, 0.14701, 0.0, 0.0, 0.38511, -0.48907, -0.48907, 0.59302], [0.0, 0.0, 0.0, 0.69165, 0.0, 0.0, -0.59302, 0.10395, 0.10395, 0.38511], [-0.10395, 0.10395, -0.69165, 0.0, -0.10395, -0.10395, 0.0, -0.48907, 0.48907, 0.0], [-0.48907, 0.48907, 0.14701, 0.0, -0.48907, -0.48907, 0.0, 0.10395, -0.10395, 0.0]]     # gives bell-like states' outputs when angle is 33 degrees, in raw format
+    # Four_list(Data.big_phi_abstract[1405] , theta = 33,compared= True)   >>> [[0.0, 0.0, -0.10395, -0.48907], [0.0, 0.0, 0.10395, 0.48907], [0.0, 0.0, -0.69165, 0.14701], [0.14701, 0.69165, 0.0, 0.0], [0.0, 0.0, -0.10395, -0.48907], [0.0, 0.0, -0.10395, -0.48907], [0.38511, -0.59302, 0.0, 0.0], [-0.48907, 0.10395, -0.48907, 0.10395], [-0.48907, 0.10395, 0.48907, -0.10395], [0.59302, 0.38511, 0.0, 0.0]]       # same but in compared format
+    # Four_list(Data.big_phi_abstract[1405] ,compared= True, roundoff = False )  # gives compared list of the output prob amps that are abstract here 
 
 
 

@@ -9,7 +9,7 @@ def radians(degrees):           # degrees  to radians
     return rad 
 
 
-def rounding(L, digits = 5):                        #L is a list of numbers, digits is just the number ofdigits after decimal upto which we want rounding
+def rounding(L, digits = 6):                        #L is a list of numbers, digits is just the number ofdigits after decimal upto which we want rounding
     factor = 10**digits
     for i in range(len(L)):
         L_new = (abs(L[i])*factor)//1

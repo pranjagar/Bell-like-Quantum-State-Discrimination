@@ -14,3 +14,5 @@ rather than just two.
 
 The python files above execute the above, and also convert input and output data to Mathematica from Python and vice versa. Our code involves use of 
 libraries numpy, sympy and mostly relies on string and list manipulations.
+
+To use the code, import the above libraries, then import modules 'function_module_beta' and 'custom_functions_01' as fn and cf respectively.

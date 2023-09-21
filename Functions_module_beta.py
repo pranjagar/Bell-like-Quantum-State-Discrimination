@@ -64,8 +64,22 @@ ten_states_9= [0,0,2,0]
 ten_states_10 = [0,0,0,2]
 
 
+natural_ten_vector_1 = [1,0,0,0,0,0,0,0,0,0]
+natural_ten_vector_2 = [0,1,0,0,0,0,0,0,0,0]
+natural_ten_vector_3 = [0,0,1,0,0,0,0,0,0,0]
+natural_ten_vector_4 = [0,0,0,1,0,0,0,0,0,0]
+natural_ten_vector_5 = [0,0,0,0,1,0,0,0,0,0]
+natural_ten_vector_6 = [0,0,0,0,0,1,0,0,0,0]
+natural_ten_vector_7 = [0,0,0,0,0,0,1,0,0,0]
+natural_ten_vector_8 = [0,0,0,0,0,0,0,1,0,0]
+natural_ten_vector_9 = [0,0,0,0,0,0,0,0,1,0]
+natural_ten_vector_10 =[0,0,0,0,0,0,0,0,0,1]
+
+
+
 TenStateBasis = [ten_states_1,ten_states_2,ten_states_3,ten_states_4,ten_states_5,ten_states_6,ten_states_7,ten_states_8,ten_states_9,ten_states_10]
 TenEmptyBasis = [ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0,ten_states_0]
+TenNaturalBasis = [natural_ten_vector_1,natural_ten_vector_2,natural_ten_vector_3,natural_ten_vector_4,natural_ten_vector_5,natural_ten_vector_6,natural_ten_vector_7,natural_ten_vector_8,natural_ten_vector_9,natural_ten_vector_10]
 TenZeroCoeffs = [0,0,0,0,0,0,0,0,0,0]
 
 # defining bell states: list of vectors n coeffs
@@ -471,6 +485,7 @@ def SystemAction(V,C, angles = False, stop_at = 34, roundoff = False):          
         return System_result
     else:
         return [System_result[0], rounding(System_result[1])]
+    # returns a list of two sublists : ten vectors (redundant) and the corresponding ten coefficients
     # print(SystemAction([[1,0,0,1]],[1], False, 34, True))     # Ex use#1
     # print(SystemAction(psiminus_V,psiminus_C, [0,sym.pi/2,sym.pi/4,0,0,0], 23 ))     # Ex use#2
 

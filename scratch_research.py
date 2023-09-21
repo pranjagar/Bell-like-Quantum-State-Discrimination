@@ -1,32 +1,58 @@
-def avg_prob_with_confidence(confidence = 1, index_15k = False, index_729 = False ,theta = 45,four_list_compared = False, machine_uncertainty = .001,  priors = [.25,.25,.25,.25]):     # index_15k is a ith elt of list big_phi_abstract, index_729 for big_phi_abstract_729, machine_uncertainty is to account for error in numerical computations 
-    if index_15k != False:
-        splitters = Data.big_phi_abstract[index_15k]
-        four_list_compared = cfn.Four_list(splitters, compared= True, theta = theta)
-    elif index_729 != False:
-        splitters = Data.big_phi_abstract_729[index_729]
-        four_list_compared = cfn.Four_list(splitters, compared= True, theta = theta)
+import numpy as np
 
-    c_threshold = confidence-machine_uncertainty
-    avg_prob_at_confidence = 0
-    # i index for states - 0,1,2,3
-    # j index for detectors - 0,1,2,...,9
-    
-    # detector j click prob = sum_i ( eta_i*a_(ij)^2) .. Ex [.5,0,.5,0] will give .25*.5^2+.25*.5^2
+M12 = '[[cos(2*phi) 0 0 0 0 0 -sqrt(2)*sin(2*phi)/2 sqrt(2)*sin(2*phi)/2 0 0],[0 cos(phi) 0 sin(phi) 0 0 0 0 0 0],[0 0 cos(phi) 0 sin(phi) 0 0 0 0 0],[0 -sin(phi) 0 cos(phi) 0 0 0 0 0 0],[0 0 -sin(phi) 0 cos(phi) 0 0 0 0 0],[0 0 0 0 0 1 0 0 0 0],[sqrt(2)*sin(2*phi)/2 0 0 0 0 0 cos(phi)**2 sin(phi)**2 0 0],[-sqrt(2)*sin(2*phi)/2 0 0 0 0 0 sin(phi)**2 cos(phi)**2 0 0],[0 0 0 0 0 0 0 0 1 0],[0 0 0 0 0 0 0 0 0 1]]'
 
-    detector_prob_list = []             # creating list of the ten detector prob - denoted p_i in the theory work
-    for j in range(10):
-        for i in range(4):
-            detector_prob = sum([priors[k]*(four_list_compared[j][k])**2 for k in range(4)])
-            detector_prob_list.append(detector_prob)
 
-    for i in range(4):
-        sum_cij_pj = 0
-        for j in range(10):
-            c_ij = ((four_list_compared[j][i])**2/detector_prob_list[j]) 
-            if c_ij >= c_threshold:
-                sum_cij_pj += c_ij
-        avg_prob_at_confidence += priors[i]*sum_cij_pj       
+def PythonToLatex(string):          # just for converting matrices to latex from numpy arrays
+    ML = [j for j in string]
+    for i in range(len(ML)):
+        if ML[i] == '(':
+            ML[i] = '{'
+        if ML[i] == ')':
+            ML[i] = '}'
+        # phi, sin,cos
+        if ML[i] == 'p' and ML[i+1] == 'h' and ML[i+2] == 'i':
+            ML[i] = '\\p'
+        if ML[i] == 's' and ML[i+1] == 'i' and ML[i+2] == 'n':
+            ML[i] = '\\s'
+        if ML[i] == 'c' and ML[i+1] == 'o' and ML[i+2] == 's':
+            ML[i] = '\\c'
+        if ML[i] == 's' and ML[i+1] == 'q' and ML[i+2] == 'r' and ML[i+3] == 't':
+            ML[i] = '\\s'
+    # comma replaced by next line, empty space by '&'
+        if ML[i] == ',':
+            ML[i] = '\\\\'
+        if ML[i] == ' ':
+            ML[i] = '&'
+        if ML[i] == '*' and ML[i+1] == '*':
+            ML[i] = '^' 
+            ML[i+1] = ''
+        if ML[i] == '[' or ML[i]==']' or ML[i] == '*':
+            ML[i] = ''
+    out = ' \\begin{equation} \\left( \\begin{array}{cccccccccc}'+''.join(ML)+'\\end{array} \\right) \\end{equation}'
+    return out
 
-    return avg_prob_at_confidence
 
-           
+print(PythonToLatex(M12))
+
+'\begin{equation} \left( \begin{array}{cccc}\cos{2\Phi}&0&0&0&0&0&-\sqrt{2}\sin{2\Phi}/2&\sqrt{2}\sin{2\Phi}/2&0&0\\0&\cos{\Phi}&0&\sin{\Phi}&0&0&0&0&0&0\\0&0&\cos{\Phi}&0&\sin{\Phi}&0&0&0&0&0\\0&-\sin{\Phi}&0&\cos{\Phi}&0&0&0&0&0&0\\0&0&-\sin{\Phi}&0&\cos{\Phi}&0&0&0&0&0\\0&0&0&0&0&1&0&0&0&0\\\sqrt{2}\sin{2\Phi}/2&0&0&0&0&0&\cos{\Phi}2&\sin{\Phi}2&0&0\\-\sqrt{2}\sin{2\Phi}/2&0&0&0&0&0&\sin{\Phi}2&\cos{\Phi}2&0&0\\0&0&0&0&0&0&0&0&1&0\\0&0&0&0&0&0&0&0&0&1\end{array} \right) \end{equation}'
+
+
+# print(np.arange(-4,15.1,.25))
+
+for i in np.arange(-4,15.1,.25):
+    print(f'\draw[thick] ({2*i},0) --({2*(i+.125)},.25);')
+
+# \draw[->] (1,10) -- (2,11)
+
+
+
+
+
+
+
+
+
+
+
+

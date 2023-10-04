@@ -218,6 +218,61 @@ def avg_prob_with_confidence(confidence = 1, custom_splitters = False, index_15k
 
 
 
+def avg_prob_with_confidence_alternative(confidence = 1, quantity = 'avgprob', custom_splitters = False, index_15k = False, index_729 = False ,theta = 45, four_list_compared = False, raw_four_list = False ,machine_uncertainty = .001,  priors = [.25,.25,.25,.25]):     
+    """
+    four_list_compared can have both compared and raw four lists as input, in case latter just set raw_four_list to True.
+    confidence variable is the threshold, = 1 for unambiguous discrimination
+    index_15k is a ith elt of list big_phi_abstract, index_729 for big_phi_abstract_729, machine_uncertainty is to account 
+    for error in numerical computations 
+    """
+    if priors != [.25,.25,.25,.25]:
+        if sum(priors) != 1:
+            print('Error. Priors dont add to 1!! \n \n ') 
+    
+    if index_15k != False:
+        splitters = Data.big_phi_abstract[index_15k]
+    elif index_729 != False:
+        splitters = Data.big_phi_abstract_729[index_729]
+    elif custom_splitters != False:
+        splitters = custom_splitters
+
+    if four_list_compared is False:              # if this is given then good, if not we construct the list using the splitter list
+        four_list_compared = Four_list(splitters, compared= True, theta = theta)
+
+    if raw_four_list is True:
+        four_list_compared = [[i[j] for i in list(four_list_compared)] for j in range(len(four_list_compared[0]))]  # converting compared into raw
+
+    c_threshold = confidence-machine_uncertainty
+    avg_prob_at_confidence = 0
+    # i index for states - 0,1,2,3, j index for detectors - 0,1,2,...,9
+    # detector j click prob = sum_i ( eta_i*a_(ij)^2) .. Ex [.5,0,.5,0] will give .25*.5^2+.25*.5^2
+    detector_prob_list = []             # creating list of the ten detector prob - denoted p_i in the theory work
+    for j in range(10):
+        detector_prob = sum([priors[i]*(four_list_compared[j][i])**2 for i in range(4)])
+        if detector_prob == 0:
+            detector_prob_list.append(1)
+        else:
+            detector_prob_list.append(detector_prob)
+    cij_pj_max = 0
+    for i in range(4):
+        sum_cij_pj = 0
+        for j in range(10):
+            c_ij = (priors[i]*(four_list_compared[j][i])**2/detector_prob_list[j])
+            c_ij_pj = c_ij*c_ij*detector_prob_list[j]   # kinda dummy
+            if quantity == 'maxconf':
+                if c_ij_pj > cij_pj_max:
+                    cij_pj_max = c_ij_pj
+            if c_ij >= c_threshold:
+                sum_cij_pj += c_ij*detector_prob_list[j]
+        avg_prob_at_confidence += sum_cij_pj
+    max_confidence = cij_pj_max         # just renaming to make intuitive
+    if quantity == 'avgprob':
+        return avg_prob_at_confidence
+    else:
+        return max_confidence
+
+
+
 
 
 

@@ -239,23 +239,43 @@ def avg_prob_with_confidence_alternative(confidence = 1, quantity = 'avgprob', c
         else:
             detector_prob_list.append(detector_prob)
     cij_pj_max = 0
+    cij_max = 0
     for i in range(4):
         sum_cij_pj = 0
         for j in range(10):
             c_ij = (priors[i]*(four_list_compared[j][i])**2/detector_prob_list[j])
             c_ij_pj = c_ij*detector_prob_list[j]   # kinda dummy
-            if quantity == 'maxconf':
+            if quantity == 'maxconf' or quantity == 'sigmoid_conf':
                 if c_ij_pj > cij_pj_max:
                     cij_pj_max = c_ij_pj
+            if quantity == 'maxconfactual' or quantity == 'sigmoid_confactual':
+                if c_ij > cij_max:
+                    cij_max = c_ij
             if c_ij >= c_threshold:
                 sum_cij_pj += c_ij*detector_prob_list[j]
         avg_prob_at_confidence += sum_cij_pj
-    max_confidence = cij_pj_max         # just renaming to make intuitive
+    
+    max_indiv_prob = cij_pj_max         # just renaming to make intuitive
+    max_confidence = cij_max
+    sigmoid = lambda x: m.exp(x)/(1 + m.exp(x))
+    
+    # sigmoid(max_indiv_prob - .25)
+    # quantities = [avg_prob_at_confidence, max_indiv_prob, max_confidence, sigmoid(max_indiv_prob - .25)]
+    
     if quantity == 'avgprob':
         return avg_prob_at_confidence
-    else:
+    elif quantity == 'maxconf':
+        return max_indiv_prob
+    elif quantity == 'maxconfactual':
         return max_confidence
-
+    elif quantity == 'sigmoid_conf':
+        return sigmoid(max_indiv_prob - .25)
+    elif quantity == 'sigmoid_confactual':
+        return sigmoid(max_confidence - .25)
+    else:
+        return "error in 'quantity' keyword"
+# 'maxconf' keyword is quite misleading, it should be 'maxindividprob' instead. Going with it for now just to avoid fixing the rest of the Code in other files.
+# need to Rename 'maxonf' to 'maxindivprob' and 'maxconfactual' to 'maxconf'.
 
 
 
